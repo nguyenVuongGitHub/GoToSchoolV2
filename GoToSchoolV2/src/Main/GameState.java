@@ -45,7 +45,7 @@ public class GameState extends JPanel implements Runnable{
 		
 		// 1000000000 (nano time) is a one second
 		double drawTime = 1000000000/ FPS; // 1/60 second ~ 0.0166666666666667 seconds
-		
+
 		long startTime = System.nanoTime();
 		double deltaTime = 0;
 		long currentTime = 0;
@@ -54,6 +54,8 @@ public class GameState extends JPanel implements Runnable{
 		int drawCount = 0;
 
 		while(gameThread != null) {
+			
+			// setup FPS 
 			currentTime = System.nanoTime();
 			deltaTime += (currentTime - startTime) / drawTime;
 			timer += (currentTime - startTime);
@@ -83,9 +85,6 @@ public class GameState extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		
-		
-		
 		
 		g2.dispose();
 		
