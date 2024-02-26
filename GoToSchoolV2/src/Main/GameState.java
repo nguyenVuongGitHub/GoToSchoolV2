@@ -20,7 +20,7 @@ public class GameState extends JPanel implements Runnable{
 	private final static int FPS = 60;
 	Thread gameThread;
 	KeyHandle keyHandle = new KeyHandle();
-	
+	MouseHandle mouseHandle = new MouseHandle();
 	// ENTITY
 	
 	// OTHER VARIABLE
@@ -30,6 +30,8 @@ public class GameState extends JPanel implements Runnable{
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		this.setBackground(Color.BLACK);
 		this.addKeyListener(keyHandle);
+		this.addMouseListener(mouseHandle);
+		this.addMouseWheelListener(mouseHandle);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 	}
@@ -80,6 +82,19 @@ public class GameState extends JPanel implements Runnable{
 	}
 	
 	public void update() {
+		if(mouseHandle.mouseLeftPress) {
+			System.out.println("left");
+		}
+		if(mouseHandle.mouseRightPress) {
+			System.out.println("right");
+		}
+		
+		if(mouseHandle.mouseWhellUp) {
+			System.out.println("up");
+		}
+		if(mouseHandle.mouseWhellDown) {
+			System.out.println("down");
+		}
 		
 	}
 	public void paintComponent(Graphics g) {
