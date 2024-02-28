@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 
 public class GameState extends JPanel implements Runnable{
@@ -20,7 +21,7 @@ public class GameState extends JPanel implements Runnable{
 	private final static int FPS = 60;
 	Thread gameThread;
 	KeyHandle keyHandle = new KeyHandle();
-	MouseHandle mouseHandle = new MouseHandle();
+	
 	// ENTITY
 	
 	// OTHER VARIABLE
@@ -80,11 +81,9 @@ public class GameState extends JPanel implements Runnable{
 			
 		}
 		exitGame();
-		
 	}
 	
 	private void exitGame() {
-		// TODO Auto-generated method stub
 		if(gameThread == null) {
 			System.exit(0);
 		}
@@ -93,20 +92,6 @@ public class GameState extends JPanel implements Runnable{
 		if(keyHandle.isEscPress()) {
 			gameThread = null;
 		}
-		if(mouseHandle.mouseLeftPress) {
-			System.out.println("left");
-		}
-		if(mouseHandle.mouseRightPress) {
-			System.out.println("right");
-		}
-		
-		if(mouseHandle.mouseWhellUp) {
-			System.out.println("up");
-		}
-		if(mouseHandle.mouseWhellDown) {
-			System.out.println("down");
-		}
-		System.out.println("cc");
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
