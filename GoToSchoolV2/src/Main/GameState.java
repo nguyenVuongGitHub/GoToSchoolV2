@@ -80,6 +80,7 @@ public class GameState extends JPanel implements Runnable{
 			
 		}
 		exitGame();
+		
 	}
 	
 	private void exitGame() {
