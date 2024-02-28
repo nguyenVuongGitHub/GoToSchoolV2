@@ -18,6 +18,7 @@ public class Main {
 		
 		gs.initGame();
 		gs.runGame();
-
+		
+		
 	}
 }
