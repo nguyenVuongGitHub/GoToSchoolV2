@@ -21,7 +21,7 @@ public class GameState extends JPanel implements Runnable{
 	private final static int FPS = 60;
 	Thread gameThread;
 	KeyHandle keyHandle = new KeyHandle();
-	
+	MouseHandle mouseHandle = new MouseHandle();
 	// ENTITY
 	
 	// OTHER VARIABLE
@@ -33,7 +33,6 @@ public class GameState extends JPanel implements Runnable{
 		this.addKeyListener(keyHandle);
 		this.addMouseListener(mouseHandle);
 		this.addMouseWheelListener(mouseHandle);
-		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 	}
 	public void initGame() {
@@ -83,7 +82,7 @@ public class GameState extends JPanel implements Runnable{
 		exitGame();
 	}
 	
-	private void exitGame() {
+	public void exitGame() {
 		if(gameThread == null) {
 			System.exit(0);
 		}
