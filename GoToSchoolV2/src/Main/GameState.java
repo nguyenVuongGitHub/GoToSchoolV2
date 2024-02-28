@@ -9,8 +9,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class GameState extends JPanel implements Runnable{
-	private static final long serialVersionUID = 1L;
-	
+
 	// VARIABLE GLOBAL
 	private static final int tile = 32;
 	private static final int WINDOW_HEIGHT = 720;
@@ -46,7 +45,7 @@ public class GameState extends JPanel implements Runnable{
 	public void run() {
 		
 		// 1000000000 (nano time) is a one second
-		double drawTime = 1000000000/ FPS; // 1/60 second ~ 0.0166666666666667 seconds
+		double drawTime = (double) 1000000000 / FPS; // 1/60 second ~ 0.0166666666666667 seconds
 
 		long startTime = System.nanoTime();
 		double deltaTime = 0;
@@ -91,6 +90,13 @@ public class GameState extends JPanel implements Runnable{
 		if(keyHandle.isEscPress()) {
 			gameThread = null;
 		}
+		if(mouseHandle.mouseLeftPress) {
+			System.out.println("left");
+		}
+		if(mouseHandle.mouseLeftPress) {
+			System.out.println("left");
+		}
+
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -99,7 +105,7 @@ public class GameState extends JPanel implements Runnable{
 		g2.dispose();
 		
 	}
- 	public static int getTile() {
+ 	public int getTile() {
 		return tile;
 	}
 }
