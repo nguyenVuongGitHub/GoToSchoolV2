@@ -40,7 +40,7 @@ public class KeyHandle implements KeyListener{
 		}
 		if(code == KeyEvent.VK_ENTER) {
 			enterPress = true;
-		}
+		}	
 	}
 
 	@Override
@@ -59,9 +59,9 @@ public class KeyHandle implements KeyListener{
 		if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
 			rightPress = false;
 		}
-		if(code == KeyEvent.VK_ESCAPE) {
-			escPress = false;
-		}
+//		if(code == KeyEvent.VK_ESCAPE) {
+//			escPress = false;
+//		}
 		if(code == KeyEvent.VK_ENTER) {
 			enterPress = false;
 		}

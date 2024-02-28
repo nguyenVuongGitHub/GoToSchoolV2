@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 
 public class GameState extends JPanel implements Runnable{
@@ -77,10 +78,18 @@ public class GameState extends JPanel implements Runnable{
 			}
 			
 		}
+		exitGame();
 	}
 	
+	public void exitGame() {
+		if(gameThread == null) {
+			System.exit(0);
+		}
+	}
 	public void update() {
-		
+		if(keyHandle.isEscPress()) {
+			gameThread = null;
+		}
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
