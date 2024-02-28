@@ -106,7 +106,7 @@ public class GameState extends JPanel implements Runnable{
 		if(mouseHandle.mouseWhellDown) {
 			System.out.println("down");
 		}
-		
+		System.out.println("cc");
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
