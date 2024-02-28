@@ -79,9 +79,19 @@ public class GameState extends JPanel implements Runnable{
 			}
 			
 		}
+		exitGame();
 	}
 	
+	private void exitGame() {
+		// TODO Auto-generated method stub
+		if(gameThread == null) {
+			System.exit(0);
+		}
+	}
 	public void update() {
+		if(keyHandle.isEscPress()) {
+			gameThread = null;
+		}
 		if(mouseHandle.mouseLeftPress) {
 			System.out.println("left");
 		}
