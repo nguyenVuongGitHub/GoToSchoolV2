@@ -79,5 +79,16 @@ public class MouseHandle implements MouseListener, MouseWheelListener, MouseMoti
 		// TODO Auto-generated method stub
 		
 	}
-
+	public boolean isMouseRightPress() {
+		return mouseLeftPress;
+	}
+	public boolean isMouseLeftPress() {
+		return mouseLeftPress;
+	}
+	public boolean isMouseWhellUp() {
+		return mouseLeftPress;
+	}
+	public boolean isMouseWhellDown() {
+		return mouseLeftPress;
+	}
 }

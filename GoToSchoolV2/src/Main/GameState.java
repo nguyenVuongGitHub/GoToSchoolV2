@@ -8,6 +8,9 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import Entity.*;
+
+
 public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
@@ -22,7 +25,8 @@ public class GameState extends JPanel implements Runnable{
 	KeyHandle keyHandle = new KeyHandle();
 	MouseHandle mouseHandle = new MouseHandle();
 	// ENTITY
-	
+	Entity player = new Player(this);
+
 	// OTHER VARIABLE
 	
 
@@ -35,7 +39,7 @@ public class GameState extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	public void initGame() {
-		
+		player.init();
 	}
 	public void runGame() {
 		gameThread = new Thread(this);
@@ -90,18 +94,14 @@ public class GameState extends JPanel implements Runnable{
 		if(keyHandle.isEscPress()) {
 			gameThread = null;
 		}
-		if(mouseHandle.mouseLeftPress) {
-			System.out.println("left");
-		}
-		if(mouseHandle.mouseLeftPress) {
-			System.out.println("left");
-		}
+
+		player.update();
 
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		
+		player.draw(g2);
 		g2.dispose();
 		
 	}
