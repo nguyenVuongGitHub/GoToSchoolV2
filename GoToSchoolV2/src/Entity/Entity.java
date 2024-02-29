@@ -9,19 +9,19 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 	GameState gs;
-
 	// CHARACTER ATTIBUTES
 	int type;
 	int speed;
 	int damage;
 	int hp;
 	boolean alive = true;
-	int worldX, worldY;
+	double worldX, worldY;
 	boolean collision;
 
 
 	// liên quan đến hình ảnh
 	BufferedImage image1;
+	Rectangle solidArea = new Rectangle(0,0,0,0);
 
 	// các phương thức
 	public Entity(GameState gs) {
@@ -31,5 +31,8 @@ public abstract class Entity {
 	public abstract void draw(Graphics2D g2);
 
 	public abstract void init();
+	public abstract Rectangle getBounds();
+
+	public void setCollision(boolean collision) {this.collision = collision;}
 
 }

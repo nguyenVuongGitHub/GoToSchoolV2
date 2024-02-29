@@ -1,32 +1,37 @@
 
 package Main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import Entity.*;
-
+import Quadtree.*;
+import Quadtree.RectangleQ;
 
 public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
 	private static final int tile = 32;
-	private static final int WINDOW_HEIGHT = 720;
-	private static final int WINDOW_WIDTH = 1080;
-	
+	private static final int WINDOW_HEIGHT = 1080;
+	private static final int WINDOW_WIDTH = 1280;
+
+	public QuadTree quadTree = new QuadTree(10,new RectangleQ(0,0,WINDOW_WIDTH,WINDOW_HEIGHT), this);
 	
 	// VARIABLE SYSTEM
 	private final static int FPS = 60;
 	Thread gameThread;
 	KeyHandle keyHandle = new KeyHandle();
 	MouseHandle mouseHandle = new MouseHandle();
-	// ENTITY
-	Entity player = new Player(this);
+	CollisionChecker CC = new CollisionChecker(this);
 
+	// ENTITY
+//	Entity player = new Player(this);
+	int n = 1500;
+	public Entity players[] = new Player[n];
+	public PointQ[] found = null;
 	// OTHER VARIABLE
 	
 
@@ -39,7 +44,13 @@ public class GameState extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	public void initGame() {
-		player.init();
+//		player.init();
+		for(int i = 0; i < n; i ++) {
+			players[i] = new Player(this);
+		}
+		for(int i = 0; i < n; i ++) {
+			players[i].init();
+		}
 	}
 	public void runGame() {
 		gameThread = new Thread(this);
@@ -68,7 +79,6 @@ public class GameState extends JPanel implements Runnable{
 			
 			
 			if(deltaTime >= 1) {
-				
 				update();
 				repaint();	
 				
@@ -94,18 +104,26 @@ public class GameState extends JPanel implements Runnable{
 		if(keyHandle.isEscPress()) {
 			gameThread = null;
 		}
-
-		player.update();
+		for(int i = 0; i < n; i ++) {
+			players[i].update();
+		}
+		CC.checkEntity(players);
 
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		player.draw(g2);
+
+		for(int i = 0; i < n; i ++) {
+			players[i].draw(g2);
+		}
+
 		g2.dispose();
 		
 	}
  	public int getTile() {
 		return tile;
 	}
+	public int getWindowHeight() {return WINDOW_HEIGHT;}
+	public int getWindowWidth() {return WINDOW_WIDTH;}
 }
