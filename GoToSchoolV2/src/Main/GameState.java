@@ -6,19 +6,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;
 import Weapon.Bullet;
+import tile.TileManager;
 
 public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
-	private static final int tile = 32;
+	private static final int tile = 64;
 	private static final int WINDOW_HEIGHT = 1080;
 	private static final int WINDOW_WIDTH = 1280;
+
+	private static final int maxScreenCol = WINDOW_WIDTH/tile;
+
+	private static final int maxScreenRow = WINDOW_HEIGHT/tile;
+
 	public QuadTree quadTree = new QuadTree(10,new RectangleQ(0,0,WINDOW_WIDTH,WINDOW_HEIGHT), this);
 	public PointQ[] found = null;
 
@@ -29,11 +35,20 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 
+	TileManager tileM = new TileManager(this);
+
 	// ENTITY
-	public Entity player = new Player(this);
+	public 	Entity player = new Player(this);
 	public List<Entity> bullets = new ArrayList<>();
 	public List<Entity> monsters = new ArrayList<Entity>();
 	int numberMonster = 30;
+
+//WORLD SETTINGS
+	private final int maxWorldCol = 32;
+	private final int maxWorldRow = 32;
+	private final int worldWidth = tile * maxWorldCol;
+	private final int worldHeight = tile * maxWorldRow;
+
 
 //	int n = 1500;
 //	public Entity players[] = new Player[n];
@@ -43,7 +58,7 @@ public class GameState extends JPanel implements Runnable{
 
 	public GameState() {
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-		this.setBackground(Color.BLACK);
+		this.setBackground(Color.DARK_GRAY);
 		this.addKeyListener(keyHandle);
 		this.addMouseListener(mouseHandle);
 		this.addMouseMotionListener(mouseHandle);
@@ -162,7 +177,7 @@ public class GameState extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		// MAP
-
+		tileM.draw(g2);
 		// ENTITY
 		if(player != null) {
 			player.draw(g2);
@@ -188,6 +203,12 @@ public class GameState extends JPanel implements Runnable{
 	}
 	public int getWindowHeight() {return WINDOW_HEIGHT;}
 	public int getWindowWidth() {return WINDOW_WIDTH;}
+	public int getMaxScreenCol() {return maxScreenCol;}
+	public int getMaxScreenRow() {return maxScreenRow;}
+	public int getMaxWorldCol() {return maxWorldCol;}
+	public int getMaxWorldRow() {return maxWorldRow;}
+	public int getWorldWidth() {return worldWidth;}
+	public int getWorldHeight() {return worldHeight;}
 	public boolean checkOutOfScreen(int x, int y) {
 		if(x < -5 || x > WINDOW_WIDTH) {
 			return true;

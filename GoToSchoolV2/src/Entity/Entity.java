@@ -21,7 +21,20 @@ public abstract class Entity {
 	protected double angleTarget;
 
 	// liên quan đến hình ảnh
-	BufferedImage image1;
+
+	protected int screenX;
+	protected int screenY;
+
+	protected BufferedImage up1, up2, up3, up4, up5, up6,
+			down1, down2, down3, down4, down5, down6,
+			left1, left2, left3, left4, left5, left6,
+			right1, right2, right3, right4, right5, right6;
+
+	protected String direction;
+
+	protected int spriteCounter = 0;
+	protected int spriteNum = 1;
+	//
 	protected Rectangle solidArea = new Rectangle(0,0,0,0);
 
 	// biến đếm
@@ -29,6 +42,12 @@ public abstract class Entity {
 	protected int timingMove = 20;
 
 	// các phương thức
+
+	public int getScreenX() {return screenX;}
+	public int getScreenY() {return screenY;}
+	public int getWorldX() {return (int) worldX;}
+	public int getWorldY() {return (int) worldY;}
+
 	public Entity(GameState gs) {
 		this.gs = gs;
 	}
@@ -50,4 +69,5 @@ public abstract class Entity {
 	public int getHP() {
 		return hp;
 	}
+
 }

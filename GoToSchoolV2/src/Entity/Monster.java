@@ -93,8 +93,8 @@ public class Monster extends Entity{
     }
     private double anglePlayerAndMonster() {
         // Lấy vị trí của người chơi
-        double playerX = gs.player.getBounds().x;
-        double playerY = gs.player.getBounds().y;
+        double playerX = gs.player.getScreenX();
+        double playerY = gs.player.getScreenY();
 
         // Tính toán khoảng cách giữa vị trí của monster và người chơi
         double dx = playerX - worldX;
