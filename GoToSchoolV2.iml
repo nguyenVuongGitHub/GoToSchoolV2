@@ -7,7 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/GoToSchoolV2/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/GoToSchoolV2/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="21" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="openjdk-21" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
