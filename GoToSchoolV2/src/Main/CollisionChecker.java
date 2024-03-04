@@ -2,6 +2,7 @@ package Main;
 import Entity.Entity;
 import Quadtree.PointQ;
 import Quadtree.RectangleQ;
+import CollisionSystem.*;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class CollisionChecker {
 
     }
 
-    public void checkEntity(Entity user,Entity[] target) {
+    public void checkEntity(Entity user, List<Entity> target) {
         gs.quadTree.clear();
 
         for(Entity e : target) {
@@ -57,9 +58,13 @@ public class CollisionChecker {
         gs.found = gs.quadTree.query(bound);
         if(gs.found != null) {
             for(PointQ other : gs.found) {
+
                 Entity check = other.getUserData();
-                if(user != check) {
-                    if (user.getBounds().intersects(check.getBounds())) {
+
+                if(user == check) {
+
+                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(user, check)) {
+
                         user.setCollision(true);
                         check.setCollision(true);
                     }

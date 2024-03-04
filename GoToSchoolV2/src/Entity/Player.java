@@ -1,5 +1,6 @@
 package Entity;
 
+import CollisionSystem.PointX;
 import Main.GameState;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class Player extends Entity{
         baseDamage = 1;
         direction = "down";
         getPlayerImage();
-
+        setPolygonVertices();
     }
 
     public void getPlayerImage() {
@@ -111,6 +112,8 @@ public class Player extends Entity{
             }
             solidArea.x = (int) worldX;
             solidArea.y = (int) worldY;
+            clearVertices();
+            setPolygonVertices();
         }
     }
 

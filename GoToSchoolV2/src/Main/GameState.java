@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import CollisionSystem.SeparatingAxis;
 import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;
@@ -41,7 +42,7 @@ public class GameState extends JPanel implements Runnable{
 	public 	Entity player = new Player(this);
 	public List<Entity> bullets = new ArrayList<>();
 	public List<Entity> monsters = new ArrayList<Entity>();
-	int numberMonster = 30;
+	int numberMonster = 1;
 
 //WORLD SETTINGS
 	private final int maxWorldCol = 32;
@@ -151,6 +152,7 @@ public class GameState extends JPanel implements Runnable{
 			player.update();
 		}
 
+
 		// WEAPON
 		for(Entity bullet : bullets) {
 			if(bullet != null) {
@@ -163,11 +165,12 @@ public class GameState extends JPanel implements Runnable{
 
 		// COLLISION
 		CC.checkBulletWithMonster(bullets,monsters);
+		// CC.checkEntity(player, monsters);
 
 		// AFTER COLLISION
         // Loại bỏ viên đạn đã chết
         bullets.removeIf(bullet -> !bullet.getAlive());
-
+		System.out.println(SeparatingAxis.polygonCollisionDetectFirstStatic(player, monsters.get(0)));
         // Loại bỏ quái vật đã chết
 		monsters.removeIf(monsters -> monsters.getHP()<=0);
         monsters.removeIf(monster -> !monster.getAlive());
