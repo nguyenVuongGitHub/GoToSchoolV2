@@ -84,12 +84,12 @@ public class QuadTree {
         }
         return false;
     }
-    public PointQ[] query(RectangleQ range) {
+    public List<PointQ> query(RectangleQ range) {
         return query(range, new ArrayList<PointQ>());
     }
 
     // truy vấn
-    private PointQ[] query(RectangleQ range, List<PointQ> found) {
+    private List<PointQ> query(RectangleQ range, List<PointQ> found) {
 
         /*
         Kiểm tra xem danh sách found đã được khởi tạo chưa. Nếu danh sách found không trống,
@@ -104,7 +104,7 @@ public class QuadTree {
         ta trả về một mảng chứa các điểm đã tìm thấy.
         * */
         if (!range.intersects(bounds)) {
-            return found.toArray(new PointQ[0]);
+            return List.of(found.toArray(new PointQ[0]));
         }
         /*
         Nếu hình chữ nhật range có giao với giới hạn của nút hiện tại, ta kiểm tra từng điểm trong danh sách points của nút hiện tại.
@@ -127,7 +127,7 @@ public class QuadTree {
         }
 
         //Cuối cùng, ta trả về một mảng chứa các điểm đã tìm thấy trong found.
-        return found.toArray(new PointQ[0]);
+        return List.of(found.toArray(new PointQ[0]));
     }
 
 }

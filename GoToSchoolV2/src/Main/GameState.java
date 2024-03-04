@@ -3,7 +3,6 @@ package Main;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.*;
@@ -11,7 +10,8 @@ import javax.swing.*;
 import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;
-import Weapon.Bullet;
+import Weapon.BaseSkill;
+import Weapon.NormalAttack;
 import tile.TileManager;
 
 public class GameState extends JPanel implements Runnable{
@@ -25,8 +25,8 @@ public class GameState extends JPanel implements Runnable{
 
 	private static final int maxScreenRow = WINDOW_HEIGHT/tile;
 
-	public QuadTree quadTree = new QuadTree(10,new RectangleQ(0,0,WINDOW_WIDTH,WINDOW_HEIGHT), this);
-	public PointQ[] found = null;
+	public QuadTree quadTree = new QuadTree(4,new RectangleQ(0,0,WINDOW_WIDTH*tile,WINDOW_HEIGHT*tile), this);
+	public List<PointQ> found = new ArrayList<>();
 
 	// VARIABLE SYSTEM
 	private final static int FPS = 60;
@@ -39,9 +39,10 @@ public class GameState extends JPanel implements Runnable{
 
 	// ENTITY
 	public 	Entity player = new Player(this);
-	public List<Entity> bullets = new ArrayList<>();
 	public List<Entity> monsters = new ArrayList<Entity>();
-	int numberMonster = 30;
+	// WEAPON
+	public List<Entity> skillAttacks = new ArrayList<Entity>();
+	int numberMonster = 5;
 
 //WORLD SETTINGS
 	private final int maxWorldCol = 32;
@@ -54,7 +55,6 @@ public class GameState extends JPanel implements Runnable{
 //	public Entity players[] = new Player[n];
 
 	// OTHER VARIABLE
-	int timmingShoot = 0;
 
 	public GameState() {
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -105,8 +105,10 @@ public class GameState extends JPanel implements Runnable{
 				deltaTime--;
 				drawCount++;
 			}
+			// mỗi giây
 			if(timer >= 1000000000) {
-				System.out.println("FPS: " + drawCount);
+				NormalAttack.TIME_COUNT_DOWN_ATTACK--;
+//				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
 			}
@@ -132,12 +134,12 @@ public class GameState extends JPanel implements Runnable{
 				monsters.add(monster);
 			}
 		}
-		// SHOOTING
-		timmingShoot++;
-		if(timmingShoot >= 5 && mouseHandle.isMouseLeftPress()) {
-			Entity bullet = new Bullet(this);
-			bullets.add(bullet);
-			timmingShoot = 0;
+
+		// ATTACK
+		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
+			Entity normalAttack = new NormalAttack(this);
+			skillAttacks.add(normalAttack);
+			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_ATTACK;
 		}
 
 		// MONSTER
@@ -152,24 +154,24 @@ public class GameState extends JPanel implements Runnable{
 		}
 
 		// WEAPON
-		for(Entity bullet : bullets) {
-			if(bullet != null) {
-				bullet.update();
-				if(checkOutOfScreen(bullet.getBounds().x,bullet.getBounds().y)){
-					bullet.setAlive(false);
-				}
+		for(Entity normalAttack : skillAttacks) {
+			if(normalAttack != null) {
+				normalAttack.update();
 			}
 		}
 
 		// COLLISION
-		CC.checkBulletWithMonster(bullets,monsters);
+		CC.checkSkillWithMonster(skillAttacks,monsters);
+		CC.checkPlayerAndMonsters(player,monsters);
+
+
 
 		// AFTER COLLISION
-        // Loại bỏ viên đạn đã chết
-        bullets.removeIf(bullet -> !bullet.getAlive());
+        // Loại bỏ skill đã chết
+		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
 
         // Loại bỏ quái vật đã chết
-		monsters.removeIf(monsters -> monsters.getHP()<=0);
+		monsters.removeIf(monster -> monster.getHP()<=0);
         monsters.removeIf(monster -> !monster.getAlive());
 
 	}
@@ -188,9 +190,9 @@ public class GameState extends JPanel implements Runnable{
 				monster.draw(g2);
 			}
 		}
-		for(Entity bullet : bullets) {
-			if(bullet != null) {
-				bullet.draw(g2);
+		for(Entity normalAttack : skillAttacks) {
+			if(normalAttack != null) {
+				normalAttack.draw(g2);
 			}
 		}
 		// ANOTHER

@@ -26,13 +26,15 @@ public class Monster extends Entity{
     @Override
     public void draw(Graphics2D g2) {
         if(alive) {
-            g2.drawRect(solidArea.x,solidArea.y,solidArea.width,solidArea.height);
+            screenX = (int) (worldX - gs.player.getWorldX() + gs.player.getScreenX());
+            screenY = (int) (worldY - gs.player.getWorldY() + gs.player.getScreenY());
+            g2.drawRect(screenX,screenY,solidArea.width,solidArea.height);
             if(collision) {
                 g2.setColor(Color.red);
             }else {
                 g2.setColor(Color.green);
             }
-            g2.fillRect(solidArea.x,solidArea.y,solidArea.width,solidArea.height);
+            g2.fillRect(screenX,screenY,solidArea.width,solidArea.height);
         }
 
     }
@@ -40,7 +42,6 @@ public class Monster extends Entity{
     @Override
     public void init() {
         type = TYPE.MONSTER;
-        hp = 1;
         int x = new Random().nextInt(8); // Random số từ 0 đến 7
         int screenWidth = gs.getWindowWidth();
         int screenHeight = gs.getWindowHeight();
@@ -81,9 +82,9 @@ public class Monster extends Entity{
                 // Các xử lý mặc định hoặc thông báo lỗi
         }
         hp = 5;
-        speed = 5;
-        baseDamage = 0;
-        solidArea = new Rectangle((int)worldX,(int)worldY,35,35);
+        speed = 3;
+        damage = 0;
+        solidArea = new Rectangle((int)worldX,(int)worldY,gs.getTile() /2,gs.getTile() /2);
         angleTarget = new Random().nextDouble() % 360;
     }
 
@@ -93,8 +94,8 @@ public class Monster extends Entity{
     }
     private double anglePlayerAndMonster() {
         // Lấy vị trí của người chơi
-        double playerX = gs.player.getScreenX();
-        double playerY = gs.player.getScreenY();
+        double playerX = gs.player.getWorldX() + (double) gs.getTile() /2;
+        double playerY = gs.player.getWorldY() + (double) gs.getTile() /2;
 
         // Tính toán khoảng cách giữa vị trí của monster và người chơi
         double dx = playerX - worldX;

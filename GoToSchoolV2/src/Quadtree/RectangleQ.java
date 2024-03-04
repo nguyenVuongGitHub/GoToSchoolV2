@@ -1,5 +1,7 @@
 package Quadtree;
 
+import java.awt.*;
+
 public class RectangleQ {
     private int x;
     private int y;
@@ -11,6 +13,12 @@ public class RectangleQ {
         this.y = y;
         this.w = w;
         this.h = h;
+    }
+    public RectangleQ(Rectangle r) {
+        this.x = r.x;
+        this.y = r.y;
+        this.w = r.width;
+        this.h = r.height;
     }
     // kiểm tra xem một điểm có nằm trong khoaảng hình chữ nhật không
     public boolean contains(PointQ point) {

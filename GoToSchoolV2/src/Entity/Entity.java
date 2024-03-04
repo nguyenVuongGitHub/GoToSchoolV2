@@ -13,7 +13,7 @@ public abstract class Entity {
 	// CHARACTER ATTIBUTES
 	protected TYPE type;
 	protected int speed;
-	protected int baseDamage;
+	protected int damage;
 	protected int hp;
 	protected boolean alive = true;
 	protected double worldX, worldY;
@@ -47,6 +47,8 @@ public abstract class Entity {
 	public int getScreenY() {return screenY;}
 	public int getWorldX() {return (int) worldX;}
 	public int getWorldY() {return (int) worldY;}
+	public void setScreenX(int x) {this.screenX = x;}
+	public void setScreenY(int y) {this.screenY = y;}
 
 	public Entity(GameState gs) {
 		this.gs = gs;
@@ -61,9 +63,8 @@ public abstract class Entity {
 	public boolean getAlive() {return alive;}
 	public void setAlive(boolean alive) {this.alive = alive;}
 	public void setHP(int hp) {this.hp = hp;}
-
-	public int getDame() {
-		return baseDamage;
+	public int getDamage() {
+		return damage;
 	}
 
 	public int getHP() {

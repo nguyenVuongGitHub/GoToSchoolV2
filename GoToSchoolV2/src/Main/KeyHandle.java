@@ -7,11 +7,11 @@ package Main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 
 public class KeyHandle implements KeyListener{
 
-	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress;
-	
+	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress;
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -34,6 +34,9 @@ public class KeyHandle implements KeyListener{
 		}
 		if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
 			rightPress = true;
+		}
+		if(code == KeyEvent.VK_SPACE) {
+			spacePress = true;
 		}
 		if(code == KeyEvent.VK_ESCAPE) {
 			escPress = true;
@@ -62,11 +65,16 @@ public class KeyHandle implements KeyListener{
 //		if(code == KeyEvent.VK_ESCAPE) {
 //			escPress = false;
 //		}
+		if(code == KeyEvent.VK_SPACE) {
+			spacePress = false;
+		}
 		if(code == KeyEvent.VK_ENTER) {
 			enterPress = false;
 		}
 	}
-
+	public boolean isSpacePress() {
+		return spacePress;
+	}
 	public boolean isDownPress() {
 		return downPress;
 	}

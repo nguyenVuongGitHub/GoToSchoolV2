@@ -7,7 +7,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 public class MouseHandle implements MouseListener, MouseWheelListener, MouseMotionListener{
-	
+
 	boolean mouseLeftPress, mouseRightPress, mouseWhellUp, mouseWhellDown;
 	int worldX, worldY;
 	public int getWorldX() {
@@ -38,8 +38,6 @@ public class MouseHandle implements MouseListener, MouseWheelListener, MouseMoti
 		int code  = e.getButton();
 		if(MouseEvent.BUTTON1 == code) {
 			mouseLeftPress = true;
-			worldX = e.getPoint().x;
-			worldY = e.getPoint().y;
 		}
 		if(MouseEvent.BUTTON3 == code) {
 			mouseRightPress = true;
@@ -79,16 +77,14 @@ public class MouseHandle implements MouseListener, MouseWheelListener, MouseMoti
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		worldX = e.getX();
+		worldY = e.getY();
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(mouseLeftPress) {
-			worldX = e.getPoint().x;
-			worldY = e.getPoint().y;
-		}
+
 	}
 	public boolean isMouseRightPress() {
 		return mouseLeftPress;
@@ -102,4 +98,5 @@ public class MouseHandle implements MouseListener, MouseWheelListener, MouseMoti
 	public boolean isMouseWhellDown() {
 		return mouseLeftPress;
 	}
+
 }

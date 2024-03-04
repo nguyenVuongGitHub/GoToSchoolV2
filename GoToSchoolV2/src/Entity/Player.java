@@ -18,13 +18,14 @@ public class Player extends Entity{
 
     @Override
     public void init() {
-        worldX = 100;
-        worldY = 100;
+        worldX = 400;
+        worldY = 500;
         type = TYPE.PLAYER;
         hp = 100;
         speed = 5;
-        baseDamage = 1;
+        damage = 1;
         direction = "down";
+        solidArea = new Rectangle((int) worldX, (int) worldY,64,64);
         getPlayerImage();
 
     }
@@ -202,7 +203,6 @@ public class Player extends Entity{
                 break;
         }
         g2.drawImage(image, screenX, screenY, gs.getTile(), gs.getTile(), null);
-
     }
 
     @Override
