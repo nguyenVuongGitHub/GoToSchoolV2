@@ -3,7 +3,10 @@
 package Entity;
 
 import Main.GameState;
+import CollisionSystem.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -17,6 +20,8 @@ public abstract class Entity {
 	protected int hp;
 	protected boolean alive = true;
 	protected double worldX, worldY;
+	protected List<PointX> vertices = new ArrayList<>();
+	protected double radius;
 	protected boolean collision;
 	protected double angleTarget;
 
@@ -50,6 +55,10 @@ public abstract class Entity {
 	public void setScreenX(int x) {this.screenX = x;}
 	public void setScreenY(int y) {this.screenY = y;}
 
+	public void setWorldX(double amount) { worldX = amount;}
+	public void setWorldY(double amount) {worldY = amount;}
+	public List<PointX> getVertices() { return vertices;}
+	public double getRadius() {	return radius;}
 	public Entity(GameState gs) {
 		this.gs = gs;
 	}
@@ -69,6 +78,17 @@ public abstract class Entity {
 
 	public int getHP() {
 		return hp;
+	}
+	protected void setPolygonVertices()
+	{
+		vertices.add(new PointX(worldX, worldY));
+		vertices.add(new PointX(worldX + gs.getTile(), worldY));
+		vertices.add(new PointX(worldX + gs.getTile(), worldY + gs.getTile()));
+		vertices.add(new PointX(worldX, worldY + gs.getTile()));
+	}
+	protected void clearVertices()
+	{
+		vertices.clear();
 	}
 
 }

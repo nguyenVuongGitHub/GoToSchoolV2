@@ -1,5 +1,6 @@
 package Entity;
 
+import CollisionSystem.PointX;
 import Main.GameState;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ public class Player extends Entity{
         direction = "down";
         solidArea = new Rectangle((int) worldX, (int) worldY,64,64);
         getPlayerImage();
-
+        setPolygonVertices();
     }
 
     public void getPlayerImage() {
@@ -112,6 +113,8 @@ public class Player extends Entity{
             }
             solidArea.x = (int) worldX;
             solidArea.y = (int) worldY;
+            clearVertices();
+            setPolygonVertices();
         }
     }
 

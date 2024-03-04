@@ -21,6 +21,8 @@ public class Monster extends Entity{
         setAI();
         solidArea.x = (int)worldX;
         solidArea.y = (int)worldY;
+        clearVertices();
+        setPolygonVertices();
     }
 
     @Override
@@ -42,6 +44,7 @@ public class Monster extends Entity{
     @Override
     public void init() {
         type = TYPE.MONSTER;
+        setPolygonVertices();
         int x = new Random().nextInt(8); // Random số từ 0 đến 7
         int screenWidth = gs.getWindowWidth();
         int screenHeight = gs.getWindowHeight();

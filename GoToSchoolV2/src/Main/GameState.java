@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import CollisionSystem.SeparatingAxis;
 import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;

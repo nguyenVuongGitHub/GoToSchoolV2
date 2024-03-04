@@ -2,6 +2,7 @@ package Main;
 import Entity.Entity;
 import Quadtree.PointQ;
 import Quadtree.RectangleQ;
+import CollisionSystem.*;
 
 import java.awt.*;
 import java.util.List;
@@ -66,11 +67,14 @@ public class CollisionChecker {
 
             for (PointQ other : gs.found) {
                 Entity check = other.getUserData();
-                Rectangle checkBounds = check.getBounds();
 
-                if (playerRect.intersects(checkBounds)) {
-                    player.setCollision(true);
-                    check.setCollision(true);
+                if(player == check) {
+
+                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(user, check)) {
+
+                        player.setCollision(true);
+                        check.setCollision(true);
+                    }
                 }
             }
         }
