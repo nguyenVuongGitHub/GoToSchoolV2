@@ -70,7 +70,7 @@ public class CollisionChecker {
 
                 if(player == check) {
 
-                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(user, check)) {
+                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check)) {
 
                         player.setCollision(true);
                         check.setCollision(true);
