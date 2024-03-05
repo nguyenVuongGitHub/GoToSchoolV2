@@ -77,15 +77,15 @@ public class Player extends Entity{
                 direction = "left";
                 worldX -=  speed ;
             }
-            if(gs.keyHandle.isRightPress()) {
+            else if(gs.keyHandle.isRightPress()) {
                 direction= "right";
                 worldX +=  speed ;
             }
-            if(gs.keyHandle.isDownPress()) {
+            else if(gs.keyHandle.isDownPress()) {
                 direction = "down";
                 worldY +=  speed ;
             }
-            if(gs.keyHandle.isUpPress()) {
+            else if(gs.keyHandle.isUpPress()) {
                 direction = "up";
                 worldY -=  speed ;
             }
