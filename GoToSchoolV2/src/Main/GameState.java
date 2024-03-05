@@ -7,11 +7,10 @@ import java.util.List;
 
 import javax.swing.*;
 
-import CollisionSystem.SeparatingAxis;
 import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;
-import Weapon.BaseSkill;
+import User.UserManager;
 import Weapon.NormalAttack;
 import tile.TileManager;
 
@@ -35,7 +34,7 @@ public class GameState extends JPanel implements Runnable{
 	public KeyHandle keyHandle = new KeyHandle();
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
-
+	public UserManager user = new UserManager();
 	TileManager tileM = new TileManager(this);
 
 	// ENTITY
@@ -67,6 +66,7 @@ public class GameState extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	public void initGame() {
+		user.readFile("/user/infUser.txt");
 		// something here
 		for(int i = 0; i < numberMonster; i++) {
 			Entity monster = new Monster(this);
@@ -120,6 +120,7 @@ public class GameState extends JPanel implements Runnable{
 	
 	public void exitGame() {
 		if(gameThread == null) {
+			user.saveFile("/user/infUser.txt");
 			System.exit(0);
 		}
 	}
@@ -127,7 +128,7 @@ public class GameState extends JPanel implements Runnable{
 		if(keyHandle.isEscPress()) {
 			gameThread = null;
 		}
-
+		System.out.println("Coin : " + user.getCoin());
 		// RE - GAME
 		if(monsters.size() <= 0) {
 			for(int i = 0; i < numberMonster; i++) {

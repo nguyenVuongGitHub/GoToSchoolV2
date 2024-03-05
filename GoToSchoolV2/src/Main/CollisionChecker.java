@@ -27,7 +27,6 @@ public class CollisionChecker {
             gs.found = gs.quadTree.query(bound);
 
             if(gs.found != null) {
-                System.out.println("size: " + gs.found.size());
                 for(PointQ other : gs.found) {
                     Entity check = other.getUserData();
                     if(check != skill && skill.getAlive() && check.getAlive()) {
