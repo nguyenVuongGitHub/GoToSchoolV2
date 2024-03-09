@@ -10,6 +10,7 @@ public class UserManager {
 
     private long coin;
     private short numberLeversUnlocked;
+    private short maxNumberLevers = 5;
     private short numberSkillsUnlocked;
 
     public UserManager() {
@@ -63,8 +64,11 @@ public class UserManager {
     public void setNumberLeversUnlocked(short numberLeversUnlocked) {
         this.numberLeversUnlocked = numberLeversUnlocked;
     }
-
     public void setNumberSkillsUnlocked(short numberSkillsUnlocked) {
         this.numberSkillsUnlocked = numberSkillsUnlocked;
+    }
+
+    public short getMaxNumberLevers() {
+        return maxNumberLevers;
     }
 }

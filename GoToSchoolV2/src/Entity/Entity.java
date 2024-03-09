@@ -90,5 +90,8 @@ public abstract class Entity {
 	{
 		vertices.clear();
 	}
+	public String getDirection() {
+		return direction;
+	}
 
 }

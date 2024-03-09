@@ -22,7 +22,7 @@ public class NormalAttack extends BaseSkill{
         worldX = gs.player.getWorldX() + (double) gs.getTile() /2;
         worldY = gs.player.getWorldY() + (double) gs.getTile() /2;
         solidArea = new Rectangle((int) worldX,(int) worldY,gs.getTile() /2,gs.getTile() /2);
-        angleTarget = anglePlayerAndMouse();
+        direction = gs.player.getDirection();
     }
 
     @Override
@@ -37,8 +37,20 @@ public class NormalAttack extends BaseSkill{
             distance = 100;
         }
         if(alive) {
-            worldX += Math.cos(angleTarget) * speed;
-            worldY += Math.sin(angleTarget) * speed;
+            switch (direction) {
+                case "up" :
+                    worldY -= speed;
+                    break;
+                case "down":
+                    worldY += speed;
+                    break;
+                case "left":
+                    worldX -= speed;
+                    break;
+                case "right":
+                    worldX += speed;
+                    break;
+            }
             distance--;
         }
         solidArea.x = (int) worldX;

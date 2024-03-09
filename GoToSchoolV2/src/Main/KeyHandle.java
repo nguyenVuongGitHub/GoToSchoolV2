@@ -11,9 +11,12 @@ import java.awt.event.MouseEvent;
 
 public class KeyHandle implements KeyListener{
 
+	GameState gs;
 	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress, tabPress;
 	private boolean skill1Press,skill2Press,skill3Press;
-
+	public KeyHandle(GameState gs) {
+		this.gs = gs;
+	}
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -23,41 +26,69 @@ public class KeyHandle implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-		
-		if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-			upPress = true;
-		}
-		if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-			downPress = true;
-		}
-		if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
-			leftPress = true;
-		}
-		if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
-			rightPress = true;
-		}
-		if(code == KeyEvent.VK_SPACE) {
-			spacePress = true;
-		}
-		if(code == KeyEvent.VK_ESCAPE) {
-			escPress = true;
-		}
-		if(code == KeyEvent.VK_ENTER) {
-			enterPress = true;
-		}
-		if(code == KeyEvent.VK_TAB) {
-			tabPress = true;
-		}
-		if(code == KeyEvent.VK_J) {
-			skill1Press = true;
-		}
-		if(code == KeyEvent.VK_K) {
-			skill2Press = true;
-		}
-		if(code == KeyEvent.VK_L) {
-			skill3Press = true;
-		}
 
+		if(gs.state == State.CAMPAIGN) {
+			if(gs.campaign.isShowDialog()) { // dialog
+				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					gs.campaign.setChoose(gs.campaign.getChoose()-1);
+					if(gs.campaign.getChoose() < 1) {
+						gs.campaign.setChoose(gs.user.getNumberSkillsUnlocked());
+					}
+				}
+				if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					gs.campaign.setChoose(gs.campaign.getChoose()+1);
+					if(gs.campaign.getChoose() > gs.user.getNumberLeversUnlocked()) {
+						gs.campaign.setChoose(1);
+					}
+				}
+				if(code == KeyEvent.VK_ENTER) {
+					gs.campaign.loadMap(gs.campaign.getChoose());
+					gs.campaign.setShowDialog(false);
+				}
+				if(code == KeyEvent.VK_ESCAPE) {
+					gs.state = State.LOOPY;
+				}
+			}else{ // battle
+				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					upPress = true;
+				}
+				if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					downPress = true;
+				}
+				if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+					leftPress = true;
+				}
+				if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+					rightPress = true;
+				}
+				if(code == KeyEvent.VK_SPACE) {
+					spacePress = true;
+				}
+				if(code == KeyEvent.VK_ESCAPE) {
+					escPress = true;
+				}
+				if(code == KeyEvent.VK_ENTER) {
+					enterPress = true;
+				}
+				if(code == KeyEvent.VK_TAB) {
+					tabPress = true;
+				}
+				if(code == KeyEvent.VK_J) {
+					skill1Press = true;
+				}
+				if(code == KeyEvent.VK_K) {
+					skill2Press = true;
+				}
+				if(code == KeyEvent.VK_L) {
+					skill3Press = true;
+				}
+			}
+		}
+		else if(gs.state == State.SURVIVAL) {
+
+		}else if(gs.state == State.LOOPY) {
+
+		}
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import javax.swing.*;
 import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;
+import Scene.Campaign;
 import User.UserManager;
 import Weapon.NormalAttack;
 import tile.TileManager;
@@ -31,11 +32,14 @@ public class GameState extends JPanel implements Runnable{
 	// VARIABLE SYSTEM
 	private final static int FPS = 60;
 	Thread gameThread;
-	public KeyHandle keyHandle = new KeyHandle();
+	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
+	public UI ui = new UI(this);
+	public State state = State.CAMPAIGN;
 	public UserManager user = new UserManager();
-	TileManager tileM = new TileManager(this);
+    public Campaign campaign = new Campaign(user,this,ui);
+	public TileManager tileM = new TileManager(this);
 
 	// ENTITY
 	public 	Entity player = new Player(this);
@@ -68,10 +72,7 @@ public class GameState extends JPanel implements Runnable{
 	public void initGame() {
 		user.readFile("/user/infUser.txt");
 		// something here
-		for(int i = 0; i < numberMonster; i++) {
-			Entity monster = new Monster(this);
-			monsters.add(monster);
-		}
+
 	}
 	public void runGame() {
 		gameThread = new Thread(this);
@@ -125,18 +126,30 @@ public class GameState extends JPanel implements Runnable{
 		}
 	}
 	public void update() {
-		if(keyHandle.isEscPress()) {
-			gameThread = null;
-		}
-		System.out.println("Coin : " + user.getCoin());
-		// RE - GAME
-		if(monsters.size() <= 0) {
-			for(int i = 0; i < numberMonster; i++) {
-				Entity monster = new Monster(this);
-				monsters.add(monster);
-			}
-		}
+		if(state == State.CAMPAIGN) {
+			campaign.update();
 
+		}else if(state == State.SURVIVAL){
+
+		}else if(state == State.LOOPY) {
+		}
+	}
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+
+		if(state == State.LOOPY) {
+
+		}else if(state == State.CAMPAIGN) {
+			campaign.draw(g2);
+		}else if(state == State.SURVIVAL) {
+
+		}
+		g2.dispose();
+		
+	}
+
+	public void updateBattle() {
 		// ATTACK
 		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
 			Entity normalAttack = new NormalAttack(this);
@@ -169,40 +182,15 @@ public class GameState extends JPanel implements Runnable{
 
 
 		// AFTER COLLISION
-        // Loại bỏ skill đã chết
+		// Loại bỏ skill đã chết
 		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
 
-        // Loại bỏ quái vật đã chết
+		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> monster.getHP()<=0);
-        monsters.removeIf(monster -> !monster.getAlive());
-
+		monsters.removeIf(monster -> !monster.getAlive());
 	}
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D)g;
-		// MAP
-		tileM.draw(g2);
-		// ENTITY
-		if(player != null) {
-			player.draw(g2);
-		}
 
-		for(Entity monster : monsters) {
-			if(monster != null) {
-				monster.draw(g2);
-			}
-		}
-		for(Entity normalAttack : skillAttacks) {
-			if(normalAttack != null) {
-				normalAttack.draw(g2);
-			}
-		}
-		// ANOTHER
-
-		g2.dispose();
-		
-	}
- 	public int getTile() {
+	public int getTile() {
 		return tile;
 	}
 	public int getWindowHeight() {return WINDOW_HEIGHT;}
