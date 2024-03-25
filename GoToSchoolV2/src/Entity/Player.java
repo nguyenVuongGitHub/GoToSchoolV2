@@ -19,14 +19,14 @@ public class Player extends Entity{
 
     @Override
     public void init() {
-        worldX = 400;
-        worldY = 500;
+        worldX = gs.getTile() * 5;
+        worldY = gs.getTile() * 5;
         type = TYPE.PLAYER;
         hp = 100;
         speed = 5;
         damage = 1;
         direction = "down";
-        solidArea = new Rectangle((int) worldX, (int) worldY,64,64);
+        solidArea = new Rectangle(20,8,64,64);
         getPlayerImage();
         setPolygonVertices();
     }
@@ -75,20 +75,38 @@ public class Player extends Entity{
                 || gs.keyHandle.isLeftPress() || gs.keyHandle.isRightPress()) {
             if(gs.keyHandle.isLeftPress()) {
                 direction = "left";
-                worldX -=  speed ;
             }
             else if(gs.keyHandle.isRightPress()) {
                 direction= "right";
-                worldX +=  speed ;
             }
             else if(gs.keyHandle.isDownPress()) {
                 direction = "down";
-                worldY +=  speed ;
             }
             else if(gs.keyHandle.isUpPress()) {
                 direction = "up";
-                worldY -=  speed ;
             }
+
+            // CHECK COLLISION
+            collisionOn = false;
+            gs.CC.checkEntityWithTile(this);
+
+            if(!collisionOn) {
+                switch (direction) {
+                    case "up" :
+                        worldY -=  speed ;
+                        break;
+                    case "down":
+                        worldY +=  speed ;
+                        break;
+                    case "left" :
+                        worldX -=  speed ;
+                        break;
+                    case "right" :
+                        worldX +=  speed ;
+                        break;
+                }
+            }
+
 
             spriteCounter++;
             if(spriteCounter > 10) {
@@ -111,8 +129,6 @@ public class Player extends Entity{
                     spriteNum = 1;
                 }
             }
-            solidArea.x = (int) worldX;
-            solidArea.y = (int) worldY;
             clearVertices();
             setPolygonVertices();
         }
@@ -210,7 +226,7 @@ public class Player extends Entity{
 
     @Override
     public Rectangle getBounds() {
-        return solidArea;
+        return new Rectangle((int)worldX + solidArea.x,(int) worldY + solidArea.y, solidArea.width, solidArea.height);
     }
 
 }

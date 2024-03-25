@@ -45,9 +45,12 @@ public class Campaign {
         switch (index) {
             case 1:
                 gs.tileM.loadMap("/maps/map_test.txt");
-                Entity monster = new Monster(gs);
-                gs.monsters.add(monster);
-                System.out.println("cc");
+
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*5);
+                    monster.setWorldY(gs.getTile()*10);
+                    gs.monsters.add(monster);
+
                 // setup MONSTER
                 break;
             case 2:
@@ -59,7 +62,6 @@ public class Campaign {
                 // setup MONSTER
                 break;
         }
-
     }
     public void update() {
         if (gs.monsters.isEmpty()) {

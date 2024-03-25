@@ -22,7 +22,8 @@ public abstract class Entity {
 	protected double worldX, worldY;
 	protected List<PointX> vertices = new ArrayList<>();
 	protected double radius;
-	protected boolean collision;
+	protected boolean collision = false;
+	protected boolean collisionOn = false;
 	protected double angleTarget;
 
 	// liên quan đến hình ảnh
@@ -35,16 +36,21 @@ public abstract class Entity {
 			left1, left2, left3, left4, left5, left6,
 			right1, right2, right3, right4, right5, right6;
 
-	protected String direction;
+	protected String direction = "right";
 
 	protected int spriteCounter = 0;
 	protected int spriteNum = 1;
+
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
 	//
 	protected Rectangle solidArea = new Rectangle(0,0,0,0);
-
-	// biến đếm
-	protected int countCanMove = 0;
-	protected int timingMove = 20;
 
 	// các phương thức
 
@@ -66,9 +72,15 @@ public abstract class Entity {
 	public abstract void draw(Graphics2D g2);
 
 	public abstract void init();
+
+	public Rectangle getSolidArea() {
+		return solidArea;
+	}
+
 	public abstract Rectangle getBounds();
 
 	public void setCollision(boolean collision) {this.collision = collision;}
+	public void setCollisionOn(boolean collisionOn) {this.collisionOn = collisionOn;}
 	public boolean getAlive() {return alive;}
 	public void setAlive(boolean alive) {this.alive = alive;}
 	public void setHP(int hp) {this.hp = hp;}

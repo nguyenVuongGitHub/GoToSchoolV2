@@ -201,13 +201,4 @@ public class GameState extends JPanel implements Runnable{
 	public int getMaxWorldRow() {return maxWorldRow;}
 	public int getWorldWidth() {return worldWidth;}
 	public int getWorldHeight() {return worldHeight;}
-	public boolean checkOutOfScreen(int x, int y) {
-		if(x < -5 || x > WINDOW_WIDTH) {
-			return true;
-		}
-		if(y < -5 || y > WINDOW_HEIGHT) {
-			return true;
-		}
-		return false;
-	}
 }

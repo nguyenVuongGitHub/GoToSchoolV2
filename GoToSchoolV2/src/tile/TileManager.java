@@ -14,6 +14,17 @@ import java.io.InputStreamReader;
 public class TileManager {
     GameState gs;
     Tile[] tile;
+
+    public int getMapTileNum(int i, int j) {
+        return mapTileNum[i][j];
+    }
+    public Tile getTile(int i) {
+        return tile[i];
+    }
+    public void setMapTileNum(int[][] mapTileNum) {
+        this.mapTileNum = mapTileNum;
+    }
+
     int mapTileNum[][];
 
     public TileManager(GameState gs) {
@@ -33,18 +44,22 @@ public class TileManager {
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_2.png"));
+            tile[2].collision = true;
 
             tile[3] = new Tile();
             tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_3.png"));
+            tile[3].collision = true;
 
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_4.png"));
+            tile[4].collision = true;
 
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_5.png"));
 
             tile[6] = new Tile();
             tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_6.png"));
+            tile[6].collision = true;
 
         }catch (IOException e) {
             e.printStackTrace();
