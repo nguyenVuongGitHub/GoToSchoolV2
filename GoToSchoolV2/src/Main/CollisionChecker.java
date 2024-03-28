@@ -104,6 +104,7 @@ public class CollisionChecker {
         gs.quadTree.clear();
 
         for (Entity m : monsters) {
+            SeparatingAxis.polygonCollisionDetectFirstStatic(player, m ,true, true);
             m.setCollision(false);
             Rectangle bounds = m.getBounds();
             RectangleQ bound = new RectangleQ(m.getBounds());
@@ -123,7 +124,7 @@ public class CollisionChecker {
 
                 if(player == check) {
 
-                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check)) {
+                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check, true, true)) {
 
                         player.setCollision(true);
                         check.setCollision(true);

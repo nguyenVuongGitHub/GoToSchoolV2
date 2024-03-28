@@ -94,9 +94,9 @@ public abstract class Entity {
 	protected void setPolygonVertices()
 	{
 		vertices.add(new PointX(worldX, worldY));
-		vertices.add(new PointX(worldX + gs.getTile(), worldY));
-		vertices.add(new PointX(worldX + gs.getTile(), worldY + gs.getTile()));
-		vertices.add(new PointX(worldX, worldY + gs.getTile()));
+		vertices.add(new PointX(worldX + getSolidArea().width, worldY));
+		vertices.add(new PointX(worldX + getSolidArea().width, worldY + getSolidArea().height));
+		vertices.add(new PointX(worldX, worldY + getSolidArea().height));
 	}
 	protected void clearVertices()
 	{

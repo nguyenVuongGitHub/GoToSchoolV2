@@ -129,9 +129,9 @@ public class Player extends Entity{
                     spriteNum = 1;
                 }
             }
-            clearVertices();
-            setPolygonVertices();
         }
+        clearVertices();
+        setPolygonVertices();
     }
 
     @Override

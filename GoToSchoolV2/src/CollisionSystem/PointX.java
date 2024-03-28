@@ -16,6 +16,15 @@ public class PointX {
         PointX v = new PointX( x + other.x, y + other.y);
         return v;
     }
+    public double getX()
+    {
+        return x;
+    }
+
+    public double getY()
+    {
+        return y;
+    }
     public PointX minusVector(PointX other)
     {
         PointX v = new PointX( x - other.x, y - other.y);
@@ -60,5 +69,10 @@ public class PointX {
         y /= vertices.size();
 
         return new PointX(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return "X: " + x +" Y: " + y;
     }
 }
