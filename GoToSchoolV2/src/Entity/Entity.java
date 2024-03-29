@@ -106,4 +106,8 @@ public abstract class Entity {
 	public String getDirection() {
 		return direction;
 	}
+
+	public boolean getCollision() {
+		return collision;
+	}
 }

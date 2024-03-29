@@ -190,6 +190,10 @@ public class GameState extends JPanel implements Runnable{
 		// COLLISION
 		CC.checkSkillWithMonster(skillAttacks,monsters);
 		CC.checkPlayerAndMonsters(player,monsters);
+		for(Entity monster : monsters ) {
+			CC.checkMonsterWithMonster(monster,monsters);
+		}
+//		monsters.forEach(monster -> CC.checkMonsterWithMonster(monster,monsters));
 
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết

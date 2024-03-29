@@ -252,13 +252,43 @@ public class CollisionChecker {
         }
 
     }
-
+    public void checkMonsterWithMonster(Entity thisMonster,List<Entity> monsters) {
+        gs.quadTree.clear();
+        for (Entity m : monsters) {
+            if(m != thisMonster) {
+                SeparatingAxis.polygonCollisionDetectFirstStatic(thisMonster, m ,true, true);
+//                if(!m.getCollision()) {
+//                    m.setCollision(false);
+//                }
+                Rectangle bounds = m.getBounds();
+                RectangleQ bound = new RectangleQ(m.getBounds());
+                PointQ p = new PointQ(bounds.x, bounds.y, m, bound);
+                gs.quadTree.insert(p);
+            }
+        }
+        RectangleQ playerBounds = new RectangleQ(thisMonster.getBounds());
+        gs.found = gs.quadTree.query(playerBounds);
+        if (gs.found != null) {
+            for (PointQ other : gs.found) {
+                Entity check = other.getUserData();
+                if(thisMonster != check) {
+                    if(SeparatingAxis.polygonCollisionDetectFirstStatic(thisMonster, check, true, true)) {
+                        thisMonster.setCollision(true);
+                        check.setCollision(true);
+                    }else {
+                        thisMonster.setCollision(false);
+                        check.setCollision(false);
+                    }
+                }
+            }
+        }
+    }
     public void checkPlayerAndMonsters(Entity player, List<Entity> monsters) {
         gs.quadTree.clear();
 
         for (Entity m : monsters) {
-            SeparatingAxis.polygonCollisionDetectFirstStatic(player, m ,true, true);
-            m.setCollision(false);
+            SeparatingAxis.polygonCollisionDetectFirstStatic(player, m ,false, true);
+//            m.setCollision(false);
             Rectangle bounds = m.getBounds();
             RectangleQ bound = new RectangleQ(m.getBounds());
             PointQ p = new PointQ(bounds.x, bounds.y, m, bound);
@@ -269,18 +299,15 @@ public class CollisionChecker {
         gs.found = gs.quadTree.query(playerBounds);
 
         if (gs.found != null) {
-
-            Rectangle playerRect = new Rectangle(player.getBounds());
-
             for (PointQ other : gs.found) {
                 Entity check = other.getUserData();
-
-                if(player == check) {
-
-                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check, true, true)) {
-
+                if(player != check) {
+                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check, false, true)) {
                         player.setCollision(true);
                         check.setCollision(true);
+                    }else {
+                        player.setCollision(false);
+                        check.setCollision(false);
                     }
                 }
             }
