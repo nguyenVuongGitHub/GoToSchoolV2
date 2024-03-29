@@ -1,5 +1,6 @@
 package Entity;
 
+import Main.CollisionChecker;
 import Main.GameState;
 
 import java.awt.*;
@@ -52,27 +53,9 @@ public class Monster extends Entity{
         setAI();
         collisionOn = false;
         gs.CC.checkEntityWithTile(this);
+        int collisionWith;
 
-        if(collisionOn && canMoving) {
-            if(Objects.equals(direction, "up") || Objects.equals(direction, "down"))
-            {
-                if(gs.player.getWorldX() <= this.worldX) {
-                    worldX -= speed;
-                }else{
-                    worldX += speed;
-                }
-            }
-            if(Objects.equals(direction, "left") || Objects.equals(direction, "right"))
-            {
-                if(gs.player.getWorldY() <= this.worldY) {
-                    worldY -= speed;
-                }else{
-                    worldY += speed;
-                }
-            }
-            timeMoving--;
-        }
-
+        // Trường hợp di chuyển bình thường khi  không có va chạm
         if(!collisionOn && canMoving){
             if(Objects.equals(direction, "up"))
                 worldY -= speed;
@@ -85,8 +68,53 @@ public class Monster extends Entity{
             timeMoving--;
         }
 
-        if(collisionOn && timeMoving > 0) {
+        // Kiểm tra nếu có va chạm và đối tượng có thể di chuyển
+        if(collisionOn && canMoving) {
+            // Kiểm tra hướng di chuyển của đối tượng
+            if(Objects.equals(direction, "up") || Objects.equals(direction, "down")) {
+                // Kiểm tra va chạm với ô bên trái của đối tượng
+                collisionWith = gs.CC.checkEntityWithTile(this, "left");
+                // Nếu không có va chạm và vị trí của người chơi nằm bên trái đối tượng
+                if(collisionWith != CollisionChecker.LEFT && gs.player.getWorldX() <= this.worldX) {
+                    // Di chuyển đối tượng sang trái
+                    worldX -= speed;
+                }
+
+                // Kiểm tra va chạm với ô bên phải của đối tượng
+                collisionWith = gs.CC.checkEntityWithTile(this, "right");
+                // Nếu không có va chạm và vị trí của người chơi nằm bên phải đối tượng
+                if(collisionWith != CollisionChecker.RIGHT && gs.player.getWorldX() > this.worldX) {
+                    // Di chuyển đối tượng sang phải
+                    worldX += speed;
+                }
+            }
+
+            // Kiểm tra hướng di chuyển của đối tượng
+            if(Objects.equals(direction, "left") || Objects.equals(direction, "right")) {
+                // Kiểm tra va chạm với ô phía trên của đối tượng
+                collisionWith = gs.CC.checkEntityWithTile(this, "up");
+                // Nếu không có va chạm và vị trí của người chơi nằm phía trên đối tượng
+                if(collisionWith != CollisionChecker.UP && gs.player.getWorldY() <= this.worldY) {
+                    // Di chuyển đối tượng lên trên
+                    worldY -= speed;
+                }
+
+                // Kiểm tra va chạm với ô phía dưới của đối tượng
+                collisionWith = gs.CC.checkEntityWithTile(this, "down");
+                // Nếu không có va chạm và vị trí của người chơi nằm phía dưới đối tượng
+                if(collisionWith != CollisionChecker.DOWN && gs.player.getWorldY() > this.worldY) {
+                    // Di chuyển đối tượng xuống dưới
+                    worldY += speed;
+                }
+            }
+
+            // Giảm thời gian di chuyển của đối tượng
             timeMoving--;
+        }
+        // trong trường hợp có va chạm và thời gian còn di chuyển được ( đang trong trạng thái AI)
+        if(collisionOn && timeMoving > 0) {
+
+            // đổi các hướng của đối tượng
 
             if(Objects.equals(direction, "right"))
                 direction = "left";
@@ -97,6 +125,7 @@ public class Monster extends Entity{
             if(Objects.equals(direction,"down"))
                 direction = "up";
 
+            timeMoving--;
         }
 
         clearVertices();
@@ -123,45 +152,6 @@ public class Monster extends Entity{
     public void init() {
         type = TYPE.MONSTER;
         setPolygonVertices();
-//        int x = new Random().nextInt(8); // Random số từ 0 đến 7
-//        int screenWidth = gs.getWindowWidth();
-//        int screenHeight = gs.getWindowHeight();
-//        switch (x) {
-//            case 0: // Vị trí trên cùng, bên trái
-//                worldX = new Random().nextInt(-screenWidth, 0);
-//                worldY = new Random().nextInt(-screenHeight, 0);
-//                break;
-//            case 1: // Vị trí trên cùng, bên phải
-//                worldX = new Random().nextInt(screenWidth, screenWidth * 2);
-//                worldY = new Random().nextInt(-screenHeight, 0);
-//                break;
-//            case 2: // Vị trí dưới cùng, bên trái
-//                worldX = new Random().nextInt(-screenWidth, 0);
-//                worldY = new Random().nextInt(screenHeight, screenHeight * 2);
-//                break;
-//            case 3: // Vị trí dưới cùng, bên phải
-//                worldX = new Random().nextInt(screenWidth, screenWidth * 2);
-//                worldY = new Random().nextInt(screenHeight, screenHeight * 2);
-//                break;
-//            case 4: // Vị trí bên trái, giữa màn hình
-//                worldX = new Random().nextInt(-screenWidth, 0);
-//                worldY = new Random().nextInt(0, screenHeight);
-//                break;
-//            case 5: // Vị trí bên phải, giữa màn hình
-//                worldX = new Random().nextInt(screenWidth, screenWidth * 2);
-//                worldY = new Random().nextInt(0, screenHeight);
-//                break;
-//            case 6: // Vị trí trên cùng, giữa màn hình
-//                worldX = new Random().nextInt(0, screenWidth);
-//                worldY = new Random().nextInt(-screenHeight, 0);
-//                break;
-//            case 7: // Vị trí dưới cùng, giữa màn hình
-//                worldX = new Random().nextInt(0, screenWidth);
-//                worldY = new Random().nextInt(screenHeight, screenHeight * 2);
-//                break;
-//            default:
-//                // Các xử lý mặc định hoặc thông báo lỗi
-//        }
         hp = 5;
         speed = 3;
         damage = 0;
@@ -174,7 +164,7 @@ public class Monster extends Entity{
         return new Rectangle((int)worldX + solidArea.x,(int)worldY + solidArea.y,solidArea.width,solidArea.height);
     }
     private void randomDirectionMonster() {
-        // Lấy vị trí của người chơi
+
         int angleDegrees = new Random().nextInt() % 4;
 
         // phán đoán hướng di chuyển
@@ -187,9 +177,6 @@ public class Monster extends Entity{
             } else {
                 direction = "left";
             }
-
-
-        // Tính toán góc dựa trên các thành phần dx và dy
     }
     private double anglePlayerAndMonster() {
         // Lấy vị trí của người chơi

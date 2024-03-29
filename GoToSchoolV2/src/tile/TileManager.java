@@ -30,36 +30,46 @@ public class TileManager {
     public TileManager(GameState gs) {
         this.gs = gs;
 
-        tile = new Tile[10];
+        tile = new Tile[55];
         mapTileNum = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
         getTileImage();
-//        loadMap(pathMap);
     }
 
     public void getTileImage() {
         try {
+            BufferedImage largeImage = ImageIO.read(getClass().getResourceAsStream("/tiles/1.png"));
+            int col = largeImage.getWidth() / gs.getTile();
+            int row = largeImage.getHeight() / gs.getTile();
 
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_1.png"));
+            for(int i = 0; i < tile.length; i++) {
+                tile[i] = new Tile();
+            }
 
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_2.png"));
-            tile[2].collision = true;
+            for(int i = 0; i < row; i++) {
+                for(int j = 0; j < col; j++) {
+                    int index = i*col + j + 1;
 
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_3.png"));
-            tile[3].collision = true;
+                    tile[index].image = largeImage.getSubimage(j * gs.getTile(), i * gs.getTile(), gs.getTile(), gs.getTile());
+                    switch (index) {
+                        case 7:
+                        case 8:
+                        case 9:
+                        case 14:
+                        case 16:
+                        case 18:
+                        case 25:
+                        case 26:
+                        case 27:
+                        case 36:
+                        case 40:
+                        case 47:
+                        case 49:
+                        case 50:
+                            tile[index].collision = true;
+                    }
+                }
+            }
 
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_4.png"));
-            tile[4].collision = true;
-
-            tile[5] = new Tile();
-            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_5.png"));
-
-            tile[6] = new Tile();
-            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/map_6.png"));
-            tile[6].collision = true;
 
         }catch (IOException e) {
             e.printStackTrace();
@@ -80,10 +90,9 @@ public class TileManager {
 
                 while (col < gs.getMaxWorldCol()) {
 
-                    String numbers[] = line.split("");
+                    String numbers[] = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
-
                     mapTileNum[col][row] = num;
                     col++;
                 }
@@ -118,7 +127,6 @@ public class TileManager {
                worldX - gs.getTile() < gs.player.getWorldX() + gs.player.getScreenX() &&
                worldY + gs.getTile() > gs.player.getWorldY() - gs.player.getScreenY() &&
                worldY - gs.getTile() < gs.player.getWorldY() + gs.player.getScreenY()) {
-
                 g2.drawImage(tile[tileNum].image, screenX, screenY, gs.getTile(), gs.getTile(), null);
 
             }

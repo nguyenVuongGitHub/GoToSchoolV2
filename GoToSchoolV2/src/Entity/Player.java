@@ -1,11 +1,13 @@
 package Entity;
 
 import CollisionSystem.PointX;
+import Main.CollisionChecker;
 import Main.GameState;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 public class Player extends Entity{
 
@@ -19,8 +21,8 @@ public class Player extends Entity{
 
     @Override
     public void init() {
-        worldX = gs.getTile() * 5;
-        worldY = gs.getTile() * 5;
+        worldX = gs.getTile() * 17;
+        worldY = gs.getTile() * 35;
         type = TYPE.PLAYER;
         hp = 100;
         speed = 5;
@@ -28,6 +30,7 @@ public class Player extends Entity{
         direction = "down";
         solidArea = new Rectangle(20,8,64,64);
         getPlayerImage();
+        clearVertices();
         setPolygonVertices();
     }
 
@@ -63,6 +66,7 @@ public class Player extends Entity{
             right5 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_5.png"));
             right6 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_6.png"));
 
+            currentImage = down1;
         }catch(IOException e) {
             e.printStackTrace();
         }
@@ -71,40 +75,67 @@ public class Player extends Entity{
     @Override
     public void update() {
 
-        if(gs.keyHandle.isUpPress() || gs.keyHandle.isDownPress()
-                || gs.keyHandle.isLeftPress() || gs.keyHandle.isRightPress()) {
-            if(gs.keyHandle.isLeftPress()) {
-                direction = "left";
-            }
-            else if(gs.keyHandle.isRightPress()) {
-                direction= "right";
-            }
-            else if(gs.keyHandle.isDownPress()) {
-                direction = "down";
-            }
-            else if(gs.keyHandle.isUpPress()) {
-                direction = "up";
-            }
-
             // CHECK COLLISION
             collisionOn = false;
-            gs.CC.checkEntityWithTile(this);
+            gs.CC.checkPlayerWithTile(this);
 
             if(!collisionOn) {
-                switch (direction) {
-                    case "up" :
-                        worldY -=  speed ;
-                        break;
-                    case "down":
-                        worldY +=  speed ;
-                        break;
-                    case "left" :
-                        worldX -=  speed ;
-                        break;
-                    case "right" :
-                        worldX +=  speed ;
-                        break;
+                if(gs.keyHandle.isUpPress()) {
+                    direction = "up";
+                    worldY -=  speed ;
                 }
+                if(gs.keyHandle.isDownPress()) {
+                    direction = "down";
+                    worldY +=  speed ;
+                }
+                if(gs.keyHandle.isLeftPress()) {
+                    direction = "left";
+                    worldX -=  speed ;
+                }
+                if(gs.keyHandle.isRightPress()) {
+                    direction = "right";
+                    worldX +=  speed ;
+                }
+            }else {
+                int collisionWith;
+                // Kiểm tra hướng di chuyển của đối tượng
+                if(gs.keyHandle.isUpPress() || gs.keyHandle.isDownPress()) {
+                    // Kiểm tra va chạm với ô bên trái của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "left");
+                    // Nếu không có va chạm
+                    if(collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
+                        // Di chuyển đối tượng sang trái
+                        worldX -= speed;
+                    }
+
+                    // Kiểm tra va chạm với ô bên phải của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "right");
+                    // Nếu không có va chạm
+                    if(collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
+                        // Di chuyển đối tượng sang phải
+                        worldX += speed;
+                    }
+                }
+
+                // Kiểm tra hướng di chuyển của đối tượng
+                if(gs.keyHandle.isLeftPress() || gs.keyHandle.isRightPress()) {
+                    // Kiểm tra va chạm với ô phía trên của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "up");
+                    // Nếu không có va chạm
+                    if (collisionWith != CollisionChecker.UP && gs.keyHandle.isUpPress()) {
+                        // Di chuyển đối tượng lên trên
+                        worldY -= speed;
+                    }
+
+                    // Kiểm tra va chạm với ô phía dưới của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "down");
+                    // Nếu không có va chạm
+                    if (collisionWith != CollisionChecker.DOWN && gs.keyHandle.isDownPress()) {
+                        // Di chuyển đối tượng xuống dưới
+                        worldY += speed;
+                    }
+                }
+
             }
 
 
@@ -131,102 +162,258 @@ public class Player extends Entity{
             }
             clearVertices();
             setPolygonVertices();
-        }
+
     }
 
     @Override
     public void draw(Graphics2D g2) {
-
-        BufferedImage image = null;
-
-        switch(direction) {
-            case "up":
-                if(spriteNum == 1) {
-                    image = up1;
-                }
-                if(spriteNum == 2) {
-                    image = up2;
-                }
-                if(spriteNum == 3) {
-                    image = up3;
-                }
-                if(spriteNum == 4) {
-                    image = up4;
-                }
-                if(spriteNum == 5) {
-                    image = up5;
-                }
-                if(spriteNum == 6) {
-                    image = up6;
-                }
-                break;
-            case "down":
-                if(spriteNum == 1) {
-                    image = down1;
-                }
-                if(spriteNum == 2) {
-                    image = down2;
-                }
-                if(spriteNum == 3) {
-                    image = down3;
-                }
-                if(spriteNum == 4) {
-                    image = down4;
-                }
-                if(spriteNum == 5) {
-                    image = down5;
-                }
-                if(spriteNum == 6) {
-                    image = down6;
-                }
-                break;
-            case "left":
-                if(spriteNum == 1) {
-                    image = left1;
-                }
-                if(spriteNum == 2) {
-                    image = left2;
-                }
-                if(spriteNum == 3) {
-                    image = left3;
-                }
-                if(spriteNum == 4) {
-                    image = left4;
-                }
-                if(spriteNum == 5) {
-                    image = left5;
-                }
-                if(spriteNum == 6) {
-                    image = left6;
-                }
-                break;
-            case "right":
-                if(spriteNum == 1) {
-                    image = right1;
-                }
-                if(spriteNum == 2) {
-                    image = right2;
-                }
-                if(spriteNum == 3) {
-                    image = right3;
-                }
-                if(spriteNum == 4) {
-                    image = right4;
-                }
-                if(spriteNum == 5) {
-                    image = right5;
-                }
-                if(spriteNum == 6) {
-                    image = right6;
-                }
-                break;
+//
+//        if(gs.keyHandle.isLeftPress() && gs.keyHandle.isUpPress()) {
+//            if(spriteNum == 1) {
+//                currentImage = left1;
+//            }
+//            if(spriteNum == 2) {
+//                currentImage = up2;
+//            }
+//            if(spriteNum == 3) {
+//                currentImage = left3;
+//            }
+//            if(spriteNum == 4) {
+//                currentImage = up4;
+//            }
+//            if(spriteNum == 5) {
+//                currentImage = left5;
+//            }
+//            if(spriteNum == 6) {
+//                currentImage = up6;
+//            }
+//        }else if(gs.keyHandle.isLeftPress() && gs.keyHandle.isDownPress()) {
+//            if(spriteNum == 1) {
+//                currentImage = left1;
+//            }
+//            if(spriteNum == 2) {
+//                currentImage = down2;
+//            }
+//            if(spriteNum == 3) {
+//                currentImage = left3;
+//            }
+//            if(spriteNum == 4) {
+//                currentImage = down4;
+//            }
+//            if(spriteNum == 5) {
+//                currentImage = left5;
+//            }
+//            if(spriteNum == 6) {
+//                currentImage = down6;
+//            }
+//        }else if(gs.keyHandle.isRightPress() && gs.keyHandle.isUpPress()) {
+//            if(spriteNum == 1) {
+//                currentImage = right1;
+//            }
+//            if(spriteNum == 2) {
+//                currentImage = up2;
+//            }
+//            if(spriteNum == 3) {
+//                currentImage = right3;
+//            }
+//            if(spriteNum == 4) {
+//                currentImage = up4;
+//            }
+//            if(spriteNum == 5) {
+//                currentImage = right5;
+//            }
+//            if(spriteNum == 6) {
+//                currentImage = up6;
+//            }
+//        }else if(gs.keyHandle.isRightPress() && gs.keyHandle.isDownPress()) {
+//            if(spriteNum == 1) {
+//                currentImage = right1;
+//            }
+//            if(spriteNum == 2) {
+//                currentImage = down2;
+//            }
+//            if(spriteNum == 3) {
+//                currentImage = right3;
+//            }
+//            if(spriteNum == 4) {
+//                currentImage = down4;
+//            }
+//            if(spriteNum == 5) {
+//                currentImage = right5;
+//            }
+//            if(spriteNum == 6) {
+//                currentImage = down6;
+//            }
+//        }else {
+//
+//            if(gs.keyHandle.isRightPress()) {
+//                if(spriteNum == 1) {
+//                    currentImage = right1;
+//                }
+//                if(spriteNum == 2) {
+//                    currentImage = right2;
+//                }
+//                if(spriteNum == 3) {
+//                    currentImage = right3;
+//                }
+//                if(spriteNum == 4) {
+//                    currentImage = right4;
+//                }
+//                if(spriteNum == 5) {
+//                    currentImage = right5;
+//                }
+//                if(spriteNum == 6) {
+//                    currentImage = right6;
+//                }
+//            }
+//            else if(gs.keyHandle.isLeftPress()) {
+//                if(spriteNum == 1) {
+//                    currentImage = left1;
+//                }
+//                if(spriteNum == 2) {
+//                    currentImage = left2;
+//                }
+//                if(spriteNum == 3) {
+//                    currentImage = left3;
+//                }
+//                if(spriteNum == 4) {
+//                    currentImage = left4;
+//                }
+//                if(spriteNum == 5) {
+//                    currentImage = left5;
+//                }
+//                if(spriteNum == 6) {
+//                    currentImage = left6;
+//                }
+//            }
+//            else if(gs.keyHandle.isUpPress()) {
+//                if(spriteNum == 1) {
+//                    currentImage = up1;
+//                }
+//                if(spriteNum == 2) {
+//                    currentImage = up2;
+//                }
+//                if(spriteNum == 3) {
+//                    currentImage = up3;
+//                }
+//                if(spriteNum == 4) {
+//                    currentImage = up4;
+//                }
+//                if(spriteNum == 5) {
+//                    currentImage = up5;
+//                }
+//                if(spriteNum == 6) {
+//                    currentImage = up6;
+//                }
+//            }
+//            else if(gs.keyHandle.isDownPress()) {
+//                if(spriteNum == 1) {
+//                    currentImage = down1;
+//                }
+//                if(spriteNum == 2) {
+//                    currentImage = down2;
+//                }
+//                if(spriteNum == 3) {
+//                    currentImage = down3;
+//                }
+//                if(spriteNum == 4) {
+//                    currentImage = down4;
+//                }
+//                if(spriteNum == 5) {
+//                    currentImage = down5;
+//                }
+//                if(spriteNum == 6) {
+//                    currentImage = down6;
+//                }
+//            }
+//
+//        }
+        if(gs.keyHandle.isRightPress()) {
+            if(spriteNum == 1) {
+                currentImage = right1;
+            }
+            if(spriteNum == 2) {
+                currentImage = right2;
+            }
+            if(spriteNum == 3) {
+                currentImage = right3;
+            }
+            if(spriteNum == 4) {
+                currentImage = right4;
+            }
+            if(spriteNum == 5) {
+                currentImage = right5;
+            }
+            if(spriteNum == 6) {
+                currentImage = right6;
+            }
         }
-        g2.drawImage(image, screenX, screenY, gs.getTile(), gs.getTile(), null);
+        if(gs.keyHandle.isLeftPress()) {
+            if(spriteNum == 1) {
+                currentImage = left1;
+            }
+            if(spriteNum == 2) {
+                currentImage = left2;
+            }
+            if(spriteNum == 3) {
+                currentImage = left3;
+            }
+            if(spriteNum == 4) {
+                currentImage = left4;
+            }
+            if(spriteNum == 5) {
+                currentImage = left5;
+            }
+            if(spriteNum == 6) {
+                currentImage = left6;
+            }
+        }
+        if(gs.keyHandle.isUpPress()) {
+            if(spriteNum == 1) {
+                currentImage = up1;
+            }
+            if(spriteNum == 2) {
+                currentImage = up2;
+            }
+            if(spriteNum == 3) {
+                currentImage = up3;
+            }
+            if(spriteNum == 4) {
+                currentImage = up4;
+            }
+            if(spriteNum == 5) {
+                currentImage = up5;
+            }
+            if(spriteNum == 6) {
+                currentImage = up6;
+            }
+        }
+        if(gs.keyHandle.isDownPress()) {
+            if(spriteNum == 1) {
+                currentImage = down1;
+            }
+            if(spriteNum == 2) {
+                currentImage = down2;
+            }
+            if(spriteNum == 3) {
+                currentImage = down3;
+            }
+            if(spriteNum == 4) {
+                currentImage = down4;
+            }
+            if(spriteNum == 5) {
+                currentImage = down5;
+            }
+            if(spriteNum == 6) {
+                currentImage = down6;
+            }
+        }
+
+        g2.drawImage(currentImage, screenX, screenY, gs.getTile(), gs.getTile(), null);
     }
 
     @Override
     public Rectangle getBounds() {
         return new Rectangle((int)worldX + solidArea.x,(int) worldY + solidArea.y, solidArea.width, solidArea.height);
     }
-
 }

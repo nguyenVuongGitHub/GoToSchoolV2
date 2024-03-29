@@ -16,45 +16,51 @@ public class NormalAttack extends BaseSkill{
     @Override
     public void init() {
         type = TYPE.WEAPON;
-        distance = 100;
+        distance = 50;
         damage = 5;
-        speed = 10;
+        speed = 20;
         worldX = gs.player.getWorldX() + (double) gs.getTile() /2;
         worldY = gs.player.getWorldY() + (double) gs.getTile() /2;
-        solidArea = new Rectangle((int) worldX,(int) worldY,gs.getTile() /2,gs.getTile() /2);
-        direction = gs.player.getDirection();
+        solidArea = new Rectangle(0,0,gs.getTile() /2,gs.getTile() /2);
+        angleTarget = anglePlayerAndMouse();
+        // Chuyển góc thành độ
+        double angleDegrees = Math.toDegrees(angleTarget);
+
+        // phán đoán hướng di chuyển
+        if (angleDegrees >= -45 && angleDegrees < 45) {
+            direction = "right";
+        } else if (angleDegrees >= 45 && angleDegrees < 135) {
+            direction = "down";
+        } else if (angleDegrees >= -135 && angleDegrees < -45) {
+            direction = "up";
+        } else {
+            direction = "left";
+        }
+
     }
 
     @Override
     public Rectangle getBounds() {
-        return solidArea;
+        return new Rectangle((int)worldX + solidArea.x,(int)worldY + solidArea.y,solidArea.width,solidArea.height);
     }
 
     @Override
     public void update() {
-        if(distance <= 0) {
+        collisionOn = false;
+        gs.CC.checkEntityWithTile(this);
+
+        if(!collisionOn && alive) {
+            if(distance <= 0) {
+                alive = false;
+                distance = 100;
+            }
+            worldX += Math.cos(angleTarget) * speed;
+            worldY += Math.sin(angleTarget) * speed;
+            distance--;
+        }else {
             alive = false;
             distance = 100;
         }
-        if(alive) {
-            switch (direction) {
-                case "up" :
-                    worldY -= speed;
-                    break;
-                case "down":
-                    worldY += speed;
-                    break;
-                case "left":
-                    worldX -= speed;
-                    break;
-                case "right":
-                    worldX += speed;
-                    break;
-            }
-            distance--;
-        }
-        solidArea.x = (int) worldX;
-        solidArea.y = (int) worldY;
     }
 
     @Override

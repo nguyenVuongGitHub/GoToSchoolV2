@@ -44,9 +44,22 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_ENTER) {
 					gs.campaign.loadMap(gs.campaign.getChoose());
 					gs.campaign.setShowDialog(false);
+					if(gs.campaign.getChoose() == 1) {
+						gs.player.setWorldX(5*gs.getTile());
+						gs.player.setWorldY(59*gs.getTile());
+					}else if(gs.campaign.getChoose() == 2) {
+						gs.player.setWorldX(24*gs.getTile());
+						gs.player.setWorldY(30*gs.getTile());
+					}else if(gs.campaign.getChoose() == 3) {
+//                		gs.player.setWorldX(5*gs.getTile());
+//                		gs.player.setWorldY(59*gs.getTile());
+					}
 				}
 				if(code == KeyEvent.VK_ESCAPE) {
 					gs.state = State.LOOPY;
+					gs.player.setWorldX(56* gs.getTile());
+					gs.player.setWorldY(24* gs.getTile());
+					gs.changeState = true;
 				}
 			}else{ // battle
 				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
@@ -87,6 +100,31 @@ public class KeyHandle implements KeyListener{
 		else if(gs.state == State.SURVIVAL) {
 
 		}else if(gs.state == State.LOOPY) {
+
+			if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+				upPress = true;
+			}
+			if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+				downPress = true;
+			}
+			if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+				leftPress = true;
+			}
+			if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+				rightPress = true;
+			}
+			if(code == KeyEvent.VK_SPACE) {
+				spacePress = true;
+			}
+			if(code == KeyEvent.VK_ESCAPE) {
+				escPress = true;
+			}
+			if(code == KeyEvent.VK_ENTER) {
+				enterPress = true;
+			}
+			if(code == KeyEvent.VK_TAB) {
+				tabPress = true;
+			}
 
 		}
 	}

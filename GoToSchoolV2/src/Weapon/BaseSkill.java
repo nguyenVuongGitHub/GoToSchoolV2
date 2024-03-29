@@ -11,8 +11,8 @@ public abstract class BaseSkill extends Entity {
     }
     public double anglePlayerAndMouse() {
         // Lấy vị trí của người chơi
-        double playerX = gs.player.getScreenX();
-        double playerY = gs.player.getScreenY();
+        double playerX = (double) gs.getWindowWidth() /2;
+        double playerY = (double) gs.getWindowHeight() /2;
 
         // Tính toán khoảng cách giữa vị trí của chuột và người chơi
         double dx = gs.mouseHandle.getWorldX() - playerX;

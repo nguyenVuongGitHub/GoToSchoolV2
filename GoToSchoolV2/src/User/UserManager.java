@@ -26,7 +26,6 @@ public class UserManager {
                 coin = Long.parseLong(token[0]);
                 numberSkillsUnlocked = Short.parseShort(token[1]);
                 numberLeversUnlocked = Short.parseShort(token[2]);
-
             }
         }catch (Exception e) {
             e.printStackTrace();

@@ -11,16 +11,19 @@ import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;
 import Scene.Campaign;
+import Scene.Loopy;
 import User.UserManager;
 import Weapon.NormalAttack;
 import tile.TileManager;
+
+import static java.util.stream.StreamSupport.stream;
 
 public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
 	private static final int tile = 64;
-	private static final int WINDOW_HEIGHT = 1080;
-	private static final int WINDOW_WIDTH = 1280;
+	private static final int WINDOW_HEIGHT = 15 * tile;
+	private static final int WINDOW_WIDTH = 15 * tile;
 
 	private static final int maxScreenCol = WINDOW_WIDTH/tile;
 
@@ -37,8 +40,10 @@ public class GameState extends JPanel implements Runnable{
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
 	public State state = State.CAMPAIGN;
+	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
+	public Loopy loopy = new Loopy(this);
 	public TileManager tileM = new TileManager(this);
 
 	// ENTITY
@@ -49,8 +54,8 @@ public class GameState extends JPanel implements Runnable{
 	int numberMonster = 5;
 
 //WORLD SETTINGS
-	private final int maxWorldCol = 32;
-	private final int maxWorldRow = 32;
+	private final int maxWorldCol = 64;
+	private final int maxWorldRow = 64;
 	private final int worldWidth = tile * maxWorldCol;
 	private final int worldHeight = tile * maxWorldRow;
 
@@ -62,7 +67,7 @@ public class GameState extends JPanel implements Runnable{
 
 	public GameState() {
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-		this.setBackground(Color.DARK_GRAY);
+		this.setBackground(new Color(99,155,255,255));
 		this.addKeyListener(keyHandle);
 		this.addMouseListener(mouseHandle);
 		this.addMouseMotionListener(mouseHandle);
@@ -72,7 +77,7 @@ public class GameState extends JPanel implements Runnable{
 	public void initGame() {
 		user.readFile("/user/infUser.txt");
 		// something here
-
+		loopy.loadMap();
 	}
 	public void runGame() {
 		gameThread = new Thread(this);
@@ -128,10 +133,14 @@ public class GameState extends JPanel implements Runnable{
 	public void update() {
 		if(state == State.CAMPAIGN) {
 			campaign.update();
-
 		}else if(state == State.SURVIVAL){
 
 		}else if(state == State.LOOPY) {
+			if(changeState) {
+				loopy.loadMap();
+				changeState = false;
+			}
+			loopy.update();
 		}
 	}
 	public void paintComponent(Graphics g) {
@@ -139,17 +148,20 @@ public class GameState extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 
 		if(state == State.LOOPY) {
-
+			loopy.draw(g2);
 		}else if(state == State.CAMPAIGN) {
 			campaign.draw(g2);
 		}else if(state == State.SURVIVAL) {
 
 		}
+		ui.draw(g2);
+
 		g2.dispose();
 		
 	}
 
 	public void updateBattle() {
+
 		// ATTACK
 		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
 			Entity normalAttack = new NormalAttack(this);
@@ -178,8 +190,6 @@ public class GameState extends JPanel implements Runnable{
 		// COLLISION
 		CC.checkSkillWithMonster(skillAttacks,monsters);
 		CC.checkPlayerAndMonsters(player,monsters);
-
-
 
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết

@@ -35,6 +35,7 @@ public abstract class Entity {
 			down1, down2, down3, down4, down5, down6,
 			left1, left2, left3, left4, left5, left6,
 			right1, right2, right3, right4, right5, right6;
+	protected  BufferedImage currentImage = null;
 
 	protected String direction = "right";
 
@@ -105,5 +106,4 @@ public abstract class Entity {
 	public String getDirection() {
 		return direction;
 	}
-
 }

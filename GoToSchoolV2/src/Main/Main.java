@@ -1,6 +1,7 @@
 package Main;
 
 import javax.swing.JFrame;
+import java.awt.*;
 
 public class Main {
 	public static void main(String[] argc) {
@@ -8,7 +9,6 @@ public class Main {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
-
 		window.setTitle("Go To School 2.0");
 		
 		window.add(gs);

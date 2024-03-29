@@ -5,7 +5,6 @@ import Main.GameState;
 import Main.State;
 import Main.UI;
 import User.UserManager;
-import tile.TileManager;
 
 import java.awt.*;
 
@@ -28,15 +27,16 @@ public class Campaign {
         int width = gs.getWindowWidth() - (gs.getTile()*15);
         int height = gs.getTile()*10;
         drawSubWindow(x,y,width,height);
+
         g2.setFont(ui.getMaruMonica().deriveFont(Font.BOLD,30F));
         x += gs.getTile();
         y += gs.getTile();
 
         for(int i = 1; i <= um.getMaxNumberLevers(); i++) {
             if(choose == i) {
-                g2.drawString("->", x-30,y);
+                g2.drawString("-> ", x-gs.getTile()*2,y);
             }
-            g2.drawString("MÀN : " + String.valueOf(i),x+10,y);
+            g2.drawString("MÀN : " + String.valueOf(i),x-gs.getTile()*2 + 30,y);
             y += gs.getTile()*2;
         }
     }
@@ -44,18 +44,145 @@ public class Campaign {
     public void loadMap(int index) {
         switch (index) {
             case 1:
-                gs.tileM.loadMap("/maps/map_test.txt");
-
-                    Entity monster = new Monster(gs);
-                    monster.setWorldX(gs.getTile()*5);
-                    monster.setWorldY(gs.getTile()*10);
-                    gs.monsters.add(monster);
-
+                gs.tileM.loadMap("/maps/map_1_final.txt");
                 // setup MONSTER
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*17+i);
+                    monster.setWorldY(gs.getTile()*36);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*31+i);
+                    monster.setWorldY(gs.getTile()*24);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*20+i);
+                    monster.setWorldY(gs.getTile()*5);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*22+i);
+                    monster.setWorldY(gs.getTile()*50);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*41+i);
+                    monster.setWorldY(gs.getTile()*56);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*52+i);
+                    monster.setWorldY(gs.getTile()*8);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*54+i);
+                    monster.setWorldY(gs.getTile()*47);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*42+i);
+                    monster.setWorldY(gs.getTile()*36);
+                    gs.monsters.add(monster);
+                }
                 break;
             case 2:
-                gs.tileM.loadMap("/maps/map_test.txt");
+                gs.tileM.loadMap("/maps/map_2.txt");
                 // setup MONSTER
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*6+i);
+                    monster.setWorldY(gs.getTile()*33);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 3; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*13+i);
+                    monster.setWorldY(gs.getTile()*41);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 3; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*29+i);
+                    monster.setWorldY(gs.getTile()*58);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*52+i);
+                    monster.setWorldY(gs.getTile()*41);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*47+i);
+                    monster.setWorldY(gs.getTile()*30);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 3; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*57+i);
+                    monster.setWorldY(gs.getTile()*28);
+                    gs.monsters.add(monster);
+                }
+
+                for(int i = 0; i < 6; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*47+i);
+                    monster.setWorldY(gs.getTile()*11);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*37+i);
+                    monster.setWorldY(gs.getTile()*15);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*24+i);
+                    monster.setWorldY(gs.getTile()*5);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*20+i);
+                    monster.setWorldY(gs.getTile()*9);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*16+i);
+                    monster.setWorldY(gs.getTile()*13);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()+i);
+                    monster.setWorldY(gs.getTile()*47);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*6+i);
+                    monster.setWorldY(gs.getTile()*5);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Monster(gs);
+                    monster.setWorldX(gs.getTile()*10);
+                    monster.setWorldY(gs.getTile()*60);
+                    gs.monsters.add(monster);
+                }
                 break;
             case 3:
                 gs.tileM.loadMap("/maps/map_test.txt");
