@@ -44,7 +44,8 @@ public class Campaign {
     public void loadMap(int index) {
         switch (index) {
             case 1:
-                gs.tileM.loadMap("/maps/map_1_final.txt");
+                gs.tileM.loadMap("/maps/map_1_final.txt",1);
+//                gs.tileM.loadMap("/maps/map_1_final_2.txt",2);
                 // setup MONSTER
                 for(int i = 0; i < 10; i++) {
                     Entity monster = new Monster(gs);
@@ -96,7 +97,7 @@ public class Campaign {
                 }
                 break;
             case 2:
-                gs.tileM.loadMap("/maps/map_2.txt");
+                gs.tileM.loadMap("/maps/map_2.txt",1);
                 // setup MONSTER
                 for(int i = 0; i < 5; i++) {
                     Entity monster = new Monster(gs);
@@ -185,7 +186,7 @@ public class Campaign {
                 }
                 break;
             case 3:
-                gs.tileM.loadMap("/maps/map_test.txt");
+//                gs.tileM.loadMap("/maps/map_test.txt");
                 // setup MONSTER
                 break;
         }

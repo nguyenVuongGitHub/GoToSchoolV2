@@ -24,7 +24,7 @@ public class Monster extends Entity{
     }
     private void setAI() {
 
-        final int sight = 500;
+        final int sight = 350;
         // nhin thay nguoi choi
         if(distanceToPlayer(gs.player) <= sight) {
             angleTarget = anglePlayerAndMonster();

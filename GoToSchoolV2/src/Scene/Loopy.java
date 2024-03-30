@@ -16,7 +16,7 @@ public class Loopy {
     }
 
     public void loadMap() {
-        gs.tileM.loadMap("/maps/loopy.txt");
+        gs.tileM.loadMap("/maps/loopy.txt",1);
     }
     private boolean checkChange(Entity player, int x, int y) {
         return gs.CC.checkEntityEvent(player,x,y);

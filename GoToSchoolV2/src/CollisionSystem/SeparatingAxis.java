@@ -1,11 +1,17 @@
 package CollisionSystem;
 
 import Entity.Entity;
+import Main.GameState;
+import tile.TileManager;
 
 import java.awt.*;
 
 
 public class SeparatingAxis {
+    static GameState gs;
+    public SeparatingAxis(GameState gs) {
+        SeparatingAxis.gs = gs;
+    }
     final static double INF = 999999999;
     /**
      * Check collision of two entity polygon by using SAT
@@ -142,13 +148,37 @@ public class SeparatingAxis {
         }
         if(move1)
         {
-            e1.setWorldX(e1.getWorldX() - depth / 2 * normal.getY());
-            e1.setWorldY(e1.getWorldY() - depth /2 * normal.getX());
+            double nextX = e1.getWorldX() - depth / 2 * normal.getY();
+            double nextY = e1.getWorldY() - depth /2 * normal.getX();
+            int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile() , TileManager.highestLayer);
+            int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            int tile4 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            if(!gs.tileM.getWall().contains(tile) &&
+                    !gs.tileM.getWall().contains(tile2) &&
+                    !gs.tileM.getWall().contains(tile3) &&
+                    !gs.tileM.getWall().contains(tile4)) {
+
+                e1.setWorldX(e1.getWorldX() - depth / 2 * normal.getY());
+                e1.setWorldY(e1.getWorldY() - depth /2 * normal.getX());
+            }
         }
         if(move2)
         {
-            e2.setWorldX(e2.getWorldX() + depth / 2 * normal.getY());
-            e2.setWorldY(e2.getWorldY() + depth /2 * normal.getX());
+            double nextX = e2.getWorldX() + depth / 2 * normal.getY();
+            double nextY = e2.getWorldY() + depth /2 * normal.getX();
+            int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            int tile4 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            if(!gs.tileM.getWall().contains(tile) &&
+                    !gs.tileM.getWall().contains(tile2) &&
+                    !gs.tileM.getWall().contains(tile3) &&
+                    !gs.tileM.getWall().contains(tile4)) {
+
+                e2.setWorldX(e2.getWorldX() + depth / 2 * normal.getY());
+                e2.setWorldY(e2.getWorldY() + depth /2 * normal.getX());
+            }
         }
         return true;
     }
@@ -177,13 +207,39 @@ public class SeparatingAxis {
 
         if(move1)
         {
-            e1.setWorldX(e1.getWorldX() - normal.getX() * depth /2);
-            e1.setWorldY(e1.getWorldY() - normal.getY() * depth /2);
+            double nextX = e1.getWorldX() - normal.getX() * depth /2;
+            double nextY = e1.getWorldY() - normal.getY() * depth /2;
+            int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            int tile4 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            if(!gs.tileM.getWall().contains(tile) &&
+                    !gs.tileM.getWall().contains(tile2) &&
+                    !gs.tileM.getWall().contains(tile3) &&
+                    !gs.tileM.getWall().contains(tile4)) {
+
+                e1.setWorldX(e1.getWorldX() - normal.getX() * depth /2);
+                e1.setWorldY(e1.getWorldY() - normal.getY() * depth /2);
+            }
         }
         if(move2)
         {
-            e2.setWorldX(e2.getWorldX() + normal.getX() * depth /2);
-            e2.setWorldY(e2.getWorldY() + normal.getY() * depth /2);
+            double nextX = e2.getWorldX() + normal.getX() * depth /2;
+            double nextY = e2.getWorldY() + normal.getY() * depth /2;
+            int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            int tile4 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            if(!gs.tileM.getWall().contains(tile) &&
+                    !gs.tileM.getWall().contains(tile2) &&
+                    !gs.tileM.getWall().contains(tile3) &&
+                    !gs.tileM.getWall().contains(tile4)) {
+
+                e2.setWorldX(e2.getWorldX() + normal.getX() * depth /2);
+                e2.setWorldY(e2.getWorldY() + normal.getY() * depth /2);
+            }
+
+
         }
 
         return true;
@@ -325,15 +381,38 @@ public class SeparatingAxis {
 
         if(move1)
         {
-            e1.setWorldX(e1.getWorldX() - normal.getX() * depth /2);
-            e1.setWorldY(e1.getWorldY() - normal.getY() * depth /2);
+            double nextX = e1.getWorldX() - normal.getX() * depth /2;
+            double nextY = e1.getWorldY() - normal.getY() * depth /2;
+            int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            int tile4 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            if(!gs.tileM.getWall().contains(tile) &&
+                    !gs.tileM.getWall().contains(tile2) &&
+                    !gs.tileM.getWall().contains(tile3) &&
+                    !gs.tileM.getWall().contains(tile4)) {
+
+                e1.setWorldX(e1.getWorldX() - normal.getX() * depth /2);
+                e1.setWorldY(e1.getWorldY() - normal.getY() * depth /2);
+            }
         }
         if(move2)
         {
-            e2.setWorldX(e2.getWorldX() + normal.getX() * depth /2);
-            e2.setWorldY(e2.getWorldY() + normal.getY() * depth /2);
-        }
+            double nextX = e2.getWorldX() + normal.getX() * depth /2;
+            double nextY = e2.getWorldY() + normal.getY() * depth /2;
+            int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
+            int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            int tile4 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
+            if(!gs.tileM.getWall().contains(tile) &&
+                    !gs.tileM.getWall().contains(tile2) &&
+                    !gs.tileM.getWall().contains(tile3) &&
+                    !gs.tileM.getWall().contains(tile4)) {
 
+                e2.setWorldX(e2.getWorldX() + normal.getX() * depth /2);
+                e2.setWorldY(e2.getWorldY() + normal.getY() * depth /2);
+            }
+        }
         return true;
     }
 

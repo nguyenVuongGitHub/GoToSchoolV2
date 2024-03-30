@@ -3,6 +3,7 @@ import Entity.Entity;
 import Quadtree.PointQ;
 import Quadtree.RectangleQ;
 import CollisionSystem.*;
+import tile.TileManager;
 
 import java.awt.*;
 import java.util.List;
@@ -45,8 +46,8 @@ public class CollisionChecker {
 
         if(direction.equals("up")) {
             topTileRow = (entityTopWorldY - entity.getSpeed()) / gs.getTile();
-            adjacentTile1 = gs.tileM.getMapTileNum(leftTileCol, topTileRow);
-            adjacentTile2 = gs.tileM.getMapTileNum(rightTileCol, topTileRow);
+            adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
+            adjacentTile2 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
             if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                 entity.setCollisionOn(true);
                 return UP;
@@ -54,8 +55,8 @@ public class CollisionChecker {
         }
         if(direction.equals("down")) {
             bottomTileRow = (entityBottomWorldY + entity.getSpeed()) / gs.getTile();
-            adjacentTile1 = gs.tileM.getMapTileNum(leftTileCol, bottomTileRow);
-            adjacentTile2 = gs.tileM.getMapTileNum(rightTileCol, bottomTileRow);
+            adjacentTile1 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
+            adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
             if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                 entity.setCollisionOn(true);
                 return DOWN;
@@ -63,8 +64,8 @@ public class CollisionChecker {
         }
         if(direction.equals("left")) {
             leftTileCol = (entityLeftWorldX - entity.getSpeed()) / gs.getTile();
-            adjacentTile1 = gs.tileM.getMapTileNum(leftTileCol, topTileRow);
-            adjacentTile2 = gs.tileM.getMapTileNum(leftTileCol, bottomTileRow);
+            adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
+            adjacentTile2 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
             if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                 entity.setCollisionOn(true);
                 return LEFT;
@@ -72,8 +73,8 @@ public class CollisionChecker {
         }
         if(direction.equals("right")) {
             rightTileCol = (entityRightWorldX + entity.getSpeed()) / gs.getTile();
-            adjacentTile1 = gs.tileM.getMapTileNum(rightTileCol, topTileRow);
-            adjacentTile2 = gs.tileM.getMapTileNum(rightTileCol, bottomTileRow);
+            adjacentTile1 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
+            adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
             if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                 entity.setCollisionOn(true);
                 return RIGHT;
@@ -140,8 +141,8 @@ public class CollisionChecker {
         {
             case "up":
                 topTileRow = (entityTopWorldY - entity.getSpeed()) / gs.getTile();
-                adjacentTile1 = gs.tileM.getMapTileNum(leftTileCol, topTileRow);
-                adjacentTile2 = gs.tileM.getMapTileNum(rightTileCol, topTileRow);
+                adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
+                adjacentTile2 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
                 if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                     return 1;
@@ -149,8 +150,8 @@ public class CollisionChecker {
                 break;
             case "down":
                 bottomTileRow = (entityBottomWorldY + entity.getSpeed()) / gs.getTile();
-                adjacentTile1 = gs.tileM.getMapTileNum(leftTileCol, bottomTileRow);
-                adjacentTile2 = gs.tileM.getMapTileNum(rightTileCol, bottomTileRow);
+                adjacentTile1 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
+                adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
                 if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                     return 2;
@@ -158,8 +159,8 @@ public class CollisionChecker {
                 break;
             case "left":
                 leftTileCol = (entityLeftWorldX - entity.getSpeed()) / gs.getTile();
-                adjacentTile1 = gs.tileM.getMapTileNum(leftTileCol, topTileRow);
-                adjacentTile2 = gs.tileM.getMapTileNum(leftTileCol, bottomTileRow);
+                adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
+                adjacentTile2 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
                 if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                     return 3;
@@ -167,8 +168,8 @@ public class CollisionChecker {
                 break;
             case "right":
                 rightTileCol = (entityRightWorldX + entity.getSpeed()) / gs.getTile();
-                adjacentTile1 = gs.tileM.getMapTileNum(rightTileCol, topTileRow);
-                adjacentTile2 = gs.tileM.getMapTileNum(rightTileCol, bottomTileRow);
+                adjacentTile1 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
+                adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
                 if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                     return 4;
@@ -193,23 +194,23 @@ public class CollisionChecker {
 
         if(gs.keyHandle.isUpPress())
             topTileRow = (entityTopWorldY - entity.getSpeed()) / gs.getTile();
-        adjacentTile1 = gs.tileM.getMapTileNum(leftTileCol, topTileRow);
-        adjacentTile2 = gs.tileM.getMapTileNum(rightTileCol, topTileRow);
+        adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
+        adjacentTile2 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
 
         if(gs.keyHandle.isDownPress())
             bottomTileRow = (entityBottomWorldY + entity.getSpeed()) / gs.getTile();
-        adjacentTile3 = gs.tileM.getMapTileNum(leftTileCol, bottomTileRow);
-        adjacentTile4 = gs.tileM.getMapTileNum(rightTileCol, bottomTileRow);
+        adjacentTile3 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
+        adjacentTile4 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
 
         if(gs.keyHandle.isLeftPress())
             leftTileCol = (entityLeftWorldX - entity.getSpeed()) / gs.getTile();
-        adjacentTile5 = gs.tileM.getMapTileNum(leftTileCol, topTileRow);
-        adjacentTile6 = gs.tileM.getMapTileNum(leftTileCol, bottomTileRow);
+        adjacentTile5 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
+        adjacentTile6 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
 
         if(gs.keyHandle.isRightPress())
             rightTileCol = (entityRightWorldX + entity.getSpeed()) / gs.getTile();
-        adjacentTile7 = gs.tileM.getMapTileNum(rightTileCol, topTileRow);
-        adjacentTile8 = gs.tileM.getMapTileNum(rightTileCol, bottomTileRow);
+        adjacentTile7 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
+        adjacentTile8 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
 
         if (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision ||
                 gs.tileM.getTile(adjacentTile3).collision || gs.tileM.getTile(adjacentTile4).collision ||

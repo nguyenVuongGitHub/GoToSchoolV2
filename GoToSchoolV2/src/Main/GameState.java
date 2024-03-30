@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import CollisionSystem.SeparatingAxis;
 import Entity.*;
 import Quadtree.*;
 import Quadtree.RectangleQ;
@@ -43,6 +44,7 @@ public class GameState extends JPanel implements Runnable{
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
+	public SeparatingAxis SAT = new SeparatingAxis(this);
 	public Loopy loopy = new Loopy(this);
 	public TileManager tileM = new TileManager(this);
 

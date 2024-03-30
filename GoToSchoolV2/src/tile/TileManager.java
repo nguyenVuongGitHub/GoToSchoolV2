@@ -10,34 +10,41 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TileManager {
+    public static final int highestLayer = 1;
     GameState gs;
     Tile[] tile;
-
-    public int getMapTileNum(int i, int j) {
-        return mapTileNum[i][j];
+    Set<Integer> wall = new HashSet<Integer>();
+    public int getLayer(int i, int j,int layer) {
+        if(layer == 1) {
+            return layer1[i][j];
+        }else {
+            return layer2[i][j];
+        }
     }
     public Tile getTile(int i) {
         return tile[i];
     }
-    public void setMapTileNum(int[][] mapTileNum) {
-        this.mapTileNum = mapTileNum;
-    }
 
-    int mapTileNum[][];
+    int layer1[][];
+    int layer2[][];
 
     public TileManager(GameState gs) {
         this.gs = gs;
 
-        tile = new Tile[55];
-        mapTileNum = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
+        tile = new Tile[100];
+        layer1 = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
+        layer2 = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
         getTileImage();
     }
 
     public void getTileImage() {
         try {
-            BufferedImage largeImage = ImageIO.read(getClass().getResourceAsStream("/tiles/1.png"));
+            BufferedImage largeImage = ImageIO.read(getClass().getResourceAsStream("/tiles/dem.png"));
             int col = largeImage.getWidth() / gs.getTile();
             int row = largeImage.getHeight() / gs.getTile();
 
@@ -65,7 +72,9 @@ public class TileManager {
                         case 47:
                         case 49:
                         case 50:
+                        case 81:
                             tile[index].collision = true;
+                            wall.add(index);
                     }
                 }
             }
@@ -76,7 +85,7 @@ public class TileManager {
         }
     }
 
-    public void loadMap(String filePath) {
+    public void loadMap(String filePath, int layer) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -93,7 +102,11 @@ public class TileManager {
                     String numbers[] = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[col][row] = num;
+                    if(layer == 1) {
+                        layer1[col][row] = num;
+                    }else if(layer == 2) {
+                        layer2[col][row] = num;
+                    }
                     col++;
                 }
                 if(col == gs.getMaxWorldCol()) {
@@ -109,13 +122,23 @@ public class TileManager {
     }
 
     public void draw(Graphics2D g2) {
+        drawHelper(g2,1);
+        drawHelper(g2,2);
+        //
+    }
+
+    private void drawHelper(Graphics2D g2, int layer) {
 
         int worldCol = 0;
         int worldRow = 0;
 
         while(worldCol < gs.getMaxWorldCol() && worldRow < gs.getMaxWorldRow()) {
-
-            int tileNum = mapTileNum[worldCol][worldRow];
+            int tileNum = 0;
+            if(layer == 1) {
+                tileNum = layer1[worldCol][worldRow];
+            }else if(layer == 2) {
+                tileNum = layer2[worldCol][worldRow];
+            }
 
             int worldX = worldCol * gs.getTile();
             int worldY = worldRow * gs.getTile();
@@ -127,8 +150,7 @@ public class TileManager {
                worldX - gs.getTile() < gs.player.getWorldX() + gs.player.getScreenX() &&
                worldY + gs.getTile() > gs.player.getWorldY() - gs.player.getScreenY() &&
                worldY - gs.getTile() < gs.player.getWorldY() + gs.player.getScreenY()) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gs.getTile(), gs.getTile(), null);
-
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gs.getTile(), gs.getTile(), null); //layer 1
             }
             worldCol++;
 
@@ -137,6 +159,8 @@ public class TileManager {
                 worldRow++;
             }
         }
-
+    }
+    public Set<Integer> getWall() {
+        return wall;
     }
 }
