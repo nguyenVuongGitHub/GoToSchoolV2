@@ -288,7 +288,7 @@ public class CollisionChecker {
         gs.quadTree.clear();
 
         for (Entity m : monsters) {
-            SeparatingAxis.polygonCollisionDetectFirstStatic(player, m ,false, true);
+//            SeparatingAxis.polygonCollisionDetectFirstStatic(player, m ,false, true);
 //            m.setCollision(false);
             Rectangle bounds = m.getBounds();
             RectangleQ bound = new RectangleQ(m.getBounds());

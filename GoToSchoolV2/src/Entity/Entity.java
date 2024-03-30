@@ -21,7 +21,7 @@ public abstract class Entity {
 	protected boolean alive = true;
 	protected double worldX, worldY;
 	protected List<PointX> vertices = new ArrayList<>();
-	protected double radius;
+	protected double radius = 30;
 	protected boolean collision = false;
 	protected boolean collisionOn = false;
 	protected double angleTarget;
@@ -94,10 +94,14 @@ public abstract class Entity {
 	}
 	protected void setPolygonVertices()
 	{
-		vertices.add(new PointX(worldX, worldY));
-		vertices.add(new PointX(worldX + getSolidArea().width, worldY));
-		vertices.add(new PointX(worldX + getSolidArea().width, worldY + getSolidArea().height));
-		vertices.add(new PointX(worldX, worldY + getSolidArea().height));
+		vertices.add(new PointX(worldX + getSolidArea().width * 0.1, worldY));
+		vertices.add(new PointX(worldX + getSolidArea().width * 0.9, worldY));
+		vertices.add(new PointX(worldX + getSolidArea().width, worldY + getSolidArea().height * 0.1));
+		vertices.add(new PointX(worldX + getSolidArea().width, worldY + getSolidArea().height * 0.9));
+		vertices.add(new PointX(worldX + getSolidArea().width * 0.9, worldY + getSolidArea().height));
+		vertices.add(new PointX(worldX + getSolidArea().width * 0.1, worldY + getSolidArea().height));
+		vertices.add(new PointX(worldX, worldY + getSolidArea().height * 0.9));
+		vertices.add(new PointX(worldX, worldY + getSolidArea().height * 0.1));
 	}
 	protected void clearVertices()
 	{
