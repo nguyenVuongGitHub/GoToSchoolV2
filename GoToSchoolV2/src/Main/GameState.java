@@ -40,7 +40,7 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.LOOPY;
+	public State state = State.CAMPAIGN;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);

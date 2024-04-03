@@ -257,7 +257,7 @@ public class CollisionChecker {
         gs.quadTree.clear();
         for (Entity m : monsters) {
             if(m != thisMonster) {
-                SeparatingAxis.polygonCollisionDetectFirstStatic(thisMonster, m ,true, true);
+//                SeparatingAxis.polygonCollisionDetectFirstStatic(thisMonster, m ,true, true);
 //                if(!m.getCollision()) {
 //                    m.setCollision(false);
 //                }
@@ -288,7 +288,7 @@ public class CollisionChecker {
         gs.quadTree.clear();
 
         for (Entity m : monsters) {
-//            SeparatingAxis.polygonCollisionDetectFirstStatic(player, m ,false, true);
+//            SeparatingAxis.CirclePolygonCollisionDectect(player, m, false, true);
 //            m.setCollision(false);
             Rectangle bounds = m.getBounds();
             RectangleQ bound = new RectangleQ(m.getBounds());
@@ -303,7 +303,7 @@ public class CollisionChecker {
             for (PointQ other : gs.found) {
                 Entity check = other.getUserData();
                 if(player != check) {
-                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check, false, true)) {
+                    if (SeparatingAxis.CircleCollisionDetect(player, check, false, true)) {
                         player.setCollision(true);
                         check.setCollision(true);
                     }else {

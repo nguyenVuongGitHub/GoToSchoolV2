@@ -198,7 +198,7 @@ public class SeparatingAxis {
         PointX center1 = PointX.getCenterPointFromList(e1.getVertices());
         PointX center2 = PointX.getCenterPointFromList(e2.getVertices());
 
-        double distance = center1.distance(center2);
+        double distance = center2.distance(center1);
         double sumRadius = e1.getRadius() + e2.getRadius();
 
         if(distance >= sumRadius)
@@ -286,6 +286,7 @@ public class SeparatingAxis {
         double depth = INF;
         PointX normal = null;
         double axisDepth;
+
         for(int i=0; i<e1.getVertices().size(); i++) {
             PointX va = e1.getVertices().get(i);
             PointX vb = e1.getVertices().get((i + 1) % e1.getVertices().size());
@@ -306,17 +307,16 @@ public class SeparatingAxis {
                 }
             }
 
-            double min2 = INF;
-            double max2 = -INF;
-
             PointX direction = axis.normalize();
             PointX directionRadius = direction.multipleVector(e2.getRadius());
 
-            PointX vectorRadius1 = PointX.getCenterPointFromList(e1.getVertices()).sumVector(directionRadius);
-            PointX vectorRadius2 = PointX.getCenterPointFromList(e1.getVertices()).minusVector(directionRadius);
+            PointX centerCir = PointX.getCenterPointFromList(e2.getVertices());
 
-            min2 = axis.dot(vectorRadius1);
-            max2 = axis.dot(vectorRadius2);
+            PointX vectorRadius1 = centerCir.sumVector(directionRadius);
+            PointX vectorRadius2 = centerCir.minusVector(directionRadius);
+
+            double min2 = axis.dot(vectorRadius2);
+            double max2 = axis.dot(vectorRadius1);
             if (min2 > max2) {
                 double tmp = min2;
                 min2 = max2;
@@ -333,7 +333,7 @@ public class SeparatingAxis {
         }
         int cpIndex = FindClosestPointFromPolygonToCircle(e1, e2);
         PointX cp = e1.getVertices().get(cpIndex);
-        PointX axis = cp.minusVector(PointX.getCenterPointFromList(e1.getVertices()));
+        PointX axis = cp.minusVector(PointX.getCenterPointFromList(e2.getVertices()));
         double min1 = INF;
         double max1 = -INF;
         for(int i=0; i<e1.getVertices().size(); i++)
@@ -349,15 +349,13 @@ public class SeparatingAxis {
                 max1 = proj;
             }
         }
-        double min2 = INF;
-        double max2 = -INF;
         PointX directionRadius = axis.normalize().multipleVector(e2.getRadius());
 
-        PointX vectorRadius1 = PointX.getCenterPointFromList(e1.getVertices()).sumVector(directionRadius);
-        PointX vectorRadius2 = PointX.getCenterPointFromList(e1.getVertices()).minusVector(directionRadius);
+        PointX vectorRadius1 = PointX.getCenterPointFromList(e2.getVertices()).sumVector(directionRadius);
+        PointX vectorRadius2 = PointX.getCenterPointFromList(e2.getVertices()).minusVector(directionRadius);
 
-        min2 = axis.dot(vectorRadius1);
-        max2 = axis.dot(vectorRadius2);
+        double min2 = axis.dot(vectorRadius1);
+        double max2 = axis.dot(vectorRadius2);
         if(min2 > max2)
         {
             double tmp = min2;
@@ -397,8 +395,8 @@ public class SeparatingAxis {
                     !gs.tileM.getWall().contains(tile3) &&
                     !gs.tileM.getWall().contains(tile4)) {
 
-                e1.setWorldX(e1.getWorldX() - normal.getY() * depth /2);
-                e1.setWorldY(e1.getWorldY() - normal.getX() * depth /2);
+                e1.setWorldX(e1.getWorldX() - normal.getX() * depth /2);
+                e1.setWorldY(e1.getWorldY() - normal.getY() * depth /2);
             }
         }
         if(move2)
@@ -414,8 +412,8 @@ public class SeparatingAxis {
                     !gs.tileM.getWall().contains(tile3) &&
                     !gs.tileM.getWall().contains(tile4)) {
 
-                e2.setWorldX(e2.getWorldX() + normal.getY() * depth /2);
-                e2.setWorldY(e2.getWorldY() + normal.getX() * depth /2);
+                e2.setWorldX(e2.getWorldX() + normal.getX() * depth /2);
+                e2.setWorldY(e2.getWorldY() + normal.getY() * depth /2);
             }
         }
         return true;
