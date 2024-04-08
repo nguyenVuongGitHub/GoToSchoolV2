@@ -98,7 +98,40 @@ public class KeyHandle implements KeyListener{
 			}
 		}
 		else if(gs.state == State.SURVIVAL) {
-
+			gs.survival.loadMap();
+			if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+				upPress = true;
+			}
+			if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+				downPress = true;
+			}
+			if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+				leftPress = true;
+			}
+			if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+				rightPress = true;
+			}
+			if(code == KeyEvent.VK_SPACE) {
+				spacePress = true;
+			}
+			if(code == KeyEvent.VK_ESCAPE) {
+				escPress = true;
+			}
+			if(code == KeyEvent.VK_ENTER) {
+				enterPress = true;
+			}
+			if(code == KeyEvent.VK_TAB) {
+				tabPress = true;
+			}
+			if(code == KeyEvent.VK_J) {
+				skill1Press = true;
+			}
+			if(code == KeyEvent.VK_K) {
+				skill2Press = true;
+			}
+			if(code == KeyEvent.VK_L) {
+				skill3Press = true;
+			}
 		}else if(gs.state == State.LOOPY) {
 
 			if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {

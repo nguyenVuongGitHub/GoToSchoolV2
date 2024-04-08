@@ -13,6 +13,7 @@ import Quadtree.*;
 import Quadtree.RectangleQ;
 import Scene.Campaign;
 import Scene.Loopy;
+import Scene.Survival;
 import User.UserManager;
 import Weapon.NormalAttack;
 import tile.TileManager;
@@ -40,10 +41,11 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.CAMPAIGN;
+	public State state = State.SURVIVAL;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
+	public Survival survival = new Survival(user, this, ui);
 	public SeparatingAxis SAT = new SeparatingAxis(this);
 	public Loopy loopy = new Loopy(this);
 	public TileManager tileM = new TileManager(this);
@@ -136,7 +138,7 @@ public class GameState extends JPanel implements Runnable{
 		if(state == State.CAMPAIGN) {
 			campaign.update();
 		}else if(state == State.SURVIVAL){
-
+			survival.update();
 		}else if(state == State.LOOPY) {
 			if(changeState) {
 				loopy.loadMap();
@@ -154,7 +156,7 @@ public class GameState extends JPanel implements Runnable{
 		}else if(state == State.CAMPAIGN) {
 			campaign.draw(g2);
 		}else if(state == State.SURVIVAL) {
-
+			survival.draw(g2);
 		}
 		ui.draw(g2);
 

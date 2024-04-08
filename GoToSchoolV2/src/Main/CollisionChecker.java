@@ -303,7 +303,7 @@ public class CollisionChecker {
             for (PointQ other : gs.found) {
                 Entity check = other.getUserData();
                 if(player != check) {
-                    if (SeparatingAxis.CircleCollisionDetect(player, check, false, true)) {
+                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check, false, true)) {
                         player.setCollision(true);
                         check.setCollision(true);
                     }else {
