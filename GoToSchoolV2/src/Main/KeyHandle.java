@@ -5,6 +5,8 @@
  */
 package Main;
 
+import com.sun.source.tree.IfTree;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -14,6 +16,11 @@ public class KeyHandle implements KeyListener{
 	GameState gs;
 	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress, tabPress;
 	private boolean skill1Press,skill2Press,skill3Press;
+
+	private boolean exitMap = false;
+	private long timeExitMap = 0;
+	private boolean accessLoadMap = false;
+	private boolean accessReturnLoopy = false;
 	public KeyHandle(GameState gs) {
 		this.gs = gs;
 	}
@@ -22,7 +29,6 @@ public class KeyHandle implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
@@ -32,7 +38,7 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 					gs.campaign.setChoose(gs.campaign.getChoose()-1);
 					if(gs.campaign.getChoose() < 1) {
-						gs.campaign.setChoose(gs.user.getNumberSkillsUnlocked());
+						gs.campaign.setChoose(gs.user.getNumberLeversUnlocked());
 					}
 				}
 				if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
@@ -42,26 +48,24 @@ public class KeyHandle implements KeyListener{
 					}
 				}
 				if(code == KeyEvent.VK_ENTER) {
-					gs.campaign.loadMap(gs.campaign.getChoose());
-					gs.campaign.setShowDialog(false);
-					if(gs.campaign.getChoose() == 1) {
-						gs.player.setWorldX(5*gs.getTile());
-						gs.player.setWorldY(59*gs.getTile());
-					}else if(gs.campaign.getChoose() == 2) {
-						gs.player.setWorldX(24*gs.getTile());
-						gs.player.setWorldY(30*gs.getTile());
-					}else if(gs.campaign.getChoose() == 3) {
-//                		gs.player.setWorldX(5*gs.getTile());
-//                		gs.player.setWorldY(59*gs.getTile());
-					}
+					accessLoadMap = true;
 				}
 				if(code == KeyEvent.VK_ESCAPE) {
-					gs.state = State.LOOPY;
-					gs.player.setWorldX(56* gs.getTile());
-					gs.player.setWorldY(24* gs.getTile());
-					gs.changeState = true;
+					accessReturnLoopy = true;
 				}
 			}else{ // battle
+
+				// exit Game
+				if(code == KeyEvent.VK_Q) {
+					System.out.println(timeExitMap);
+					timeExitMap++;
+					if(timeExitMap >= 50) {
+						exitMap = true;
+					}
+				}else {
+					exitMap = false;
+					timeExitMap = 0;
+				}
 				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 					upPress = true;
 				}
@@ -208,5 +212,41 @@ public class KeyHandle implements KeyListener{
 
 	public boolean isTabPress() {
 		return tabPress;
+	}
+	public boolean isAccessLoadMap() {
+		return accessLoadMap;
+	}
+
+	public void setAccessLoadMap(boolean accessLoadMap) {
+		this.accessLoadMap = accessLoadMap;
+	}
+	public boolean isAccessReturnLoopy() {
+		return accessReturnLoopy;
+	}
+
+	public void setAccessReturnLoopy(boolean accessReturnLoopy) {
+		this.accessReturnLoopy = accessReturnLoopy;
+	}
+	public boolean isExitMap() {
+		return exitMap;
+	}
+
+	public long getTimeExitMap() {
+		return timeExitMap;
+	}
+
+	public void setTimeExitMap(long timeExitMap) {
+		this.timeExitMap = timeExitMap;
+	}
+
+	public void setExitMap(boolean exitMap) {
+		this.exitMap = exitMap;
+	}
+
+	public void resetAllData() {
+		timeExitMap = 0;
+		exitMap = false;
+		accessReturnLoopy = false;
+		accessLoadMap = false;
 	}
 }

@@ -10,7 +10,6 @@ public class UserManager {
 
     private long coin;
     private short numberLeversUnlocked;
-    private short maxNumberLevers = 5;
     private short numberSkillsUnlocked;
 
     public UserManager() {
@@ -68,6 +67,6 @@ public class UserManager {
     }
 
     public short getMaxNumberLevers() {
-        return maxNumberLevers;
+        return (short) 5;
     }
 }

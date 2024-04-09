@@ -12,13 +12,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-public class TileManager {
-    public static final int highestLayer = 1;
+public class TileManager{
+    public static final int highestLayer = 2;
     GameState gs;
     Tile[] tile;
-    Set<Integer> wall = new HashSet<Integer>();
+    Set<Tile> walls = new HashSet<Tile>();
     public int getLayer(int i, int j,int layer) {
         if(layer == 1) {
             return layer1[i][j];
@@ -26,17 +27,17 @@ public class TileManager {
             return layer2[i][j];
         }
     }
-    public Tile getTile(int i) {
-        return tile[i];
+    public Tile getTile(int index) {
+        return tile[index];
     }
 
-    int layer1[][];
-    int layer2[][];
+    int[][] layer1;
+    int[][] layer2;
 
     public TileManager(GameState gs) {
         this.gs = gs;
 
-        tile = new Tile[100];
+        tile = new Tile[201];
         layer1 = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
         layer2 = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
         getTileImage();
@@ -44,7 +45,7 @@ public class TileManager {
 
     public void getTileImage() {
         try {
-            BufferedImage largeImage = ImageIO.read(getClass().getResourceAsStream("/tiles/dem.png"));
+            BufferedImage largeImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/final_map_maybe.png")));
             int col = largeImage.getWidth() / gs.getTile();
             int row = largeImage.getHeight() / gs.getTile();
 
@@ -58,23 +59,71 @@ public class TileManager {
 
                     tile[index].image = largeImage.getSubimage(j * gs.getTile(), i * gs.getTile(), gs.getTile(), gs.getTile());
                     switch (index) {
+                        case 4:
+                        case 5:
+                        case 6:
                         case 7:
                         case 8:
                         case 9:
-                        case 14:
-                        case 16:
-                        case 18:
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 13:
+                        case 24:
                         case 25:
                         case 26:
                         case 27:
-                        case 36:
-                        case 40:
+                        case 29:
+                        case 30:
+                        case 31:
+                        case 32:
+                        case 33:
+                        case 44:
+                        case 45:
+                        case 46:
                         case 47:
+                        case 48:
                         case 49:
                         case 50:
-                        case 81:
+                        case 51:
+                        case 52:
+                        case 53:
+                        case 65:
+                        case 70:
+                        case 71:
+                        case 72:
+                        case 73:
+                        case 85:
+                        case 101:
+                        case 102:
+                        case 103:
+                        case 104:
+                        case 127:
+                        case 128:
+                        case 129:
+                        case 130:
+                        case 131:
+                        case 147:
+                        case 148:
+                        case 149:
+                        case 150:
+                        case 151:
+                        case 167:
+                        case 168:
+                        case 169:
+                        case 170:
+                        case 171:
+                            if(index == 101 || index == 103) {
+                                tile[index].setSolidArea(32,9,32,48);
+                            }
+                            else if(index == 102 || index == 104) {
+                                tile[index].setSolidArea(0,0,32,48);
+                            }else {
+                                tile[index].setSolidArea(0,0,64,64);
+                            }
                             tile[index].collision = true;
-                            wall.add(index);
+                            tile[index].setValue(index);
+                            walls.add(tile[index]);
                     }
                 }
             }
@@ -127,7 +176,7 @@ public class TileManager {
         //
     }
 
-    private void drawHelper(Graphics2D g2, int layer) {
+    public void drawHelper(Graphics2D g2, int layer) {
 
         int worldCol = 0;
         int worldRow = 0;
@@ -145,12 +194,11 @@ public class TileManager {
             int screenX = worldX - gs.player.getWorldX() + gs.player.getScreenX();
             int screenY = worldY - gs.player.getWorldY() + gs.player.getScreenY();
 
-
             if(worldX + gs.getTile() > gs.player.getWorldX() - gs.player.getScreenX() &&
                worldX - gs.getTile() < gs.player.getWorldX() + gs.player.getScreenX() &&
                worldY + gs.getTile() > gs.player.getWorldY() - gs.player.getScreenY() &&
-               worldY - gs.getTile() < gs.player.getWorldY() + gs.player.getScreenY()) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gs.getTile(), gs.getTile(), null); //layer 1
+               worldY - gs.getTile() < gs.player.getWorldY() + gs.player.getScreenY()){
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gs.getTile(), gs.getTile(), null);
             }
             worldCol++;
 
@@ -160,7 +208,10 @@ public class TileManager {
             }
         }
     }
-    public Set<Integer> getWall() {
-        return wall;
+
+
+
+    public Set<Tile> getWall() {
+        return walls;
     }
 }

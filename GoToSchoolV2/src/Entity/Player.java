@@ -11,6 +11,8 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 public class Player extends Entity{
 
+    int timeCount = 0;
+
     public Player(GameState gs) {
         super(gs);
         init();
@@ -21,14 +23,14 @@ public class Player extends Entity{
 
     @Override
     public void init() {
-        worldX = gs.getTile() * 17;
-        worldY = gs.getTile() * 35;
+        worldX = gs.getTile() * 30;
+        worldY = gs.getTile() * 30;
         type = TYPE.PLAYER;
         hp = 100;
-        speed = 5;
+        speed = 8;
         damage = 1;
         direction = "down";
-        solidArea = new Rectangle(20,8,64,64);
+        solidArea = new Rectangle(20*2,10*2,26*2,38*2);
         getPlayerImage();
         clearVertices();
         setPolygonVertices();
@@ -74,73 +76,139 @@ public class Player extends Entity{
 
     @Override
     public void update() {
-
             // CHECK COLLISION
             collisionOn = false;
+            if(gs.keyHandle.isUpPress() && gs.keyHandle.isLeftPress()) {
+                direction = "up-left";
+            }else if(gs.keyHandle.isUpPress() && gs.keyHandle.isRightPress()) {
+                direction = "up-right";
+            }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isLeftPress()) {
+                direction = "down-left";
+            }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isRightPress()) {
+                direction = "down-right";
+            }else if(gs.keyHandle.isUpPress()) {
+                direction = "up";
+            }else if(gs.keyHandle.isDownPress()) {
+                direction = "down";
+            }else if(gs.keyHandle.isLeftPress()) {
+                direction = "left";
+            }else if(gs.keyHandle.isRightPress()) {
+                direction = "right";
+            }
+            else {
+                direction = "nan";
+            }
+
             gs.CC.checkPlayerWithTile(this);
 
             if(!collisionOn) {
-                if(gs.keyHandle.isUpPress()) {
-                    direction = "up";
-                    worldY -=  speed ;
-                }
-                if(gs.keyHandle.isDownPress()) {
-                    direction = "down";
-                    worldY +=  speed ;
-                }
-                if(gs.keyHandle.isLeftPress()) {
-                    direction = "left";
-                    worldX -=  speed ;
-                }
-                if(gs.keyHandle.isRightPress()) {
-                    direction = "right";
-                    worldX +=  speed ;
-                }
-            }else {
-                int collisionWith;
-                // Kiểm tra hướng di chuyển của đối tượng
-                if(gs.keyHandle.isUpPress() || gs.keyHandle.isDownPress()) {
-                    // Kiểm tra va chạm với ô bên trái của đối tượng
-                    collisionWith = gs.CC.checkEntityWithTile(this, "left");
-                    // Nếu không có va chạm
-                    if(collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
-                        // Di chuyển đối tượng sang trái
+                switch (direction) {
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                    case "up-left" -> {
                         worldX -= speed;
+                        worldY -= speed;
                     }
-
-                    // Kiểm tra va chạm với ô bên phải của đối tượng
-                    collisionWith = gs.CC.checkEntityWithTile(this, "right");
-                    // Nếu không có va chạm
-                    if(collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
-                        // Di chuyển đối tượng sang phải
+                    case "up-right" -> {
+                        worldX += speed;
+                        worldY -= speed;
+                    }
+                    case "down-left" -> {
+                        worldX -= speed;
+                        worldY += speed;
+                    }
+                    case "down-right" -> {
+                        worldY += speed;
                         worldX += speed;
                     }
                 }
+            }else {
+                int collisionWith;
+                switch (direction) {
+                    case "up-left", "up-right" -> {
+                        collisionWith = gs.CC.checkEntityWithTile(this, "up");
+                        if (collisionWith != CollisionChecker.UP && gs.keyHandle.isUpPress()) {
+                            direction = "up";
+                            worldY -= speed;
+                        }
 
-                // Kiểm tra hướng di chuyển của đối tượng
-                if(gs.keyHandle.isLeftPress() || gs.keyHandle.isRightPress()) {
-                    // Kiểm tra va chạm với ô phía trên của đối tượng
-                    collisionWith = gs.CC.checkEntityWithTile(this, "up");
-                    // Nếu không có va chạm
-                    if (collisionWith != CollisionChecker.UP && gs.keyHandle.isUpPress()) {
-                        // Di chuyển đối tượng lên trên
-                        worldY -= speed;
-                    }
+                        collisionWith = gs.CC.checkEntityWithTile(this, "left");
+                        if (collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
+                            direction = "left";
+                            worldX -= speed;
+                        }
 
-                    // Kiểm tra va chạm với ô phía dưới của đối tượng
-                    collisionWith = gs.CC.checkEntityWithTile(this, "down");
-                    // Nếu không có va chạm
-                    if (collisionWith != CollisionChecker.DOWN && gs.keyHandle.isDownPress()) {
-                        // Di chuyển đối tượng xuống dưới
-                        worldY += speed;
+                        collisionWith = gs.CC.checkEntityWithTile(this, "right");
+
+                        if (collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
+
+                            direction = "right";
+                            worldX += speed;
+                        }
                     }
+                    case "down-left", "down-right" -> {
+                        collisionWith = gs.CC.checkEntityWithTile(this, "down");
+                        if (collisionWith != CollisionChecker.DOWN && gs.keyHandle.isDownPress()) {
+                            direction = "down";
+                            worldY += speed;
+                        }
+                        collisionWith = gs.CC.checkEntityWithTile(this, "left");
+
+                        if (collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
+
+                            direction = "left";
+                            worldX -= speed;
+                        }
+
+                        collisionWith = gs.CC.checkEntityWithTile(this, "right");
+
+                        if (collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
+
+                            direction = "right";
+                            worldX += speed;
+                        }
+                    }
+                    case "up", "down" -> {
+                        collisionWith = gs.CC.checkEntityWithTile(this, "left");
+                        if (collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
+                            direction = "left";
+                            worldX -= speed;
+                        }
+                        collisionWith = gs.CC.checkEntityWithTile(this, "right");
+                        if (collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
+                            direction = "right";
+                            worldX += speed;
+                        }
+                    }
+                    case "left", "right" -> {
+                        collisionWith = gs.CC.checkEntityWithTile(this, "up");
+                        if (collisionWith != CollisionChecker.UP && gs.keyHandle.isUpPress()) {
+                            direction = "up";
+                            worldY -= speed;
+                        }
+                        collisionWith = gs.CC.checkEntityWithTile(this, "down");
+                        if (collisionWith != CollisionChecker.DOWN && gs.keyHandle.isDownPress()) {
+                            direction = "down";
+                            worldY += speed;
+                        }
+                    }
+                }
+            }
+
+            if(!canTouch) {
+                timeCount++;
+                if(timeCount >= timeCanTouch) {
+                    timeCount = 0;
+                    canTouch = true;
                 }
 
             }
 
-
             spriteCounter++;
-            if(spriteCounter > 10) {
+            if(spriteCounter > 3) {
+                spriteCounter = 0;
                 if(spriteNum == 1) {
                     spriteNum = 2;
                 }
@@ -162,7 +230,6 @@ public class Player extends Entity{
             }
             clearVertices();
             setPolygonVertices();
-
     }
 
     @Override
@@ -248,11 +315,6 @@ public class Player extends Entity{
             }
         }
 
-        g2.drawImage(currentImage, screenX, screenY, gs.getTile(), gs.getTile(), null);
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return new Rectangle((int)worldX + solidArea.x,(int) worldY + solidArea.y, solidArea.width, solidArea.height);
+        g2.drawImage(currentImage, screenX, screenY, gs.getTile()*2, gs.getTile()*2, null);
     }
 }
