@@ -29,6 +29,16 @@ public class Survival {
     public void update() {
 
         gs.updateBattle();
+        // add power up :
+        // 1. Increase Damage
+        // 2. Increase speed
+        // 3. Increase health / mana
+        // 4. Choose another skill
+        // 5. Give health / mana point
+        // 6. meet shopkeeper after 5 round
+        //  - buy item { last stand, invest(each round you will earn income), lock target, gain health regeneration, ability)
+        //  - fresh item
+        //  - play gambling
 
     }
 
