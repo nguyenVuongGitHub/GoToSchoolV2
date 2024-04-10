@@ -21,20 +21,31 @@ public abstract class Entity {
 	protected boolean alive = true;
 	protected double worldX, worldY;
 	protected List<PointX> vertices = new ArrayList<>();
-	protected double radius = 30;
+	protected double radius = 25;
 	protected boolean collision = false;
 	protected boolean collisionOn = false;
-	protected double angleTarget;
 
-	// liên quan đến hình ảnh
+	public double getAngleTarget() {
+		return angleTarget;
+	}
+
+	public void setAngleTarget(double angleTarget) {
+		this.angleTarget = angleTarget;
+	}
+
+	protected double angleTarget;
+	protected boolean canTouch = true;
+	protected int timeCanTouch = 10;
+
+// liên quan đến hình ảnh
 
 	protected int screenX;
 	protected int screenY;
 
-	protected BufferedImage up1, up2, up3, up4, up5, up6,
-			down1, down2, down3, down4, down5, down6,
-			left1, left2, left3, left4, left5, left6,
-			right1, right2, right3, right4, right5, right6;
+	protected BufferedImage up1 = null, up2 = null, up3 = null, up4 = null, up5 = null, up6 = null,
+			down1 = null, down2 = null, down3 = null, down4 = null, down5 = null, down6 = null,
+			left1 = null, left2 = null, left3 = null, left4 = null, left5 = null, left6 = null,
+			right1 = null, right2 = null, right3 = null, right4 = null, right5 = null, right6 = null;
 	protected  BufferedImage currentImage = null;
 
 	protected String direction = "right";
@@ -54,7 +65,7 @@ public abstract class Entity {
 	protected Rectangle solidArea = new Rectangle(0,0,0,0);
 
 	// các phương thức
-
+	public void generateCoin(){}
 	public int getScreenX() {return screenX;}
 	public int getScreenY() {return screenY;}
 	public int getWorldX() {return (int) worldX;}
@@ -78,7 +89,9 @@ public abstract class Entity {
 		return solidArea;
 	}
 
-	public abstract Rectangle getBounds();
+	public Rectangle getBounds() {
+		return new Rectangle((int)worldX + solidArea.x,(int) worldY + solidArea.y, solidArea.width, solidArea.height);
+	}
 
 	public void setCollision(boolean collision) {this.collision = collision;}
 	public void setCollisionOn(boolean collisionOn) {this.collisionOn = collisionOn;}
@@ -94,14 +107,10 @@ public abstract class Entity {
 	}
 	protected void setPolygonVertices()
 	{
-		vertices.add(new PointX(worldX + getSolidArea().width * 0.1, worldY));
-		vertices.add(new PointX(worldX + getSolidArea().width * 0.9, worldY));
-		vertices.add(new PointX(worldX + getSolidArea().width, worldY + getSolidArea().height * 0.1));
-		vertices.add(new PointX(worldX + getSolidArea().width, worldY + getSolidArea().height * 0.9));
-		vertices.add(new PointX(worldX + getSolidArea().width * 0.9, worldY + getSolidArea().height));
-		vertices.add(new PointX(worldX + getSolidArea().width * 0.1, worldY + getSolidArea().height));
-		vertices.add(new PointX(worldX, worldY + getSolidArea().height * 0.9));
-		vertices.add(new PointX(worldX, worldY + getSolidArea().height * 0.1));
+		vertices.add(new PointX(worldX + getSolidArea().x, worldY + getSolidArea().y));
+		vertices.add(new PointX(worldX + getSolidArea().width + getSolidArea().x, worldY + getSolidArea().y));
+		vertices.add(new PointX(worldX + getSolidArea().width + getSolidArea().x, worldY + getSolidArea().height + getSolidArea().y));
+		vertices.add(new PointX(worldX + getSolidArea().x, worldY + getSolidArea().height + getSolidArea().y));
 	}
 	protected void clearVertices()
 	{
@@ -113,5 +122,23 @@ public abstract class Entity {
 
 	public boolean getCollision() {
 		return collision;
+	}
+	public int getTimeCanTouch() {
+		return timeCanTouch;
+	}
+
+	public void setTimeCanTouch(int timeCanTouch) {
+		this.timeCanTouch = timeCanTouch;
+	}
+	public boolean isCanTouch() {
+		return canTouch;
+	}
+
+	public void setCanTouch(boolean canTouch) {
+		this.canTouch = canTouch;
+	}
+
+	public TYPE getType() {
+		return type;
 	}
 }

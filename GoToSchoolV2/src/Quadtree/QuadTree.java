@@ -96,7 +96,7 @@ public class QuadTree {
         nghĩa là nó đã được sử dụng từ lần gọi trước đó của hàm query(), ta cần xóa các phần tử hiện có của nó bằng cách tạo một danh sách mới.
         * */
         if (!found.isEmpty()) {
-            found = new ArrayList<>();
+            found.clear();
         }
         /*
         Kiểm tra xem hình chữ nhật range có giao với giới hạn của nút hiện tại không.
