@@ -227,7 +227,7 @@ public class GameState extends JPanel implements Runnable{
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
 		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
-
+		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
 		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive
