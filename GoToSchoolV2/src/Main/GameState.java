@@ -31,11 +31,11 @@ public class GameState extends JPanel implements Runnable{
 
 	private static final int maxScreenRow = WINDOW_HEIGHT/tile;
 
-	public QuadTree quadTree = new QuadTree(4,new RectangleQ(0,0,WINDOW_WIDTH*tile,WINDOW_HEIGHT*tile), this);
+	public QuadTree quadTree = new QuadTree(30,new RectangleQ(0,0,WINDOW_WIDTH*tile,WINDOW_HEIGHT*tile), this);
 	public List<PointQ> found = new ArrayList<>();
 
 	// VARIABLE SYSTEM
-	private final static int FPS = 60;
+	private final static int FPS = 75;
 	Thread gameThread;
 	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();

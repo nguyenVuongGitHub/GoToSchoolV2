@@ -14,6 +14,7 @@ public class KeyHandle implements KeyListener{
 	GameState gs;
 	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress, tabPress;
 	private boolean skill1Press,skill2Press,skill3Press;
+	private boolean augment1Press,augment2Press,augrment3Press;
 	public KeyHandle(GameState gs) {
 		this.gs = gs;
 	}
@@ -98,39 +99,62 @@ public class KeyHandle implements KeyListener{
 			}
 		}
 		else if(gs.state == State.SURVIVAL) {
-			gs.survival.loadMap();
-			if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-				upPress = true;
+			if(!gs.survival.isMapExist())
+			{
+				gs.survival.loadMap();
+				gs.survival.setMapExist(true);
 			}
-			if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-				downPress = true;
+			if(gs.survival.getEndOfDay())
+			{
+				if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+                    if (gs.survival.getSelected() - 1 <= 0) {
+                        gs.survival.setSelected(3);
+                    } else {
+                        gs.survival.setSelected(gs.survival.getSelected() - 1);
+                    }
+                }
+				if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+					gs.survival.setSelected(gs.survival.getSelected() % 3 + 1);
+				}
+				if(code == KeyEvent.VK_ENTER) {
+					gs.survival.setEndOfDay(false);
+				}
 			}
-			if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
-				leftPress = true;
-			}
-			if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
-				rightPress = true;
-			}
-			if(code == KeyEvent.VK_SPACE) {
-				spacePress = true;
-			}
-			if(code == KeyEvent.VK_ESCAPE) {
-				escPress = true;
-			}
-			if(code == KeyEvent.VK_ENTER) {
-				enterPress = true;
-			}
-			if(code == KeyEvent.VK_TAB) {
-				tabPress = true;
-			}
-			if(code == KeyEvent.VK_J) {
-				skill1Press = true;
-			}
-			if(code == KeyEvent.VK_K) {
-				skill2Press = true;
-			}
-			if(code == KeyEvent.VK_L) {
-				skill3Press = true;
+			else
+			{
+				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					upPress = true;
+				}
+				if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					downPress = true;
+				}
+				if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+					leftPress = true;
+				}
+				if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+					rightPress = true;
+				}
+				if(code == KeyEvent.VK_SPACE) {
+					spacePress = true;
+				}
+				if(code == KeyEvent.VK_ESCAPE) {
+					escPress = true;
+				}
+				if(code == KeyEvent.VK_ENTER) {
+					enterPress = true;
+				}
+				if(code == KeyEvent.VK_TAB) {
+					tabPress = true;
+				}
+				if(code == KeyEvent.VK_J) {
+					skill1Press = true;
+				}
+				if(code == KeyEvent.VK_K) {
+					skill2Press = true;
+				}
+				if(code == KeyEvent.VK_L) {
+					skill3Press = true;
+				}
 			}
 		}else if(gs.state == State.LOOPY) {
 
