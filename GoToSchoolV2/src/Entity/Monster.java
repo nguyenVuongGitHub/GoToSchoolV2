@@ -12,7 +12,7 @@ import java.util.Random;
 
 public abstract class Monster extends Entity{
     protected int sight = 0;
-
+    TypeMonster typeMonster;
     protected final int defaultCountdown = 10;
     protected int countdown = defaultCountdown;
     protected final int defaultTimeMoving = 100;
@@ -23,13 +23,16 @@ public abstract class Monster extends Entity{
         super(gs);
     }
     public void generateCoin(){}
-    private double distanceToPlayer(Entity player) {
+    protected double distanceToPlayer(Entity player) {
         return Math.sqrt((Math.pow(player.worldX - this.worldX,2)) + (Math.pow(player.worldY - this.worldY,2)));
+    }
+    protected boolean seePlayer() {
+        return distanceToPlayer(gs.player) <= sight;
     }
     protected void setAI() {
 
         // nhin thay nguoi choi
-        if(distanceToPlayer(gs.player) <= sight) {
+        if(seePlayer()) {
             angleTarget = anglePlayerAndMonster();
             canMoving = true;
         }else {
@@ -63,7 +66,7 @@ public abstract class Monster extends Entity{
     public Rectangle getBounds() {
         return new Rectangle((int)worldX + solidArea.x,(int)worldY + solidArea.y,solidArea.width,solidArea.height);
     }
-    private void randomDirectionMonster() {
+    protected void randomDirectionMonster() {
 
         int angleDegrees = new Random().nextInt() % 4;
 
@@ -78,7 +81,7 @@ public abstract class Monster extends Entity{
                 direction = "left";
             }
     }
-    private double anglePlayerAndMonster() {
+    protected double anglePlayerAndMonster() {
         // Lấy vị trí của người chơi
         double playerX = gs.player.getWorldX() + (double) gs.getTile() /2;
         double playerY = gs.player.getWorldY() + (double) gs.getTile() /2;

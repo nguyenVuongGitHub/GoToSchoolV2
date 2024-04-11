@@ -18,7 +18,6 @@ public class KeyHandle implements KeyListener{
 	private boolean skill1Press,skill2Press,skill3Press;
 
 	private boolean exitMap = false;
-	private long timeExitMap = 0;
 	private boolean accessLoadMap = false;
 	private boolean accessReturnLoopy = false;
 	public KeyHandle(GameState gs) {
@@ -56,15 +55,10 @@ public class KeyHandle implements KeyListener{
 			}else{ // battle
 
 				// exit Game
-				if(code == KeyEvent.VK_Q) {
-					System.out.println(timeExitMap);
-					timeExitMap++;
-					if(timeExitMap >= 50) {
-						exitMap = true;
-					}
+				if(code == KeyEvent.VK_ESCAPE) {
+					exitMap = true;
 				}else {
 					exitMap = false;
-					timeExitMap = 0;
 				}
 				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 					upPress = true;
@@ -231,20 +225,11 @@ public class KeyHandle implements KeyListener{
 		return exitMap;
 	}
 
-	public long getTimeExitMap() {
-		return timeExitMap;
-	}
-
-	public void setTimeExitMap(long timeExitMap) {
-		this.timeExitMap = timeExitMap;
-	}
-
 	public void setExitMap(boolean exitMap) {
 		this.exitMap = exitMap;
 	}
 
 	public void resetAllData() {
-		timeExitMap = 0;
 		exitMap = false;
 		accessReturnLoopy = false;
 		accessLoadMap = false;

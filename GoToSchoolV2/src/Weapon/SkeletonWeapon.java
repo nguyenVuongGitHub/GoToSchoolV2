@@ -7,17 +7,17 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.util.Objects;
 
-public class NormalAttack extends BaseSkill{
-    public static int TIME_COUNT_DOWN_ATTACK = 1;
-    public static final int TIME_ATTACK = 1;
+public class SkeletonWeapon extends BaseSkill{
 
-    public NormalAttack(GameState gs) {
+
+    public SkeletonWeapon(GameState gs) {
         super(gs);
         init();
     }
+
     public void getImage() {
         try {
-            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/nomalAttack.png")));
+            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/ske_weapon.png")));
             currentImage = up1;
         }catch(Exception ignored) {
 
@@ -28,34 +28,24 @@ public class NormalAttack extends BaseSkill{
         type = TYPE.WEAPON;
         distance = 50;
         damage = 5;
-        speed = 20;
-        worldX = gs.player.getWorldX();
-        worldY = gs.player.getWorldY();
-        solidArea = new Rectangle(0,0,gs.getTile(),gs.getTile());
-        angleTarget = anglePlayerAndMouse();
+        speed = 10;
+        solidArea = new Rectangle(0,0,gs.getTile()/2,gs.getTile()/2);
         getImage();
         setPolygonVertices();
     }
 
     @Override
     public void update() {
-        collisionOn = false;
-        gs.CC.checkEntityWithTile(this);
-
-        if(!collisionOn && alive) {
+        if(alive) {
             if(distance <= 0) {
                 alive = false;
-                distance = 100;
             }
             worldX += Math.cos(angleTarget) * speed;
             worldY += Math.sin(angleTarget) * speed;
             distance--;
-        }else {
-            alive = false;
-            distance = 100;
+            clearVertices();
+            setPolygonVertices();
         }
-        clearVertices();
-        setPolygonVertices();
     }
 
     @Override
@@ -63,8 +53,9 @@ public class NormalAttack extends BaseSkill{
         if(alive) {
             screenX = (int) (worldX - gs.player.getWorldX() + gs.player.getScreenX());
             screenY = (int) (worldY - gs.player.getWorldY() + gs.player.getScreenY());
-            g2.drawImage(currentImage, screenX + gs.getTile()/4 , screenY + gs.getTile()/4, gs.getTile()/2, gs.getTile()/2, null);
-            g2.drawRect(screenX,screenY,getBounds().width,getBounds().height);
+            g2.drawImage(currentImage, screenX, screenY, gs.getTile()/2, gs.getTile()/2, null);
+
         }
     }
+
 }

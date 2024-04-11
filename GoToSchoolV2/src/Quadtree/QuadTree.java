@@ -1,12 +1,12 @@
 package Quadtree;
 import Main.GameState;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuadTree {
     GameState gs;
-    private final int MAX_LEVELS = 5;
-
     private final int capacity;
     private List<PointQ> points;
     private RectangleQ bounds;
@@ -41,19 +41,19 @@ public class QuadTree {
     * Hàm này sẽ chia QuadTree hiện tại thành 4 nút con đuợc đánh dấu là , northEast, northWest, southEast, southWest
     * */
     private void subdivide() {
-        int subWidth = bounds.getW() / 2;
-        int subHeight = bounds.getH() / 2;
+        int w = bounds.getW() / 2;
+        int h = bounds.getH() / 2;
         int x = bounds.getX();
         int y = bounds.getY();
 
         // north east
-        northEast = new QuadTree(capacity, new RectangleQ(x + subWidth, y - subHeight, subWidth, subHeight),gs);
+        northEast = new QuadTree(capacity, new RectangleQ(x + w, y - h, w, h),gs);
         // north west
-        northWest = new QuadTree(capacity, new RectangleQ(x - subWidth, y - subHeight, subWidth, subHeight),gs);
+        northWest = new QuadTree(capacity, new RectangleQ(x - w, y - h, w, h),gs);
         // south east
-        southEast = new QuadTree(capacity, new RectangleQ(x + subWidth, y + subHeight, subWidth, subHeight),gs);
+        southEast = new QuadTree(capacity, new RectangleQ(x + w, y + h, w, h),gs);
         // south west
-        southWest = new QuadTree(capacity, new RectangleQ(x - subWidth, y + subHeight, subWidth, subHeight),gs);
+        southWest = new QuadTree(capacity, new RectangleQ(x - w, y + h, w, h),gs);
 
         this.divided = true;
     }
@@ -67,67 +67,40 @@ public class QuadTree {
         if(this.points.size() < this.capacity) {
            points.add(point);
            return true;
-        }else {
-            // nếu khoảng không gian hiện tại chưa được chia nhỏ thì sẽ chia nhỏ bởi hàm subdivide
-           if(!this.divided)
-                subdivide();
-
-           // sau khi chia xong sẽ tìm trong các khoảng không nhỏ, và chèn điểm đó vào
-           if(northEast.insert(point))
-               return true;
-           else if (northWest.insert(point))
-                return true;
-           else if (southEast.insert(point))
-               return true;
-           else if (southWest.insert(point))
-               return true;
         }
-        return false;
-    }
-    public List<PointQ> query(RectangleQ range) {
-        return query(range, new ArrayList<PointQ>());
-    }
+        // nếu khoảng không gian hiện tại chưa được chia nhỏ thì sẽ chia nhỏ bởi hàm subdivide
+       if(!this.divided) {
+            subdivide();
+       }
 
+       // sau khi chia xong sẽ tìm trong các khoảng không nhỏ, và chèn điểm đó vào
+
+        return this.northEast.insert(point)
+                || this.northWest.insert(point)
+                || this.southEast.insert(point)
+                || this.southWest.insert(point);
+    }
     // truy vấn
-    private List<PointQ> query(RectangleQ range, List<PointQ> found) {
+    public List<PointQ> query(RectangleQ range) {
+        List<PointQ> found = new ArrayList<>();
 
-        /*
-        Kiểm tra xem danh sách found đã được khởi tạo chưa. Nếu danh sách found không trống,
-        nghĩa là nó đã được sử dụng từ lần gọi trước đó của hàm query(), ta cần xóa các phần tử hiện có của nó bằng cách tạo một danh sách mới.
-        * */
-        if (!found.isEmpty()) {
-            found.clear();
-        }
-        /*
-        Kiểm tra xem hình chữ nhật range có giao với giới hạn của nút hiện tại không.
-        Nếu không có giao nhau, có nghĩa là không có điểm nào trong Quadtree nằm trong vùng range,
-        ta trả về một mảng chứa các điểm đã tìm thấy.
-        * */
         if (!range.intersects(bounds)) {
-            return List.of(found.toArray(new PointQ[0]));
+            return found;
         }
-        /*
-        Nếu hình chữ nhật range có giao với giới hạn của nút hiện tại, ta kiểm tra từng điểm trong danh sách points của nút hiện tại.
-        Nếu một điểm nằm trong hình chữ nhật range, ta thêm điểm đó vào danh sách found
-        * */
+
         for (PointQ p : this.points) {
             if (range.contains(p)) {
                 found.add(p);
             }
         }
-        /*
-        Nếu nút hiện tại đã được phân chia thành các nút con, ta tiếp tục gọi phương thức query()
-        trên các nút con với cùng hình chữ nhật range và danh sách found.
-        * */
-        if (this.divided) {
-            this.northWest.query(range, found);
-            this.northEast.query(range, found);
-            this.southWest.query(range, found);
-            this.southEast.query(range, found);
-        }
 
-        //Cuối cùng, ta trả về một mảng chứa các điểm đã tìm thấy trong found.
-        return List.of(found.toArray(new PointQ[0]));
+        if (this.divided) {
+            found.addAll(northWest.query(range));
+            found.addAll(northEast.query(range));
+            found.addAll(southWest.query(range));
+            found.addAll(southEast.query(range));
+        }
+        return found;
     }
 
 }

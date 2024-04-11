@@ -62,7 +62,7 @@ public abstract class Entity {
 	}
 
 	//
-	protected Rectangle solidArea = new Rectangle(0,0,0,0);
+	protected Rectangle solidArea = new Rectangle(0,0,64,64);
 
 	// các phương thức
 	public void generateCoin(){}

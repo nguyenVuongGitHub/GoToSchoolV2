@@ -1,14 +1,14 @@
-package Entity;
+package objects;
 
+import Entity.Entity;
 import Main.GameState;
-
+import Entity.TYPE;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-public class Coin extends Entity{
-
+public class Coin extends Entity {
 
     boolean move = true;
     int TimeMoving = 25;
@@ -23,7 +23,7 @@ public class Coin extends Entity{
     }
     @Override
     public void init() {
-        speed = 2;
+        speed = 3;
         type = TYPE.OBJECT;
         solidArea = new Rectangle(0,0,gs.getTile(),gs.getTile());
         getImage();
@@ -39,7 +39,7 @@ public class Coin extends Entity{
             alive = false;
         }
         spriteCounter++;
-        if(spriteCounter > 6) {
+        if(spriteCounter > 3) {
             spriteCounter = 0;
             if(spriteNum == 1) {
 
@@ -94,7 +94,7 @@ public class Coin extends Entity{
     private void move() {
         if(distanceToPlayer(gs.player) <= 200) {
             angleTarget = anglePlayerAndCoin();
-            speed = 8;
+            speed = 16;
             move = true;
         }else {
             countTimeMoving++;
@@ -108,7 +108,7 @@ public class Coin extends Entity{
         }
     }
     private double distanceToPlayer(Entity player) {
-        return Math.sqrt((Math.pow(player.worldX - this.worldX,2)) + (Math.pow(player.worldY - this.worldY,2)));
+        return Math.sqrt((Math.pow(player.getWorldX() - this.worldX,2)) + (Math.pow(player.getWorldY() - this.worldY,2)));
     }
     private double anglePlayerAndCoin() {
         // Lấy vị trí của người chơi
