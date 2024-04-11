@@ -9,7 +9,6 @@ import javax.swing.*;
 
 import CollisionSystem.SeparatingAxis;
 import Entity.*;
-import Quadtree.*;
 import Quadtree.RectangleQ;
 import Scene.Campaign;
 import Scene.Loopy;
@@ -28,12 +27,13 @@ public class GameState extends JPanel implements Runnable{
 	private static final int maxScreenCol = WINDOW_WIDTH/tile;
 
 	private static final int maxScreenRow = WINDOW_HEIGHT/tile;
-
-	public QuadTree quadTree = new QuadTree(20,new RectangleQ(0,0,WINDOW_WIDTH*tile,WINDOW_HEIGHT*tile), this);
-	public List<PointQ> found = new ArrayList<>();
+	//WORLD SETTINGS
+	private final int maxWorldCol = 64;
+	private final int maxWorldRow = 64;
+	public final RectangleQ boundsQuadTree = new RectangleQ(0,0,maxWorldCol*tile,maxWorldRow*tile);
 
 	// VARIABLE SYSTEM
-	private final static int FPS = 60;
+	private final static int FPS = 30;
 	Thread gameThread;
 	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();
@@ -49,14 +49,12 @@ public class GameState extends JPanel implements Runnable{
 
 	// ENTITY
 	public 	Entity player = new Player(this);
-	public List<Entity> monsters = new ArrayList<Entity>();
+	public List<Entity> monsters = new ArrayList<>();
 	// WEAPON
-	public List<Entity> skillAttacks = new ArrayList<Entity>();
-	public List<Entity> coins = new ArrayList<Entity>();
+	public List<Entity> skillAttacks = new ArrayList<>();
+	public List<Entity> skeletonAttacks = new ArrayList<>();
+	public List<Entity> coins = new ArrayList<>();
 
-//WORLD SETTINGS
-	private final int maxWorldCol = 64;
-	private final int maxWorldRow = 64;
     // OTHER VARIABLE
 
 	public GameState() {
@@ -173,6 +171,11 @@ public class GameState extends JPanel implements Runnable{
 				skill.draw(g2);
 			}
 		}
+		for(Entity skeletonAttack : skeletonAttacks) {
+			if(skeletonAttack != null) {
+				skeletonAttack.draw(g2);
+			}
+		}
 		// ANOTHER
 		coins.forEach(coin -> {
 			if(coin != null) {
@@ -193,7 +196,6 @@ public class GameState extends JPanel implements Runnable{
 			skillAttacks.add(normalAttack);
 			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_ATTACK;
 		}
-
 		// MONSTER
 		for(Entity monster : monsters) {
 			if(monster != null) {
@@ -215,20 +217,17 @@ public class GameState extends JPanel implements Runnable{
 				coin.update();
 			}
 		});
-
-		// COLLISION
-		CC.checkSkillWithMonster(skillAttacks,monsters);
-		CC.checkPlayerAndMonsters(player,monsters);
-		CC.checkPlayerWithCoins(player,coins);
-		for(Entity monster : monsters) {
-			if(monster != null) {
-				CC.checkMonsterWithMonster(monster,monsters);
+		for(Entity skeletonAttack : skeletonAttacks) {
+			if(skeletonAttack != null) {
+				skeletonAttack.update();
 			}
 		}
+		// COLLISION
+		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
 		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
-
+		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
 		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive

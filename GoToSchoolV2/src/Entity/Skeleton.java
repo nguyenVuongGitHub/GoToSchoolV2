@@ -2,6 +2,7 @@ package Entity;
 
 import Main.CollisionChecker;
 import Main.GameState;
+import Weapon.SkeletonWeapon;
 import objects.Coin;
 
 import javax.imageio.ImageIO;
@@ -12,10 +13,11 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
-public class Slime extends Monster{
-
-    int HadCoins = 3;
-    public Slime(GameState gs) {
+public class Skeleton extends Monster{
+    public int TIME_COUNT_DOWN_ATTACK = 30;
+    public final int TIME_ATTACK = 30;
+    int HadCoins = 5;
+    public Skeleton(GameState gs) {
         super(gs);
         init();
     }
@@ -35,11 +37,12 @@ public class Slime extends Monster{
 
     @Override
     public void init() {
-        hp = 5;
-        speed = 5;
-        damage = 3;
+        hp = 10;
+        speed = 8;
+        damage = 5;
         sight = 500;
         type = TYPE.MONSTER;
+        typeMonster = TypeMonster.SKELETON;
         solidArea = new Rectangle(0,0,gs.getTile(),gs.getTile());
         getMonsterImage();
         clearVertices();
@@ -47,27 +50,20 @@ public class Slime extends Monster{
     }
     @Override
     public void draw(Graphics2D g2) {
-        if(alive) {
-            if(spriteNum == 1) {
+        if (alive) {
+            if (spriteNum == 1) {
                 currentImage = up1;
-            }
-            if(spriteNum == 2) {
+            } else if (spriteNum == 2) {
                 currentImage = up2;
-            }
-            if(spriteNum == 3) {
+            } else if (spriteNum == 3) {
                 currentImage = up3;
-            }
-            if(spriteNum == 4) {
+            } else if (spriteNum == 4) {
                 currentImage = up4;
             }
-            if(spriteNum == 5) {
-                currentImage = up5;
-            }
-            if(spriteNum == 6) {
-                currentImage = up6;
-            }
+
             screenX = (int) (worldX - gs.player.getWorldX() + gs.player.getScreenX());
             screenY = (int) (worldY - gs.player.getWorldY() + gs.player.getScreenY());
+
             if (direction.equals("left") || direction.equals("up")) {
                 AffineTransform oldTransform = g2.getTransform();
                 g2.scale(-1, 1);
@@ -78,10 +74,41 @@ public class Slime extends Monster{
             }
         }
     }
+
+    public void setAI() {
+        // nhin thay nguoi choi
+        if(seePlayer()) {
+            angleTarget = anglePlayerAndMonster();
+            canMoving = false;
+        }else {
+            // con thoi gian dung im
+            if(countdown >= 0) {
+                canMoving = false;
+                countdown--;
+                randomDirectionMonster();
+            }else {
+                if(timeMoving > 0) {
+                    canMoving = true;
+                }else{
+                    countdown = defaultCountdown;
+                    timeMoving = defaultTimeMoving;
+                }
+            }
+        }
+    }
+
     @Override
     public void update() {
 
         setAI();
+        if(seePlayer()) {
+            if(TIME_COUNT_DOWN_ATTACK <= 0) {
+                attacking();
+                TIME_COUNT_DOWN_ATTACK = TIME_ATTACK;
+            }else {
+                TIME_COUNT_DOWN_ATTACK--;
+            }
+        }
         collisionOn = false;
         gs.CC.checkEntityWithTile(this);
         int collisionWith;
@@ -144,9 +171,7 @@ public class Slime extends Monster{
         }
         // trong trường hợp có va chạm và thời gian còn di chuyển được ( đang trong trạng thái AI)
         if(collisionOn && timeMoving > 0) {
-
             // đổi các hướng của đối tượng
-
             if(Objects.equals(direction, "right"))
                 direction = "left";
             if(Objects.equals(direction,"left"))
@@ -155,12 +180,11 @@ public class Slime extends Monster{
                 direction = "down";
             if(Objects.equals(direction,"down"))
                 direction = "up";
-
             timeMoving--;
         }
 
         spriteCounter++;
-        if(spriteCounter > 6) {
+        if(spriteCounter > 4) {
             spriteCounter = 0;
             if(spriteNum == 1) {
 
@@ -173,25 +197,24 @@ public class Slime extends Monster{
                 spriteNum = 4;
             }
             else if(spriteNum == 4) {
-                spriteNum = 5;
-            }
-            else if(spriteNum == 5) {
-                spriteNum = 6;
-            }
-            else if(spriteNum == 6) {
                 spriteNum = 1;
             }
-
         }
         clearVertices();
         setPolygonVertices();
     }
 
-
+    public void attacking() {
+        Entity skeletonAttack = new SkeletonWeapon(gs);
+        skeletonAttack.worldX = this.worldX + (double) this.getBounds().width /2;
+        skeletonAttack.worldY = this.worldY + (double) this.getBounds().height /2;
+        skeletonAttack.setAngleTarget(anglePlayerAndMonster());
+        gs.skeletonAttacks.add(skeletonAttack);
+    }
     public void getMonsterImage() {
         try {
 
-            BufferedImage largeImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/monster/slime.png")));
+            BufferedImage largeImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/monster/skeleton.png")));
 
             int x = 0;
             int y = 0;
@@ -205,12 +228,6 @@ public class Slime extends Monster{
 
             x+=64;
             up4 = largeImage.getSubimage(x,y,gs.getTile(),gs.getTile());
-
-            x+=64;
-            up5 = largeImage.getSubimage(x,y,gs.getTile(),gs.getTile());
-
-            x+=64;
-            up6 = largeImage.getSubimage(x,y,gs.getTile(),gs.getTile());
 
             currentImage = up1;
         }catch(IOException ignored) {

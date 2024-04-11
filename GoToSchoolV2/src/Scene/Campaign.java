@@ -1,7 +1,5 @@
 package Scene;
-import Entity.Entity;
-import Entity.Monster;
-import Entity.Slime;
+import Entity.*;
 
 import Main.GameState;
 import Main.State;
@@ -45,10 +43,10 @@ public class Campaign {
             }
             if(i > um.getNumberLeversUnlocked()) {
                 g2.setColor(Color.red);
-                g2.drawString("MÀN : " + String.valueOf(i),x-gs.getTile()*2 + 30,y);
+                g2.drawString("MÀN : " + i,x-gs.getTile()*2 + 30,y);
             }else{
                 g2.setColor(Color.white);
-                g2.drawString("MÀN : " + String.valueOf(i),x-gs.getTile()*2 + 30,y);
+                g2.drawString("MÀN : " + i,x-gs.getTile()*2 + 30,y);
             }
             y += gs.getTile();
         }
@@ -62,53 +60,53 @@ public class Campaign {
                 gs.tileM.loadMap("/maps/map1_2.txt",2);
                 // setup MONSTER
                 for(int i = 0; i < 5; i++) {
-                    Entity monster = new Slime(gs);
-                    monster.setWorldX(gs.getTile()*39+2);
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*39);
                     monster.setWorldY(gs.getTile()*50);
                     gs.monsters.add(monster);
                 }
-//                for(int i = 0; i < 10; i++) {
-//                    Entity monster = new Slime(gs);
-//                    monster.setWorldX(gs.getTile()*28+i);
-//                    monster.setWorldY(gs.getTile()*27);
-//                    gs.monsters.add(monster);
-//                }
-//                for(int i = 0; i < 10; i++) {
-//                    Entity monster = new Slime(gs);
-//                    monster.setWorldX(gs.getTile()*35+i);
-//                    monster.setWorldY(gs.getTile()*20);
-//                    gs.monsters.add(monster);
-//                }
-//                for(int i = 0; i < 5; i++) {
-//                    Entity monster = new Slime(gs);
-//                    monster.setWorldX(gs.getTile()*24+i);
-//                    monster.setWorldY(gs.getTile()*49);
-//                    gs.monsters.add(monster);
-//                }
-//                for(int i = 0; i < 5; i++) {
-//                    Entity monster = new Slime(gs);
-//                    monster.setWorldX(gs.getTile()*13+i);
-//                    monster.setWorldY(gs.getTile()*42);
-//                    gs.monsters.add(monster);
-//                }
-//                for(int i = 0; i < 10; i++) {
-//                    Entity monster = new Slime(gs);
-//                    monster.setWorldX(gs.getTile()*10+i);
-//                    monster.setWorldY(gs.getTile()*26);
-//                    gs.monsters.add(monster);
-//                }
-//                for(int i = 0; i < 5; i++) {
-//                    Entity monster = new Slime(gs);
-//                    monster.setWorldX(gs.getTile()*52+i);
-//                    monster.setWorldY(gs.getTile()*9);
-//                    gs.monsters.add(monster);
-//                }
-//                for(int i = 0; i < 5; i++) {
-//                    Entity monster = new Slime(gs);
-//                    monster.setWorldX(gs.getTile()*50+i);
-//                    monster.setWorldY(gs.getTile()*31);
-//                    gs.monsters.add(monster);
-//                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*28);
+                    monster.setWorldY(gs.getTile()*27);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*35);
+                    monster.setWorldY(gs.getTile()*20);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*24);
+                    monster.setWorldY(gs.getTile()*49);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*13);
+                    monster.setWorldY(gs.getTile()*42);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 10; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*10);
+                    monster.setWorldY(gs.getTile()*26);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*52);
+                    monster.setWorldY(gs.getTile()*9);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*50);
+                    monster.setWorldY(gs.getTile()*31);
+                    gs.monsters.add(monster);
+                }
                 break;
             case 2:
                 gs.tileM.loadMap("/maps/map_2.txt",1);
@@ -216,7 +214,6 @@ public class Campaign {
         if(gs.keyHandle.isExitMap()) {
             showDialog = true;
             gs.keyHandle.setExitMap(false);
-            gs.keyHandle.setTimeExitMap(0);
         }
         if(gs.monsters.isEmpty()) {
             // update lever
@@ -269,7 +266,6 @@ public class Campaign {
     private void drawSubWindow(int x, int y, int width, int height) {
         Color c = new Color(0,0,0,210);
         g2.setColor(c);
-
         g2.fillRoundRect(x, y, width, height, 35, 35);
         c = new Color(255,255,255);
         g2.setColor(c);
@@ -291,12 +287,7 @@ public class Campaign {
     public int getChoose() {
         return choose;
     }
-    public boolean getLoadMapDone() {return loadMapDone;}
     public boolean isGameOver() {
         return isGameOver;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        isGameOver = gameOver;
     }
 }

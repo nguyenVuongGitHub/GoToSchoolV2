@@ -27,7 +27,7 @@ public class Player extends Entity{
         worldY = gs.getTile() * 30;
         type = TYPE.PLAYER;
         hp = 100;
-        speed = 8;
+        speed = 15;
         damage = 1;
         direction = "down";
         solidArea = new Rectangle(20*2,10*2,26*2,38*2);

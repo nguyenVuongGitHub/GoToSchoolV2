@@ -1,11 +1,13 @@
 package Main;
 import Entity.*;
 import Quadtree.PointQ;
+import Quadtree.QuadTree;
 import Quadtree.RectangleQ;
 import CollisionSystem.*;
 import tile.TileManager;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionChecker {
@@ -266,116 +268,143 @@ public class CollisionChecker {
         }
     }
     public void checkPlayerWithCoins(Entity player, List<Entity> coins) {
-        gs.quadTree.clear();
+        if(coins.isEmpty()) return;
 
-        for (Entity m : coins) {
-            SeparatingAxis.polygonCollisionDetectFirstStatic(player, m ,false, false);
-            Rectangle bounds = m.getBounds();
-            RectangleQ bound = new RectangleQ(m.getBounds());
-            PointQ p = new PointQ(bounds.x, bounds.y, m, bound);
-            gs.quadTree.insert(p);
+        QuadTree quadTree = new QuadTree(10,gs.boundsQuadTree,gs);
+
+        for (Entity coin : coins) {
+            Rectangle bounds = coin.getBounds();
+            PointQ point = new PointQ(bounds.x, bounds.y, coin);
+            quadTree.insert(point);
         }
 
         RectangleQ playerBounds = new RectangleQ(player.getBounds());
-        gs.found = gs.quadTree.query(playerBounds);
-
-        if (gs.found != null) {
-            for (PointQ other : gs.found) {
-                Entity check = other.getUserData();
-                if(player != check) {
-                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check, false, false)) {
-                        long currentCoin = gs.user.getCoin();
-                        gs.user.setCoin( currentCoin + 1);
-                        check.setAlive(false);
-                    }
+        List<PointQ> pointsNearPlayer = quadTree.query(playerBounds);
+        for (PointQ point : pointsNearPlayer) {
+            Entity other = point.getUserData();
+            if(player != other) {
+                if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, false)) {
+                    long currentCoin = gs.user.getCoin();
+                    gs.user.setCoin( currentCoin + 1);
+                    other.setAlive(false);
                 }
             }
         }
     }
-    public void checkSkillWithMonster(List<Entity> skills, List<Entity> target) {
-        gs.quadTree.clear();
+    private void checkSkillWithMonster(List<Entity> skills, List<Entity> monsters) {
+        if(skills.isEmpty()) return;
 
-        for(Entity e : target) {
-            RectangleQ bound = new RectangleQ(e.getBounds());
-            PointQ p = new PointQ(e.getBounds().x,e.getBounds().y,e,bound);
-            gs.quadTree.insert(p);
+        QuadTree quadTree = new QuadTree(5,gs.boundsQuadTree,gs);
+
+        for(Entity monster : monsters) {
+            Rectangle bound = monster.getBounds();
+            PointQ point = new PointQ(bound.x ,bound.y ,monster);
+            quadTree.insert(point);
         }
         for(Entity skill : skills) {
-            Rectangle bulletBound = skill.getBounds();
-            RectangleQ bound = new RectangleQ(bulletBound);
-            gs.found = gs.quadTree.query(bound);
-
-            if(gs.found != null) {
-                for(PointQ other : gs.found) {
-                    Entity check = other.getUserData();
-                    if (SeparatingAxis.CircleCollisionDetect(check,skill,false,false)) {
-                        skill.setAlive(false);
-                        int newHP = check.getHP();
-                        newHP -= skill.getDamage() + gs.player.getDamage();
-                        check.setHP(newHP);
-                        if(check.getHP() <= 0) {
-                            check.setAlive(false);
-                        }
-                        if(!check.getAlive()) {
-                            check.generateCoin();
-                        }
+            RectangleQ range = new RectangleQ(skill.getBounds());
+            List<PointQ> pointsNearSkill =  quadTree.query(range);
+            System.out.println(pointsNearSkill.size());
+            for(PointQ point : pointsNearSkill) {
+                Entity other = point.getUserData();
+                if(other != skill && skill.getBounds().intersects(other.getBounds())) {
+                    skill.setAlive(false);
+                    int newHP = other.getHP();
+                    newHP -= skill.getDamage() + gs.player.getDamage();
+                    other.setHP(newHP);
+                    if(other.getHP() <= 0) {
+                        other.setAlive(false);
+                    }
+                    if(!other.getAlive()) {
+                        other.generateCoin();
                     }
                 }
             }
         }
-
+        quadTree.clear();
     }
-    public void checkMonsterWithMonster(Entity thisMonster,List<Entity> monsters) {
-        gs.quadTree.clear();
-        for (Entity m : monsters) {
-            if(m != thisMonster) {
-                Rectangle bounds = m.getBounds();
-                RectangleQ bound = new RectangleQ(m.getBounds());
-                PointQ p = new PointQ(bounds.x, bounds.y, m, bound);
-                gs.quadTree.insert(p);
-            }
-        }
-        RectangleQ playerBounds = new RectangleQ(thisMonster.getBounds());
-        gs.found = gs.quadTree.query(playerBounds);
-        if (gs.found != null) {
-            for (PointQ other : gs.found) {
-                Entity check = other.getUserData();
-                if(thisMonster != check) {
-                    SeparatingAxis.polygonCollisionDetectFirstStatic(thisMonster, check, true, true);
-                }
-            }
-        }
-    }
-    public void checkPlayerAndMonsters(Entity player, List<Entity> monsters) {
-        gs.quadTree.clear();
+    private void checkMonsterWithMonster(List<Entity> monsters) {
+        QuadTree quadTree = new QuadTree(50,gs.boundsQuadTree,gs);
 
         for (Entity m : monsters) {
             Rectangle bounds = m.getBounds();
-            RectangleQ bound = new RectangleQ(m.getBounds());
-            PointQ p = new PointQ(bounds.x, bounds.y, m, bound);
-            gs.quadTree.insert(p);
+            PointQ p = new PointQ(bounds.x + bounds.width/2, bounds.y + bounds.height/2, m);
+            quadTree.insert(p);
         }
 
-        RectangleQ playerBounds = new RectangleQ(player.getBounds());
-        gs.found = gs.quadTree.query(playerBounds);
-
-        if (gs.found != null) {
-            for (PointQ other : gs.found) {
-                Entity check = other.getUserData();
-                if (player != check) {
-                    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, check, false, true)) {
-                        if (player.isCanTouch()) {
-                            int newHP = player.getHP() - check.getDamage();
-                            player.setHP(newHP);
-                            player.setCanTouch(false);
-                        }
-                        if (player.getHP() <= 0) {
-                            player.setAlive(false);
-                        }
-                    }
+        for(Entity monster : monsters) {
+            RectangleQ range = new RectangleQ(monster.getBounds());
+            List<PointQ> points = quadTree.query(range);
+            for (PointQ point : points) {
+                Entity other = point.getUserData();
+                if(monster != other) {
+                    SeparatingAxis.polygonCollisionDetectFirstStatic(monster, other, true, true);
                 }
             }
         }
+        quadTree.clear();
     }
 
+    private void checkPlayerAndMonsters(Entity player, List<Entity> monsters) {
+        QuadTree quadTree = new QuadTree(20,gs.boundsQuadTree,gs);
+
+        for (Entity m : monsters) {
+            Rectangle bounds = m.getBounds();
+            PointQ p = new PointQ(bounds.x + bounds.width/2, bounds.y + bounds.height/2, m);
+            quadTree.insert(p);
+        }
+        RectangleQ range = new RectangleQ(player.getBounds());
+        List<PointQ> points = quadTree.query(range);
+
+        for (PointQ point : points) {
+            Entity other = point.getUserData();
+
+            if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, true)) {
+                if (player.isCanTouch()) {
+                            int newHP = player.getHP() - other.getDamage();
+                            player.setHP(newHP);
+                    player.setCanTouch(false);
+                }
+                if (player.getHP() <= 0) {
+                    player.setAlive(false);
+                }
+            }
+        }
+        quadTree.clear();
+    }
+    private void checkSkeletonWeaponWithPlayer(Entity player, List<Entity> skeletonAttacks) {
+        QuadTree quadTree = new QuadTree(20,gs.boundsQuadTree,gs);
+
+        for (Entity sa : skeletonAttacks) {
+            Rectangle bounds = sa.getBounds();
+            PointQ point = new PointQ(bounds.x + bounds.width/2, bounds.y + bounds.height/2, sa);
+            quadTree.insert(point);
+        }
+
+        RectangleQ range = new RectangleQ(player.getBounds());
+        List<PointQ> points = quadTree.query(range);
+        for (PointQ point : points) {
+            Entity other = point.getUserData();
+            if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, false)) {
+                other.setAlive(false);
+                if (player.isCanTouch()) {
+                    int newHP = player.getHP() - other.getDamage();
+                    player.setHP(newHP);
+                    player.setCanTouch(false);
+                }
+                if (player.getHP() <= 0) {
+                    player.setAlive(false);
+                }
+            }
+        }
+        quadTree.clear();
+    }
+
+    public void checkAllEntity(Entity player, List<Entity> monsters, List<Entity> skills, List<Entity> coins, List<Entity> skeletonAttacks) {
+        checkPlayerAndMonsters(player,monsters);
+        checkMonsterWithMonster(monsters);
+        checkSkillWithMonster(skills,monsters);
+        checkPlayerWithCoins(player,coins);
+        checkSkeletonWeaponWithPlayer(player,skeletonAttacks);
+    }
 }
