@@ -287,12 +287,7 @@ public class Campaign {
     public int getChoose() {
         return choose;
     }
-    public boolean getLoadMapDone() {return loadMapDone;}
     public boolean isGameOver() {
         return isGameOver;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        isGameOver = gameOver;
     }
 }

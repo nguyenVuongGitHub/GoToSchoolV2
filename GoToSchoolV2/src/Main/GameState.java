@@ -9,7 +9,6 @@ import javax.swing.*;
 
 import CollisionSystem.SeparatingAxis;
 import Entity.*;
-import Quadtree.*;
 import Quadtree.RectangleQ;
 import Scene.Campaign;
 import Scene.Loopy;
@@ -50,11 +49,11 @@ public class GameState extends JPanel implements Runnable{
 
 	// ENTITY
 	public 	Entity player = new Player(this);
-	public List<Entity> monsters = new ArrayList<Entity>();
+	public List<Entity> monsters = new ArrayList<>();
 	// WEAPON
-	public List<Entity> skillAttacks = new ArrayList<Entity>();
+	public List<Entity> skillAttacks = new ArrayList<>();
 	public List<Entity> skeletonAttacks = new ArrayList<>();
-	public List<Entity> coins = new ArrayList<Entity>();
+	public List<Entity> coins = new ArrayList<>();
 
     // OTHER VARIABLE
 

@@ -234,15 +234,4 @@ public class Skeleton extends Monster{
 
         }
     }
-    public int getTIME_COUNT_DOWN_ATTACK() {
-        return TIME_COUNT_DOWN_ATTACK;
-    }
-
-    public void setTIME_COUNT_DOWN_ATTACK(int TIME_COUNT_DOWN_ATTACK) {
-        this.TIME_COUNT_DOWN_ATTACK = TIME_COUNT_DOWN_ATTACK;
-    }
-
-    public int getTIME_ATTACK() {
-        return TIME_ATTACK;
-    }
 }

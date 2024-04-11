@@ -64,7 +64,6 @@ public class NormalAttack extends BaseSkill{
             screenX = (int) (worldX - gs.player.getWorldX() + gs.player.getScreenX());
             screenY = (int) (worldY - gs.player.getWorldY() + gs.player.getScreenY());
             g2.drawImage(currentImage, screenX + gs.getTile()/4 , screenY + gs.getTile()/4, gs.getTile()/2, gs.getTile()/2, null);
-            g2.drawRect(screenX,screenY,getBounds().width,getBounds().height);
         }
     }
 }

@@ -1,15 +1,13 @@
 package Quadtree;
 import Main.GameState;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuadTree {
     GameState gs;
     private final int capacity;
-    private List<PointQ> points;
-    private RectangleQ bounds;
+    private final List<PointQ> points;
+    private final RectangleQ bounds;
     private QuadTree northWest;
     private QuadTree northEast;
     private QuadTree southWest;
