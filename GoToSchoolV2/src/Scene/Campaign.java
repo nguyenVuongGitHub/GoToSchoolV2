@@ -43,10 +43,10 @@ public class Campaign {
             }
             if(i > um.getNumberLeversUnlocked()) {
                 g2.setColor(Color.red);
-                g2.drawString("MÀN : " + String.valueOf(i),x-gs.getTile()*2 + 30,y);
+                g2.drawString("MÀN : " + i,x-gs.getTile()*2 + 30,y);
             }else{
                 g2.setColor(Color.white);
-                g2.drawString("MÀN : " + String.valueOf(i),x-gs.getTile()*2 + 30,y);
+                g2.drawString("MÀN : " + i,x-gs.getTile()*2 + 30,y);
             }
             y += gs.getTile();
         }
