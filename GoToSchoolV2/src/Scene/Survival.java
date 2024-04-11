@@ -76,7 +76,7 @@ public class Survival {
     {
         for(int i=0; i<amount/kind; i++)
         {
-            Entity tmp = new Monster(gs);
+            Entity tmp = new Skeleton(gs);
             tmp.setWorldX(Math.random() % gs.getTile() * 14 + gs.getTile() * 12);
             tmp.setWorldY(Math.random() % gs.getTile() * 14 + gs.getTile() * 12);
             gs.monsters.add(tmp);
@@ -124,10 +124,10 @@ public class Survival {
         g2.setColor(c);
         g2.fillRect(0, 0 ,gs.getWindowWidth(), gs.getWindowHeight());
 
-        int x = gs.getMaxScreenCol() / 10 * gs.getTile(),
-                y = gs.getMaxScreenRow() / 10 * gs.getTile() * 3,
-                width = gs.getMaxScreenCol() / 10 * gs.getTile() * 3,
-                height = gs.getMaxScreenRow() / 10 * gs.getTile() * 4;
+        int x = gs.getWindowWidth() / 10 * gs.getTile(),
+                y = gs.getWindowHeight() / 10 * gs.getTile() * 3,
+                width = gs.getWindowWidth() / 10 * gs.getTile() * 3,
+                height = gs.getWindowHeight() / 10 * gs.getTile() * 4;
         Color c1 = new Color(60, 40, 40);
         g2.setColor(c1);
         int gap = gs.getTile() *2;

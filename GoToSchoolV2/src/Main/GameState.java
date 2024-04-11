@@ -9,7 +9,6 @@ import javax.swing.*;
 
 import CollisionSystem.SeparatingAxis;
 import Entity.*;
-import Quadtree.*;
 import Quadtree.RectangleQ;
 import Scene.Campaign;
 import Scene.Loopy;
@@ -18,30 +17,30 @@ import User.UserManager;
 import Weapon.NormalAttack;
 import tile.TileManager;
 
-import static java.util.stream.StreamSupport.stream;
 
 public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
 	private static final int tile = 64;
 	private static final int WINDOW_HEIGHT = 15 * tile;
-	private static final int WINDOW_WIDTH = 15 * tile;
+	private static final int WINDOW_WIDTH = 25 * tile;
 
 	private static final int maxScreenCol = WINDOW_WIDTH/tile;
 
 	private static final int maxScreenRow = WINDOW_HEIGHT/tile;
-
-	public QuadTree quadTree = new QuadTree(30,new RectangleQ(0,0,WINDOW_WIDTH*tile,WINDOW_HEIGHT*tile), this);
-	public List<PointQ> found = new ArrayList<>();
+	//WORLD SETTINGS
+	private final int maxWorldCol = 64;
+	private final int maxWorldRow = 64;
+	public final RectangleQ boundsQuadTree = new RectangleQ(0,0,maxWorldCol*tile,maxWorldRow*tile);
 
 	// VARIABLE SYSTEM
-	private final static int FPS = 75;
+	private final static int FPS = 30;
 	Thread gameThread;
 	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.SURVIVAL;
+	public State state = State.LOOPY;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
@@ -52,26 +51,17 @@ public class GameState extends JPanel implements Runnable{
 
 	// ENTITY
 	public 	Entity player = new Player(this);
-	public List<Entity> monsters = new ArrayList<Entity>();
+	public List<Entity> monsters = new ArrayList<>();
 	// WEAPON
-	public List<Entity> skillAttacks = new ArrayList<Entity>();
-	int numberMonster = 5;
+	public List<Entity> skillAttacks = new ArrayList<>();
+	public List<Entity> skeletonAttacks = new ArrayList<>();
+	public List<Entity> coins = new ArrayList<>();
 
-//WORLD SETTINGS
-	private final int maxWorldCol = 64;
-	private final int maxWorldRow = 64;
-	private final int worldWidth = tile * maxWorldCol;
-	private final int worldHeight = tile * maxWorldRow;
-
-
-//	int n = 1500;
-//	public Entity players[] = new Player[n];
-
-	// OTHER VARIABLE
+    // OTHER VARIABLE
 
 	public GameState() {
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-		this.setBackground(new Color(99,155,255,255));
+		this.setBackground(new Color(77,138,179,255));
 		this.addKeyListener(keyHandle);
 		this.addMouseListener(mouseHandle);
 		this.addMouseMotionListener(mouseHandle);
@@ -136,10 +126,15 @@ public class GameState extends JPanel implements Runnable{
 	}
 	public void update() {
 		if(state == State.CAMPAIGN) {
+			if(campaign.isGameOver()) {
+				campaign.setShowDialog(true);
+			}
 			campaign.update();
+
 		}else if(state == State.SURVIVAL){
 			survival.update();
 		}else if(state == State.LOOPY) {
+			// trường hợp từ CAMPAIGN hoặc SURVIVAL trở về LOOPY thì cần load map lại
 			if(changeState) {
 				loopy.loadMap();
 				changeState = false;
@@ -163,6 +158,37 @@ public class GameState extends JPanel implements Runnable{
 		g2.dispose();
 		
 	}
+	public void drawBattle(Graphics2D g2) {
+		// MAP
+		tileM.draw(g2);
+
+
+		for(Entity monster : monsters) {
+			if(monster != null) {
+				monster.draw(g2);
+			}
+		}
+		for(Entity skill : skillAttacks) {
+			if(skill != null) {
+				skill.draw(g2);
+			}
+		}
+		for(Entity skeletonAttack : skeletonAttacks) {
+			if(skeletonAttack != null) {
+				skeletonAttack.draw(g2);
+			}
+		}
+		// ANOTHER
+		coins.forEach(coin -> {
+			if(coin != null) {
+				coin.draw(g2);
+			}
+		});
+		// ENTITY
+		if(player != null) {
+			player.draw(g2);
+		}
+	}
 
 	public void updateBattle() {
 
@@ -172,7 +198,6 @@ public class GameState extends JPanel implements Runnable{
 			skillAttacks.add(normalAttack);
 			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_ATTACK;
 		}
-
 		// MONSTER
 		for(Entity monster : monsters) {
 			if(monster != null) {
@@ -183,29 +208,32 @@ public class GameState extends JPanel implements Runnable{
 		if(player != null) {
 			player.update();
 		}
-
 		// WEAPON
-		for(Entity normalAttack : skillAttacks) {
-			if(normalAttack != null) {
-				normalAttack.update();
+		for(Entity skill : skillAttacks) {
+			if(skill != null) {
+				skill.update();
 			}
 		}
-
-		// COLLISION
-		CC.checkSkillWithMonster(skillAttacks,monsters);
-		CC.checkPlayerAndMonsters(player,monsters);
-		for(Entity monster : monsters ) {
-			CC.checkMonsterWithMonster(monster,monsters);
+		coins.forEach(coin -> {
+			if(coin != null) {
+				coin.update();
+			}
+		});
+		for(Entity skeletonAttack : skeletonAttacks) {
+			if(skeletonAttack != null) {
+				skeletonAttack.update();
+			}
 		}
-//		monsters.forEach(monster -> CC.checkMonsterWithMonster(monster,monsters));
-
+		// COLLISION
+		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
 		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
-
+		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
 		// Loại bỏ quái vật đã chết
-		monsters.removeIf(monster -> monster.getHP()<=0);
 		monsters.removeIf(monster -> !monster.getAlive());
+		// remove if coins not alive
+		coins.removeIf(coin -> !coin.getAlive());
 	}
 
 	public int getTile() {
@@ -213,10 +241,6 @@ public class GameState extends JPanel implements Runnable{
 	}
 	public int getWindowHeight() {return WINDOW_HEIGHT;}
 	public int getWindowWidth() {return WINDOW_WIDTH;}
-	public int getMaxScreenCol() {return maxScreenCol;}
-	public int getMaxScreenRow() {return maxScreenRow;}
 	public int getMaxWorldCol() {return maxWorldCol;}
 	public int getMaxWorldRow() {return maxWorldRow;}
-	public int getWorldWidth() {return worldWidth;}
-	public int getWorldHeight() {return worldHeight;}
 }
