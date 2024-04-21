@@ -16,6 +16,7 @@ public class KeyHandle implements KeyListener{
 	GameState gs;
 	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress, tabPress;
 	private boolean skill1Press,skill2Press,skill3Press;
+	private boolean flashPress;
 
 	private boolean exitMap = false;
 	private boolean accessLoadMap = false;
@@ -84,14 +85,17 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_TAB) {
 					tabPress = true;
 				}
-				if(code == KeyEvent.VK_J) {
+				if(code == KeyEvent.VK_1) {
 					skill1Press = true;
 				}
-				if(code == KeyEvent.VK_K) {
+				if(code == KeyEvent.VK_2) {
 					skill2Press = true;
 				}
-				if(code == KeyEvent.VK_L) {
+				if(code == KeyEvent.VK_3) {
 					skill3Press = true;
+				}
+				if(code == KeyEvent.VK_F) {
+					flashPress = true;
 				}
 			}
 		}
@@ -155,14 +159,17 @@ public class KeyHandle implements KeyListener{
 		if(code == KeyEvent.VK_TAB) {
 			tabPress = false;
 		}
-		if(code == KeyEvent.VK_J) {
+		if(code == KeyEvent.VK_1) {
 			skill1Press = false;
 		}
-		if(code == KeyEvent.VK_K) {
+		if(code == KeyEvent.VK_2) {
 			skill2Press = false;
 		}
-		if(code == KeyEvent.VK_L) {
+		if(code == KeyEvent.VK_3) {
 			skill3Press = false;
+		}
+		if(code == KeyEvent.VK_F) {
+			flashPress = false;
 		}
 	}
 	public boolean isSpacePress() {
@@ -233,5 +240,12 @@ public class KeyHandle implements KeyListener{
 		exitMap = false;
 		accessReturnLoopy = false;
 		accessLoadMap = false;
+	}
+	public boolean isFlashPress() {
+		return flashPress;
+	}
+
+	public void setFlashPress(boolean flashPress) {
+		this.flashPress = flashPress;
 	}
 }

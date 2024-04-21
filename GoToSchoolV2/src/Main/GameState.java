@@ -13,6 +13,7 @@ import Quadtree.RectangleQ;
 import Scene.Campaign;
 import Scene.Loopy;
 import User.UserManager;
+import Weapon.Flash;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
 import tile.TileManager;
@@ -53,6 +54,7 @@ public class GameState extends JPanel implements Runnable{
 	public List<Entity> monsters = new ArrayList<>();
 	// WEAPON
 	public List<Entity> skillAttacks = new ArrayList<>();
+	public Entity flashSkill = null;
 	public List<Entity> skeletonAttacks = new ArrayList<>();
 	public Entity lazeBoss = new LazerBoss(this);
 	public List<Entity> coins = new ArrayList<>();
@@ -109,6 +111,14 @@ public class GameState extends JPanel implements Runnable{
 			// mỗi giây
 			if(timer >= 1000000000) {
 				NormalAttack.TIME_COUNT_DOWN_ATTACK--;
+				if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
+					NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				Flash.TIME_COUNT_DOWN--;
+				if(Flash.TIME_COUNT_DOWN <= 0) {
+					Flash.TIME_COUNT_DOWN = -1;
+				}
+				System.out.println(Flash.TIME_COUNT_DOWN);
 //				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
@@ -202,6 +212,12 @@ public class GameState extends JPanel implements Runnable{
 			skillAttacks.add(normalAttack);
 			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_ATTACK;
 		}
+		if(keyHandle.isFlashPress() && Flash.TIME_COUNT_DOWN <= 0) {
+			if(flashSkill == null) {
+				flashSkill = new Flash(this);
+			}
+			Flash.TIME_COUNT_DOWN = Flash.TIME_ATTACK;
+		}
 		// MONSTER
 		for(Entity monster : monsters) {
 			if(monster != null) {
@@ -218,6 +234,10 @@ public class GameState extends JPanel implements Runnable{
 				skill.update();
 			}
 		}
+		if(flashSkill != null) {
+			flashSkill.update();
+		}
+
 		coins.forEach(coin -> {
 			if(coin != null) {
 				coin.update();
@@ -243,6 +263,10 @@ public class GameState extends JPanel implements Runnable{
 			if(!lazeBoss.getAlive()) {
 				lazeBoss = null;
 			}
+		}
+		if(flashSkill != null) {
+			if(!flashSkill.getAlive())
+				flashSkill = null;
 		}
 		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> !monster.getAlive());

@@ -164,4 +164,8 @@ public abstract class Entity {
 				(int) (screenX + vertices.get(0).getX() - worldX),
 				(int) (screenY + vertices.get(0).getY() - worldY));
 	}
+
+	public String getBeforeDirection() {
+        return null;
+    }
 }
