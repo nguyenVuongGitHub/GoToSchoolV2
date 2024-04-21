@@ -80,6 +80,11 @@ public class Slime extends Monster{
     }
     @Override
     public void update() {
+        if(hp <= 0) {
+            generateCoin();
+            alive = false;
+            return;
+        }
 
         setAI();
         collisionOn = false;
