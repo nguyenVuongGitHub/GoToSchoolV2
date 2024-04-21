@@ -43,8 +43,8 @@ public class Skeleton extends Monster{
         sight = 500;
         type = TYPE.MONSTER;
         typeMonster = TypeMonster.SKELETON;
-        solidArea = new Rectangle(0,0,gs.getTile(),gs.getTile());
-        getMonsterImage();
+        solidArea = new Rectangle(0,0,64,64);
+        getImage();
         clearVertices();
         setPolygonVertices();
     }
@@ -72,6 +72,7 @@ public class Skeleton extends Monster{
             } else {
                 g2.drawImage(currentImage, screenX, screenY, null);
             }
+//            g2.drawRect(screenX+getSolidArea().x,screenY+getSolidArea().y, getBounds().width, getBounds().height);
         }
     }
 
@@ -99,6 +100,12 @@ public class Skeleton extends Monster{
 
     @Override
     public void update() {
+
+        if(hp <= 0) {
+            generateCoin();
+            alive = false;
+            return;
+        }
 
         setAI();
         if(seePlayer()) {
@@ -211,7 +218,7 @@ public class Skeleton extends Monster{
         skeletonAttack.setAngleTarget(anglePlayerAndMonster());
         gs.skeletonAttacks.add(skeletonAttack);
     }
-    public void getMonsterImage() {
+    public void getImage() {
         try {
 
             BufferedImage largeImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/monster/skeleton.png")));

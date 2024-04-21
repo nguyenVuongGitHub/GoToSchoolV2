@@ -13,6 +13,7 @@ import Quadtree.RectangleQ;
 import Scene.Campaign;
 import Scene.Loopy;
 import User.UserManager;
+import Weapon.LazerBoss;
 import Weapon.NormalAttack;
 import tile.TileManager;
 
@@ -39,7 +40,7 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.LOOPY;
+	public State state = State.CAMPAIGN;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
@@ -53,6 +54,7 @@ public class GameState extends JPanel implements Runnable{
 	// WEAPON
 	public List<Entity> skillAttacks = new ArrayList<>();
 	public List<Entity> skeletonAttacks = new ArrayList<>();
+	public Entity lazeBoss = new LazerBoss(this);
 	public List<Entity> coins = new ArrayList<>();
 
     // OTHER VARIABLE
@@ -171,6 +173,10 @@ public class GameState extends JPanel implements Runnable{
 				skill.draw(g2);
 			}
 		}
+		if(lazeBoss != null) {
+			lazeBoss.draw(g2);
+		}
+
 		for(Entity skeletonAttack : skeletonAttacks) {
 			if(skeletonAttack != null) {
 				skeletonAttack.draw(g2);
@@ -217,17 +223,27 @@ public class GameState extends JPanel implements Runnable{
 				coin.update();
 			}
 		});
+
+		if(lazeBoss != null) {
+			lazeBoss.update();
+		}
+
 		for(Entity skeletonAttack : skeletonAttacks) {
 			if(skeletonAttack != null) {
 				skeletonAttack.update();
 			}
 		}
 		// COLLISION
-		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks);
+		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, lazeBoss);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
 		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
 		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
+		if(lazeBoss != null) {
+			if(!lazeBoss.getAlive()) {
+				lazeBoss = null;
+			}
+		}
 		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive

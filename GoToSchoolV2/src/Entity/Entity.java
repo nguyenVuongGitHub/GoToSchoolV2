@@ -53,6 +53,10 @@ public abstract class Entity {
 	protected int spriteCounter = 0;
 	protected int spriteNum = 1;
 
+	public int getSpriteNum() {
+		return spriteNum;
+	}
+
 	public int getSpeed() {
 		return speed;
 	}
@@ -84,6 +88,7 @@ public abstract class Entity {
 	public abstract void draw(Graphics2D g2);
 
 	public abstract void init();
+	public abstract void getImage();
 
 	public Rectangle getSolidArea() {
 		return solidArea;
@@ -140,5 +145,23 @@ public abstract class Entity {
 
 	public TYPE getType() {
 		return type;
+	}
+	public void drawVertices(Graphics2D g2) {
+		g2.drawLine((int) (screenX + vertices.get(0).getX() - worldX),
+				(int) (screenY + vertices.get(0).getY() - worldY),
+				(int) (screenX + vertices.get(1).getX() - worldX),
+				(int) (screenY + vertices.get(1).getY() - worldY));
+		g2.drawLine((int) (screenX + vertices.get(1).getX() - worldX),
+				(int) (screenY + vertices.get(1).getY() - worldY),
+				(int) (screenX + vertices.get(2).getX() - worldX),
+				(int) (screenY + vertices.get(2).getY() - worldY));
+		g2.drawLine((int) (screenX + vertices.get(2).getX() - worldX),
+				(int) (screenY + vertices.get(2).getY() - worldY),
+				(int) (screenX + vertices.get(3).getX() - worldX),
+				(int) (screenY + vertices.get(3).getY() - worldY));
+		g2.drawLine((int) (screenX + vertices.get(3).getX() - worldX),
+				(int) (screenY + vertices.get(3).getY() - worldY),
+				(int) (screenX + vertices.get(0).getX() - worldX),
+				(int) (screenY + vertices.get(0).getY() - worldY));
 	}
 }

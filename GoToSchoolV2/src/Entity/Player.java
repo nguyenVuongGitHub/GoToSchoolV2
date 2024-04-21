@@ -30,13 +30,13 @@ public class Player extends Entity{
         speed = 15;
         damage = 1;
         direction = "down";
-        solidArea = new Rectangle(20*2,10*2,26*2,38*2);
-        getPlayerImage();
+        solidArea = new Rectangle(50,64,32,30);
+        getImage();
         clearVertices();
         setPolygonVertices();
     }
-
-    public void getPlayerImage() {
+    @Override
+    public void getImage() {
         try {
 
             up1 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_1.png"));
@@ -316,5 +316,8 @@ public class Player extends Entity{
         }
 
         g2.drawImage(currentImage, screenX, screenY, gs.getTile()*2, gs.getTile()*2, null);
+//        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, getBounds().width, getBounds().height);
+        drawVertices(g2);
     }
 }
+

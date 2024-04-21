@@ -40,8 +40,8 @@ public class Slime extends Monster{
         damage = 3;
         sight = 500;
         type = TYPE.MONSTER;
-        solidArea = new Rectangle(0,0,gs.getTile(),gs.getTile());
-        getMonsterImage();
+        solidArea = new Rectangle(8,10,64- 16,64-10);
+        getImage();
         clearVertices();
         setPolygonVertices();
     }
@@ -188,7 +188,7 @@ public class Slime extends Monster{
     }
 
 
-    public void getMonsterImage() {
+    public void getImage() {
         try {
 
             BufferedImage largeImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/monster/slime.png")));
