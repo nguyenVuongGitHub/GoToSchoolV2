@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class NormalAttack extends BaseSkill{
     public static int TIME_COUNT_DOWN_ATTACK = 1;
-    public static final int TIME_ATTACK = 1;
+    public static final int TIME_REDUCE = 1;
 
     public NormalAttack(GameState gs) {
         super(gs);
@@ -26,6 +26,7 @@ public class NormalAttack extends BaseSkill{
     @Override
     public void init() {
         type = TYPE.WEAPON;
+        typeSkill.typeAttack = ATTACK_SKILL.NORMAL;
         distance = 50;
         damage = 5;
         speed = 20;

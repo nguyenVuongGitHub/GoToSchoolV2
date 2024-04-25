@@ -18,7 +18,6 @@ public class Main {
 		window.setVisible(true);
 		
 		gs.initGame();
-		gs.runGame(); // 
-		
+		gs.runGame(); //
 	}
 }

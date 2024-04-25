@@ -29,7 +29,7 @@ public class Campaign {
         int y = gs.getTile()*3;
         int width = gs.getWindowWidth() - (gs.getTile()*15);
         int height = gs.getTile()*10;
-        drawSubWindow(x,y,width,height);
+        ui.drawSubWindow(x,y,width,height,g2);
 
         g2.setFont(ui.getMaruMonica().deriveFont(Font.BOLD,30F));
         y += gs.getTile();
@@ -174,7 +174,8 @@ public class Campaign {
                 // setup MONSTER
                 break;
             case 3:
-//                gs.tileM.loadMap("/maps/map_test.txt");
+                gs.tileM.loadMap("/maps/map3_1.txt",1);
+                gs.tileM.loadMap("/maps/map3_2.txt",2);
                 // setup MONSTER
                 break;
         }
@@ -202,8 +203,8 @@ public class Campaign {
             gs.state = State.LOOPY;
             gs.changeState = true;
             gs.keyHandle.resetAllData();
-            gs.player.setWorldX(56* gs.getTile());
-            gs.player.setWorldY(24* gs.getTile());
+            gs.player.setWorldX(29* gs.getTile());
+            gs.player.setWorldY(28* gs.getTile());
         }
         if(gs.keyHandle.isAccessLoadMap()) {
             loadMap(choose);
@@ -215,6 +216,9 @@ public class Campaign {
             }else if(choose == 2) {
                 gs.player.setWorldX(4*gs.getTile());
                 gs.player.setWorldY(5*gs.getTile());
+            }else if(choose == 3) {
+                gs.player.setWorldX(3*gs.getTile());
+                gs.player.setWorldY(60*gs.getTile());
             }
         }
 
@@ -238,15 +242,6 @@ public class Campaign {
         }else{
            gs.drawBattle(g2);
         }
-    }
-    private void drawSubWindow(int x, int y, int width, int height) {
-        Color c = new Color(0,0,0,210);
-        g2.setColor(c);
-        g2.fillRoundRect(x, y, width, height, 35, 35);
-        c = new Color(255,255,255);
-        g2.setColor(c);
-        g2.setStroke(new BasicStroke(5));
-        g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
     }
 
     public void setShowDialog(boolean b) {

@@ -32,11 +32,13 @@ public class UserManager {
     }
     public void saveFile(String filePath) {
         try{
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-            // Write the data to the file in semicolon-separated format
-            writer.write(coin + ";" + numberSkillsUnlocked + ";" + numberLeversUnlocked);
+//            BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
+            FileWriter fw = new FileWriter(filePath);
+            fw.write(coin + ";" + numberSkillsUnlocked + ";" + numberLeversUnlocked);
+            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("An error occurred while saving the file: " + e.getMessage());
         }
     }
     public void resetAllData() {

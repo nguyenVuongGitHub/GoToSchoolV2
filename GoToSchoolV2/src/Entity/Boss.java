@@ -257,16 +257,16 @@ public class Boss extends Monster{
     }
 
     public void attacking() {
-        if(gs.lazeBoss == null) {
-            gs.lazeBoss = new LazerBoss(gs);
-            gs.lazeBoss.worldX = this.worldX;
-            gs.lazeBoss.worldY = this.worldY;
-            gs.lazeBoss.direction = this.direction;
-            Random random = new Random();
-            int angle  = random.nextInt(181) - 90;
-//            int angle = 10;
-            gs.lazeBoss.setAngleTarget(Math.toRadians(angle));
-        }
+//        if(gs.lazeBoss == null) {
+//            gs.lazeBoss = new LazerBoss(gs);
+//            gs.lazeBoss.worldX = this.worldX;
+//            gs.lazeBoss.worldY = this.worldY;
+//            gs.lazeBoss.direction = this.direction;
+//            Random random = new Random();
+//            int angle  = random.nextInt(181) - 90;
+////            int angle = 10;
+//            gs.lazeBoss.setAngleTarget(Math.toRadians(angle));
+//        }
     }
     public void getImage() {
         try {
