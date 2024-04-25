@@ -1,14 +1,15 @@
 package objects;
 
 import Entity.Entity;
-import Main.GameState;
 import Entity.TYPE;
+import Main.GameState;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-public class Coin extends Entity {
+public class Exp extends Entity{
 
     boolean move = true;
     int TimeMoving = 25;
@@ -16,7 +17,7 @@ public class Coin extends Entity {
     int timeExit = 200;
     int countTimeExit = 0;
 
-    public Coin(GameState gs) {
+    public Exp(GameState gs) {
         super(gs);
         init();
 
@@ -123,7 +124,7 @@ public class Coin extends Entity {
     }
     public void getImage() {
         try {
-            BufferedImage largeImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/coin.png")));
+            BufferedImage largeImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/exp.png")));
             int x = 0;
             int y = 0;
             up1 = largeImage.getSubimage(x,y,gs.getTile(),gs.getTile());
@@ -142,5 +143,4 @@ public class Coin extends Entity {
 
         }
     }
-
 }

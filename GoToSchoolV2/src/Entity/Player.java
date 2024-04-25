@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 public class Player extends Entity{
 
     int timeCount = 0;
-
+    String beforeDirection = direction;
     public Player(GameState gs) {
         super(gs);
         init();
@@ -30,13 +30,13 @@ public class Player extends Entity{
         speed = 15;
         damage = 1;
         direction = "down";
-        solidArea = new Rectangle(20*2,10*2,26*2,38*2);
-        getPlayerImage();
+        solidArea = new Rectangle(50,64,32,30);
+        getImage();
         clearVertices();
         setPolygonVertices();
     }
-
-    public void getPlayerImage() {
+    @Override
+    public void getImage() {
         try {
 
             up1 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_1.png"));
@@ -80,20 +80,28 @@ public class Player extends Entity{
             collisionOn = false;
             if(gs.keyHandle.isUpPress() && gs.keyHandle.isLeftPress()) {
                 direction = "up-left";
+                beforeDirection = direction;
             }else if(gs.keyHandle.isUpPress() && gs.keyHandle.isRightPress()) {
                 direction = "up-right";
+                beforeDirection = direction;
             }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isLeftPress()) {
                 direction = "down-left";
+                beforeDirection = direction;
             }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isRightPress()) {
                 direction = "down-right";
+                beforeDirection = direction;
             }else if(gs.keyHandle.isUpPress()) {
                 direction = "up";
+                beforeDirection = direction;
             }else if(gs.keyHandle.isDownPress()) {
                 direction = "down";
+                beforeDirection = direction;
             }else if(gs.keyHandle.isLeftPress()) {
                 direction = "left";
+                beforeDirection = direction;
             }else if(gs.keyHandle.isRightPress()) {
                 direction = "right";
+                beforeDirection = direction;
             }
             else {
                 direction = "nan";
@@ -131,12 +139,14 @@ public class Player extends Entity{
                         collisionWith = gs.CC.checkEntityWithTile(this, "up");
                         if (collisionWith != CollisionChecker.UP && gs.keyHandle.isUpPress()) {
                             direction = "up";
+                            beforeDirection = direction;
                             worldY -= speed;
                         }
 
                         collisionWith = gs.CC.checkEntityWithTile(this, "left");
                         if (collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
                             direction = "left";
+                            beforeDirection = direction;
                             worldX -= speed;
                         }
 
@@ -145,6 +155,7 @@ public class Player extends Entity{
                         if (collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
 
                             direction = "right";
+                            beforeDirection = direction;
                             worldX += speed;
                         }
                     }
@@ -152,6 +163,7 @@ public class Player extends Entity{
                         collisionWith = gs.CC.checkEntityWithTile(this, "down");
                         if (collisionWith != CollisionChecker.DOWN && gs.keyHandle.isDownPress()) {
                             direction = "down";
+                            beforeDirection = direction;
                             worldY += speed;
                         }
                         collisionWith = gs.CC.checkEntityWithTile(this, "left");
@@ -159,6 +171,7 @@ public class Player extends Entity{
                         if (collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
 
                             direction = "left";
+                            beforeDirection = direction;
                             worldX -= speed;
                         }
 
@@ -167,6 +180,7 @@ public class Player extends Entity{
                         if (collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
 
                             direction = "right";
+                            beforeDirection = direction;
                             worldX += speed;
                         }
                     }
@@ -174,11 +188,13 @@ public class Player extends Entity{
                         collisionWith = gs.CC.checkEntityWithTile(this, "left");
                         if (collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
                             direction = "left";
+                            beforeDirection = direction;
                             worldX -= speed;
                         }
                         collisionWith = gs.CC.checkEntityWithTile(this, "right");
                         if (collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
                             direction = "right";
+                            beforeDirection = direction;
                             worldX += speed;
                         }
                     }
@@ -186,11 +202,13 @@ public class Player extends Entity{
                         collisionWith = gs.CC.checkEntityWithTile(this, "up");
                         if (collisionWith != CollisionChecker.UP && gs.keyHandle.isUpPress()) {
                             direction = "up";
+                            beforeDirection = direction;
                             worldY -= speed;
                         }
                         collisionWith = gs.CC.checkEntityWithTile(this, "down");
                         if (collisionWith != CollisionChecker.DOWN && gs.keyHandle.isDownPress()) {
                             direction = "down";
+                            beforeDirection = direction;
                             worldY += speed;
                         }
                     }
@@ -316,5 +334,11 @@ public class Player extends Entity{
         }
 
         g2.drawImage(currentImage, screenX, screenY, gs.getTile()*2, gs.getTile()*2, null);
+//        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, getBounds().width, getBounds().height);
+        drawVertices(g2);
+    }
+    public String getBeforeDirection() {
+        return beforeDirection;
     }
 }
+

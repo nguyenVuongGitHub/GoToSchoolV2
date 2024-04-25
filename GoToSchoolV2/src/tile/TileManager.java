@@ -5,15 +5,14 @@ import Main.GameState;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.List;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class TileManager{
     public static final int highestLayer = 2;
@@ -37,7 +36,7 @@ public class TileManager{
     public TileManager(GameState gs) {
         this.gs = gs;
 
-        tile = new Tile[201];
+        tile = new Tile[401];
         layer1 = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
         layer2 = new int[gs.getMaxWorldCol()][gs.getMaxWorldRow()];
         getTileImage();
@@ -55,84 +54,34 @@ public class TileManager{
 
             for(int i = 0; i < row; i++) {
                 for(int j = 0; j < col; j++) {
-                    int index = i*col + j + 1;
-
+                    int index = i * col + j + 1;
                     tile[index].image = largeImage.getSubimage(j * gs.getTile(), i * gs.getTile(), gs.getTile(), gs.getTile());
-                    switch (index) {
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 8:
-                        case 9:
-                        case 10:
-                        case 11:
-                        case 12:
-                        case 13:
-                        case 24:
-                        case 25:
-                        case 26:
-                        case 27:
-                        case 29:
-                        case 30:
-                        case 31:
-                        case 32:
-                        case 33:
-                        case 44:
-                        case 45:
-                        case 46:
-                        case 47:
-                        case 48:
-                        case 49:
-                        case 50:
-                        case 51:
-                        case 52:
-                        case 53:
-                        case 65:
-                        case 70:
-                        case 71:
-                        case 72:
-                        case 73:
-                        case 85:
-                        case 101:
-                        case 102:
-                        case 103:
-                        case 104:
-                        case 127:
-                        case 128:
-                        case 129:
-                        case 130:
-                        case 131:
-                        case 147:
-                        case 148:
-                        case 149:
-                        case 150:
-                        case 151:
-                        case 167:
-                        case 168:
-                        case 169:
-                        case 170:
-                        case 171:
-                            if(index == 101 || index == 103) {
-                                tile[index].setSolidArea(32,9,32,48);
-                            }
-                            else if(index == 102 || index == 104) {
-                                tile[index].setSolidArea(0,0,32,48);
-                            }else {
-                                tile[index].setSolidArea(0,0,64,64);
-                            }
-                            tile[index].collision = true;
-                            tile[index].setValue(index);
-                            walls.add(tile[index]);
+
+                    // Kiểm tra xem index có nằm trong danh sách các index cần collision không
+                    if (isCollisionIndex(index)) {
+                        tile[index].collision = true;
+                        tile[index].setValue(index);
+                        walls.add(tile[index]);
                     }
                 }
             }
 
-
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    // Danh sách các index cần collision
+    private boolean isCollisionIndex(int index) {
+        ArrayList<Integer> collisionIndexes = new ArrayList<>(Arrays.asList(
+                4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 24, 25, 26, 27, 29, 30, 31, 32, 33, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
+                65, 67, 69, 70, 71, 72, 73, 85, 101, 102, 103, 104, 114, 115, 116, 127, 128, 129, 130, 131, 147, 148, 149, 150,
+                151, 167, 168, 169, 170, 171, 192, 193, 194, 195, 196, 197, 212, 213, 214, 215, 216, 217, 232, 233, 234, 235,
+                236, 237
+        ));
+        return collisionIndexes.contains(index);
+    }
+
 
     public void loadMap(String filePath, int layer) {
         try {

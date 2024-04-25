@@ -14,6 +14,8 @@ import Scene.Campaign;
 import Scene.Loopy;
 import Scene.Survival;
 import User.UserManager;
+import Weapon.Flash;
+import Weapon.LazerBoss;
 import Weapon.NormalAttack;
 import tile.TileManager;
 
@@ -40,7 +42,7 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.LOOPY;
+	public State state = State.CAMPAIGN;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
@@ -54,7 +56,9 @@ public class GameState extends JPanel implements Runnable{
 	public List<Entity> monsters = new ArrayList<>();
 	// WEAPON
 	public List<Entity> skillAttacks = new ArrayList<>();
+	public Entity flashSkill = null;
 	public List<Entity> skeletonAttacks = new ArrayList<>();
+	public Entity lazeBoss = new LazerBoss(this);
 	public List<Entity> coins = new ArrayList<>();
 
     // OTHER VARIABLE
@@ -109,6 +113,14 @@ public class GameState extends JPanel implements Runnable{
 			// mỗi giây
 			if(timer >= 1000000000) {
 				NormalAttack.TIME_COUNT_DOWN_ATTACK--;
+				if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
+					NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				Flash.TIME_COUNT_DOWN--;
+				if(Flash.TIME_COUNT_DOWN <= 0) {
+					Flash.TIME_COUNT_DOWN = -1;
+				}
+				System.out.println(Flash.TIME_COUNT_DOWN);
 //				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
@@ -173,6 +185,10 @@ public class GameState extends JPanel implements Runnable{
 				skill.draw(g2);
 			}
 		}
+		if(lazeBoss != null) {
+			lazeBoss.draw(g2);
+		}
+
 		for(Entity skeletonAttack : skeletonAttacks) {
 			if(skeletonAttack != null) {
 				skeletonAttack.draw(g2);
@@ -198,6 +214,12 @@ public class GameState extends JPanel implements Runnable{
 			skillAttacks.add(normalAttack);
 			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_ATTACK;
 		}
+		if(keyHandle.isFlashPress() && Flash.TIME_COUNT_DOWN <= 0) {
+			if(flashSkill == null) {
+				flashSkill = new Flash(this);
+			}
+			Flash.TIME_COUNT_DOWN = Flash.TIME_ATTACK;
+		}
 		// MONSTER
 		for(Entity monster : monsters) {
 			if(monster != null) {
@@ -214,22 +236,40 @@ public class GameState extends JPanel implements Runnable{
 				skill.update();
 			}
 		}
+		if(flashSkill != null) {
+			flashSkill.update();
+		}
+
 		coins.forEach(coin -> {
 			if(coin != null) {
 				coin.update();
 			}
 		});
+
+		if(lazeBoss != null) {
+			lazeBoss.update();
+		}
+
 		for(Entity skeletonAttack : skeletonAttacks) {
 			if(skeletonAttack != null) {
 				skeletonAttack.update();
 			}
 		}
 		// COLLISION
-		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks);
+		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, lazeBoss);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
 		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
 		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
+		if(lazeBoss != null) {
+			if(!lazeBoss.getAlive()) {
+				lazeBoss = null;
+			}
+		}
+		if(flashSkill != null) {
+			if(!flashSkill.getAlive())
+				flashSkill = null;
+		}
 		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive

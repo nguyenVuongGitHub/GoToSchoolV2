@@ -57,6 +57,11 @@ public class PointX {
         PointX v = new PointX(x/length(), y/length());
         return v;
     }
+    public PointX clockwiseTransform(PointX center, double angle) {
+//        angle = angle*Math.PI / 180;
+        return new PointX(((x - center.x) * Math.cos(angle) - (y - center.y) * Math.sin(angle)) + center.x
+                , (x - center.x) * Math.sin(angle) + (y - center.y) * Math.cos(angle) + center.y);
+    }
     public static PointX getCenterPointFromList(List<PointX> vertices)
     {
         double x=0, y =0;
