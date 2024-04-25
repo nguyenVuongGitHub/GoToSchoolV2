@@ -54,7 +54,6 @@ public class SkeletonWeapon extends BaseSkill{
             screenX = (int) (worldX - gs.player.getWorldX() + gs.player.getScreenX());
             screenY = (int) (worldY - gs.player.getWorldY() + gs.player.getScreenY());
             g2.drawImage(currentImage, screenX, screenY, gs.getTile()/2, gs.getTile()/2, null);
-
         }
     }
 

@@ -94,19 +94,12 @@ public class CollisionChecker {
         int bottomTileRow = entityBottomWorldY / gs.getTile();
 
         int adjacentTile1, adjacentTile2;
-        Rectangle rect1,rect2;
         switch (entity.getDirection())
         {
             case "up":
                 topTileRow = (entityTopWorldY - entity.getSpeed()) / gs.getTile();
                 adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
-//                rect1 = new Rectangle(leftTileCol*gs.getTile(),topTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile1).getBounds().width,gs.tileM.getTile(adjacentTile1).getBounds().height);
-//                rect2 = new Rectangle(rightTileCol*gs.getTile(),topTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile2).getBounds().width,gs.tileM.getTile(adjacentTile2).getBounds().height);
-//                if (
-//                        (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision)
-//                                && (entity.getBounds().intersects(rect1) || entity.getBounds().intersects(rect2))
-//                ){
                 if(gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                 }
@@ -115,12 +108,6 @@ public class CollisionChecker {
                 bottomTileRow = (entityBottomWorldY + entity.getSpeed()) / gs.getTile();
                 adjacentTile1 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
-//                rect1 = new Rectangle(leftTileCol*gs.getTile(),bottomTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile1).getBounds().width,gs.tileM.getTile(adjacentTile1).getBounds().height);
-//                rect2 = new Rectangle(rightTileCol*gs.getTile(),bottomTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile2).getBounds().width,gs.tileM.getTile(adjacentTile2).getBounds().height);
-//                if (
-//                        (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision)
-//                                && (entity.getBounds().intersects(rect1) || entity.getBounds().intersects(rect2))
-//                ){
                 if(gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                 }
@@ -129,12 +116,6 @@ public class CollisionChecker {
                 leftTileCol = (entityLeftWorldX - entity.getSpeed()) / gs.getTile();
                 adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
-//                rect1 = new Rectangle(leftTileCol*gs.getTile(),topTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile1).getBounds().width,gs.tileM.getTile(adjacentTile1).getBounds().height);
-//                rect2 = new Rectangle(leftTileCol*gs.getTile(),bottomTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile2).getBounds().width,gs.tileM.getTile(adjacentTile2).getBounds().height);
-//                if (
-//                        (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision)
-//                                && (entity.getBounds().intersects(rect1) || entity.getBounds().intersects(rect2))
-//                ){
                 if(gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                 }
@@ -143,12 +124,6 @@ public class CollisionChecker {
                 rightTileCol = (entityRightWorldX + entity.getSpeed()) / gs.getTile();
                 adjacentTile1 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
-//                rect1 = new Rectangle(rightTileCol*gs.getTile(),topTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile1).getBounds().width,gs.tileM.getTile(adjacentTile1).getBounds().height);
-//                rect2 = new Rectangle(rightTileCol*gs.getTile(),bottomTileRow*gs.getTile(),gs.tileM.getTile(adjacentTile2).getBounds().width,gs.tileM.getTile(adjacentTile2).getBounds().height);
-//                if (
-//                        (gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision)
-//                                && (entity.getBounds().intersects(rect1) || entity.getBounds().intersects(rect2))
-//                ){
                 if(gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                 }
@@ -304,7 +279,6 @@ public class CollisionChecker {
         for(Entity skill : skills) {
             RectangleQ range = new RectangleQ(skill.getBounds());
             List<PointQ> pointsNearSkill =  quadTree.query(range);
-            System.out.println(pointsNearSkill.size());
             for(PointQ point : pointsNearSkill) {
                 Entity other = point.getUserData();
                 if(other != skill && skill.getBounds().intersects(other.getBounds())) {
@@ -312,12 +286,12 @@ public class CollisionChecker {
                     int newHP = other.getHP();
                     newHP -= skill.getDamage() + gs.player.getDamage();
                     other.setHP(newHP);
-                    if(other.getHP() <= 0) {
-                        other.setAlive(false);
-                    }
-                    if(!other.getAlive()) {
-                        other.generateCoin();
-                    }
+//                    if(other.getHP() <= 0) {
+//                        other.setAlive(false);
+//                    }
+//                    if(!other.getAlive()) {
+//                        other.generateCoin();
+//                    }
                 }
             }
         }
@@ -399,12 +373,27 @@ public class CollisionChecker {
         }
         quadTree.clear();
     }
-
-    public void checkAllEntity(Entity player, List<Entity> monsters, List<Entity> skills, List<Entity> coins, List<Entity> skeletonAttacks) {
+    private void checkPlayerWithLazeboss(Entity player, Entity lazerBoss) {
+        if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, lazerBoss, false, false) && lazerBoss.getSpriteNum() >= 9) {
+            System.out.println("check");
+            if (player.isCanTouch()) {
+                int newHP = player.getHP() - lazerBoss.getDamage();
+                player.setHP(newHP);
+                player.setCanTouch(false);
+            }
+            if (player.getHP() <= 0) {
+//                player.setAlive(false);
+            }
+        }
+    }
+    public void checkAllEntity(Entity player, List<Entity> monsters, List<Entity> skills, List<Entity> coins, List<Entity> skeletonAttacks, Entity lazerBoss) {
         checkPlayerAndMonsters(player,monsters);
         checkMonsterWithMonster(monsters);
         checkSkillWithMonster(skills,monsters);
         checkPlayerWithCoins(player,coins);
         checkSkeletonWeaponWithPlayer(player,skeletonAttacks);
+        if(lazerBoss != null) {
+            checkPlayerWithLazeboss(player,lazerBoss);
+        }
     }
 }
