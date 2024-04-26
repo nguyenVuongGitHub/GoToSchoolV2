@@ -23,11 +23,12 @@ public class Survival {
     UI ui;
     Font maruMonica, purisaB;
     boolean mapExist = false;
-    final int BASE_NUMBER_MOBS = 10;
+    final int BASE_NUMBER_MOBS = 4;
     int numberDay = 0;
     boolean endOfDay = false;
     int selected = 0;
-    List<Integer> list = new ArrayList<Integer>();
+    List<Integer> listBlessing = new ArrayList<Integer>();
+    List<Integer> listItem = new ArrayList<Integer>();
     public Survival(UserManager um, GameState gs, UI ui) {
         try {
             InputStream is = getClass().getResourceAsStream("/font/x12y16pxMaruMonica.ttf");
@@ -70,26 +71,28 @@ public class Survival {
 
 
     public void loadMap() {
-        gs.tileM.loadMap("/maps/survival.txt", 1);
+        gs.tileM.loadMap("/maps/survival_1.txt",1);
+        gs.tileM.loadMap("/maps/survival_2.txt",2);
+        gs.player.setWorldX(80);
+        gs.player.setWorldY(80);
     }
     public void spawnMobs(int amount, int kind)
     {
-        for(int i=0; i<amount/kind; i++)
+        for(int i=0; i< amount/kind; i++)
         {
             Entity tmp = new Skeleton(gs);
-            tmp.setWorldX(Math.random() % gs.getTile() * 14 + gs.getTile() * 12);
-            tmp.setWorldY(Math.random() % gs.getTile() * 14 + gs.getTile() * 12);
+            tmp.setWorldX(Math.random() % gs.getTile() * 21 + gs.getTile() * 17);
+            tmp.setWorldY(Math.random() % gs.getTile() * 21 + gs.getTile() * 17);
             gs.monsters.add(tmp);
         }
     }
     public void newState()
     {
-        spawnMobs((int)Math.floor(BASE_NUMBER_MOBS * ++numberDay * 1.1), 1);
+        spawnMobs((int)Math.floor(BASE_NUMBER_MOBS * ++numberDay * 0.75), 1);
     }
     private void drawEssentialInfo(Graphics2D g2)
     {
-        g2.setFont(maruMonica);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD,45F));
+        g2.setFont(maruMonica.deriveFont(Font.BOLD,45F));
         g2.setColor(Color.white);
         g2.drawString("Day : " + numberDay, (float)0.5*gs.getTile(),(float)gs.getWindowHeight() - 20);
     }
@@ -122,29 +125,31 @@ public class Survival {
     {
         Color c = new Color(0,0,0,180);
         g2.setColor(c);
+        //draw dark mark
         g2.fillRect(0, 0 ,gs.getWindowWidth(), gs.getWindowHeight());
 
-        int x = gs.getWindowWidth() / 10 * gs.getTile(),
-                y = gs.getWindowHeight() / 10 * gs.getTile() * 3,
-                width = gs.getWindowWidth() / 10 * gs.getTile() * 3,
-                height = gs.getWindowHeight() / 10 * gs.getTile() * 4;
         Color c1 = new Color(60, 40, 40);
         g2.setColor(c1);
+        int x = gs.getTile() * 5,
+                y = gs.getTile() * 5,
+                width = gs.getTile() * 4,
+                height = gs.getTile() * 5;
         int gap = gs.getTile() *2;
+        //draw choices table
         g2.fillRect(x, y ,width, height);
         g2.fillRect(x + width + gap, y ,width, height);
         g2.fillRect(x + (width + gap) * 2, y ,width, height);
 
         //Default text color
-        Color c2 = new Color(220, 210, 200);
+        Color c2 = new Color(255, 255, 255);
         //Hover text color
-        Color c3 = new Color(255, 255, 255);
+        Color c3 = new Color(220, 210, 100);
 
-        g2.setFont(maruMonica);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD,20F));
-        for(int i=0; i<list.size(); i++)
+        g2.setFont(maruMonica.deriveFont(Font.BOLD,20F));
+        x += gs.getTile();
+        for(int i=0; i<listBlessing.size(); i++)
         {
-            switch (list.get(i))
+            switch (listBlessing.get(i))
             {
                 case 1:
                     if(selected == i+1)
@@ -156,7 +161,7 @@ public class Survival {
                         g2.setColor(c2);
                     }
                     g2.drawString("Increase attack speed" , x + (width + gap) * i, y + gs.getTile());
-                    g2.drawString("Amount: 10%" , x + gs.getTile() + (width + gap) * i, y + 2 *gs.getTile());
+                    g2.drawString("Amount: 10%" , x + (int)(gs.getTile()*0.5) + (width + gap) * i, y + 2 *gs.getTile());
                     //Increase attack speed
                     break;
                 case 2:
@@ -170,7 +175,7 @@ public class Survival {
                     }
                     //Increase damage
                     g2.drawString("Increase damage" , x + (width + gap) * i, y + gs.getTile());
-                    g2.drawString("Amount: 2%" , x + gs.getTile() + (width + gap) * i, y + 2 *gs.getTile());
+                    g2.drawString("Amount: 2%" , x + (int)(gs.getTile()*0.5) + (width + gap) * i, y + 2 *gs.getTile());
                     break;
                 case 3:
                     if(selected == i+1)
@@ -183,7 +188,7 @@ public class Survival {
                     }
                     //Increase health
                     g2.drawString("Increase health" , x + (width + gap) * i, y + gs.getTile());
-                    g2.drawString("Amount: 10" , x + gs.getTile() + (width + gap) * i, y + 2 *gs.getTile());
+                    g2.drawString("Amount: 10" , x + (int)(gs.getTile()*0.5) + (width + gap) * i, y + 2 *gs.getTile());
                     break;
                 case 4:
                     if(selected == i+1)
@@ -196,7 +201,7 @@ public class Survival {
                     }
                     //Receive health point
                     g2.drawString("Receive health point" , x + (width + gap) * i, y + gs.getTile());
-                    g2.drawString("Amount: 1" , x + gs.getTile() + (width + gap) * i, y + 2 *gs.getTile());
+                    g2.drawString("Amount: 1" , x + (int)(gs.getTile()*0.5)+ (width + gap) * i, y + 2 *gs.getTile());
                     break;
                 case 5:
                     if(selected == i+1)
@@ -209,7 +214,7 @@ public class Survival {
                     }
                     //Increase mana
                     g2.drawString("Increase mana" , x + (width + gap) * i, y + gs.getTile());
-                    g2.drawString("Amount: 10" , x + gs.getTile() + (width + gap) * i, y + 2 *gs.getTile());
+                    g2.drawString("Amount: 10" , x + (int)(gs.getTile()*0.5) + (width + gap) * i, y + 2 *gs.getTile());
                     break;
                 case 6:
                     if(selected == i+1)
@@ -222,11 +227,16 @@ public class Survival {
                     }
                     //Receive mana point
                     g2.drawString("Receive mana point" , x + (width + gap) * i, y + gs.getTile());
-                    g2.drawString("Amount: 1" , x + gs.getTile() + (width + gap) * i, y + 2 *gs.getTile());
+                    g2.drawString("Amount: 1" , x + (int)(gs.getTile()*0.5) + (width + gap) * i, y + 2 *gs.getTile());
                     break;
             }
         }
 
+    }
+    public void meetShopkeeper()
+    {
+        //Draw shop with 4 random items
+        System.out.println("Hello my hero!");
     }
     public void update() {
 
@@ -236,20 +246,38 @@ public class Survival {
         }
         if(gs.monsters.isEmpty())
         {
+            if(numberDay % 5 == 0)
+            {
+                meetShopkeeper();
+            }
             //Appear table of the blessing at the end of day
             endOfDay = true;
             //Create random list of blessing
-            list.clear();
+            listBlessing.clear();
             Random ran = new Random();
             do
             {
                 int ranNumber = new Random().nextInt(6-1 + 1) + 1;
-                if(!list.contains(ranNumber))
+                if(!listBlessing.contains(ranNumber))
                 {
-                    list.add(ranNumber);
+                    listBlessing.add(ranNumber);
                 }
             }
-            while(list.size()<3);
+            while(listBlessing.size()<3);
+            if(numberDay % 5 == 4)
+            {
+                //Create random list of blessing
+                listItem.clear();
+                do
+                {
+                    int ranNumber = new Random().nextInt(6-1 + 1) + 1;
+                    if(!listItem.contains(ranNumber))
+                    {
+                        listItem.add(ranNumber);
+                    }
+                }
+                while(listItem.size()<4);
+            }
             //Spawn mobs , begin new day
             newState();
         }
@@ -272,7 +300,8 @@ public class Survival {
         gs.tileM.draw(g2);
 
         // ENTITY
-        if(gs.player != null) {
+        if(gs.player != null)
+        {
             gs.player.draw(g2);
         }
 
@@ -282,16 +311,7 @@ public class Survival {
         }
         else
         {
-            for(Entity monster : gs.monsters) {
-                if(monster != null) {
-                    monster.draw(g2);
-                }
-            }
-            for(Entity skill : gs.skillAttacks) {
-                if (skill != null) {
-                    skill.draw(g2);
-                }
-            }
+            gs.drawBattle(g2);
             drawEssentialInfo(g2);
         }
     }

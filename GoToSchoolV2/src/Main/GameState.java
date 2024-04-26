@@ -42,7 +42,7 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.CAMPAIGN;
+	public State state = State.SURVIVAL;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
@@ -75,7 +75,7 @@ public class GameState extends JPanel implements Runnable{
 	public void initGame() {
 		user.readFile("/user/infUser.txt");
 		// something here
-		loopy.loadMap();
+		survival.loadMap();
 	}
 	public void runGame() {
 		gameThread = new Thread(this);
@@ -120,7 +120,7 @@ public class GameState extends JPanel implements Runnable{
 				if(Flash.TIME_COUNT_DOWN <= 0) {
 					Flash.TIME_COUNT_DOWN = -1;
 				}
-				System.out.println(Flash.TIME_COUNT_DOWN);
+//				System.out.println(Flash.TIME_COUNT_DOWN);
 //				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;

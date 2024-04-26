@@ -16,7 +16,7 @@ public class KeyHandle implements KeyListener{
 	GameState gs;
 	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress, tabPress;
 	private boolean skill1Press,skill2Press,skill3Press;
-	private boolean augment1Press,augment2Press,augrment3Press;
+	private boolean augment1Press,augment2Press,augment3Press;
 	private boolean flashPress;
 
 	private boolean exitMap = false;
@@ -266,6 +266,18 @@ public class KeyHandle implements KeyListener{
 
 	public boolean isSkill3Press() {
 		return skill3Press;
+	}
+
+	public boolean isAugment1Press() {
+		return augment1Press;
+	}
+
+	public boolean isAugment2Press() {
+		return augment2Press;
+	}
+
+	public boolean isAugment3Press() {
+		return augment3Press;
 	}
 
 	public boolean isTabPress() {
