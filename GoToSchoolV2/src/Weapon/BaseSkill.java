@@ -6,6 +6,7 @@ import java.awt.*;
 
 public abstract class BaseSkill extends Entity {
     protected double distance;
+
     public BaseSkill(GameState gs) {
         super(gs);
     }

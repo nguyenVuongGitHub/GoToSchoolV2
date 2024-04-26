@@ -23,8 +23,8 @@ public class Player extends Entity{
 
     @Override
     public void init() {
-        worldX = gs.getTile() * 30;
-        worldY = gs.getTile() * 30;
+        worldX = gs.getTile() * 20;
+        worldY = gs.getTile() * 37;
         type = TYPE.PLAYER;
         hp = 100;
         speed = 15;
