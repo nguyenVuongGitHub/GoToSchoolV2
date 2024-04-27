@@ -23,7 +23,7 @@ public abstract class Entity {
 	protected boolean alive = true;
 	protected double worldX, worldY;
 	protected List<PointX> vertices = new ArrayList<>();
-	protected double radius = 25;
+	protected double radius = 80;
 	protected boolean collision = false;
 	protected boolean collisionOn = false;
 
