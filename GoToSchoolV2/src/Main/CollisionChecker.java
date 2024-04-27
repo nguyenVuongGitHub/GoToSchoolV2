@@ -362,6 +362,7 @@ public class CollisionChecker {
             }
         }
         quadTree.clear();
+
     }
     private void checkSkeletonWeaponWithPlayer(Entity player, List<Entity> skeletonAttacks) {
         QuadTree quadTree = new QuadTree(20,gs.boundsQuadTree,gs);
