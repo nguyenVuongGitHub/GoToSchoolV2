@@ -15,13 +15,22 @@ public class KeyHandle implements KeyListener{
 
 	GameState gs;
 	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress, tabPress;
-	private boolean skill1Press,skill2Press,skill3Press;
-	private boolean augment1Press,augment2Press,augment3Press;
-	private boolean flashPress;
+
+    private boolean skill1Press,skill2Press,skill3Press;
+	private boolean supportSkill1;
+	private boolean supportSkill2;
 
 	private boolean exitMap = false;
 	private boolean accessLoadMap = false;
 	private boolean accessReturnLoopy = false;
+    private boolean accessSaveGame = false;
+    private boolean accessExitGame = false;
+
+	private boolean isResetSkillSupport = false;
+	private boolean isAddSkillSupport = false;
+	private String yourAddSkillSupport = null;
+
+
 	public KeyHandle(GameState gs) {
 		this.gs = gs;
 	}
@@ -33,7 +42,6 @@ public class KeyHandle implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-
 		if(gs.state == State.CAMPAIGN) {
 			if(gs.campaign.isShowDialog()) { // dialog
 				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
@@ -48,7 +56,7 @@ public class KeyHandle implements KeyListener{
 						gs.campaign.setChoose(1);
 					}
 				}
-				if(code == KeyEvent.VK_ENTER) {
+				if(code == KeyEvent.VK_SPACE) {
 					accessLoadMap = true;
 				}
 				if(code == KeyEvent.VK_ESCAPE) {
@@ -80,7 +88,7 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_ESCAPE) {
 					escPress = true;
 				}
-				if(code == KeyEvent.VK_ENTER) {
+				if(code == KeyEvent.VK_E) {
 					enterPress = true;
 				}
 				if(code == KeyEvent.VK_TAB) {
@@ -96,7 +104,10 @@ public class KeyHandle implements KeyListener{
 					skill3Press = true;
 				}
 				if(code == KeyEvent.VK_F) {
-					flashPress = true;
+					supportSkill1 = true;
+				}
+				if(code == KeyEvent.VK_R) {
+					supportSkill2 = true;
 				}
 			}
 		}
@@ -160,30 +171,95 @@ public class KeyHandle implements KeyListener{
 			}
 		}else if(gs.state == State.LOOPY) {
 
-			if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-				upPress = true;
+            if(gs.loopy.isShowDialogExit()) {
+                if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit()-1);
+                    if(gs.loopy.getChooseDialogExit() < 1) {
+                        gs.loopy.setChooseDialogExit(2);
+                    }
+                }
+                if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit()+1);
+                    if(gs.loopy.getChooseDialogExit() > 2) {
+                        gs.loopy.setChooseDialogExit(1);
+                    }
+                }
+                if(code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 1) {
+                    accessSaveGame = true;
+					gs.loopy.setShowDialogExit(false);
+                }
+                if(code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 2) {
+                    accessExitGame = true;
+					gs.loopy.setShowDialogExit(false);
+                }
+                if(code == KeyEvent.VK_ESCAPE) {
+                    gs.loopy.setShowDialogExit(false);
+                }
+            }else if(gs.loopy.isShowDialogChooseSkillsSupport()) {
+				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()-1);
+					if(gs.loopy.getChooseSkill() < 1) {
+						gs.loopy.setChooseSkill(gs.user.getNumberSkillsUnlocked());
+					}
+				}
+				if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()+1);
+					if(gs.loopy.getChooseSkill() > gs.user.getNumberSkillsUnlocked()) {
+						gs.loopy.setChooseSkill(1);
+					}
+				}
+				if(code == KeyEvent.VK_SPACE) {
+					gs.loopy.setSkillHave(gs.loopy.getSkillHave()+1);
+					if(gs.loopy.getSkillHave() <= 2) {
+						if(gs.loopy.getChooseSkill() == 1) {
+							gs.Map_chooseSkill.put("flash",gs.loopy.getSkillHave());
+							yourAddSkillSupport = "flash";
+						}else if(gs.loopy.getChooseSkill() == 2) {
+							gs.Map_chooseSkill.put("speed",gs.loopy.getSkillHave());
+							yourAddSkillSupport = "speed";
+						}else if(gs.loopy.getChooseSkill() == 3) {
+							gs.Map_chooseSkill.put("healing",gs.loopy.getSkillHave());
+							yourAddSkillSupport = "healing";
+						}
+						isAddSkillSupport = true;
+					}
+				}
+				if(code == KeyEvent.VK_Q) {
+					isResetSkillSupport = true;
+				}
+				if(code == KeyEvent.VK_ESCAPE) {
+					gs.loopy.setShowDialogChooseSkillsSupport(false);
+				}
 			}
-			if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-				downPress = true;
-			}
-			if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
-				leftPress = true;
-			}
-			if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
-				rightPress = true;
-			}
-			if(code == KeyEvent.VK_SPACE) {
-				spacePress = true;
-			}
-			if(code == KeyEvent.VK_ESCAPE) {
-				escPress = true;
-			}
-			if(code == KeyEvent.VK_ENTER) {
-				enterPress = true;
-			}
-			if(code == KeyEvent.VK_TAB) {
-				tabPress = true;
-			}
+			else {
+				accessSaveGame = false;
+				accessExitGame = false;
+				gs.ui.setPlayerSay(false);
+                if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    upPress = true;
+                }
+                if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    downPress = true;
+                }
+                if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+                    leftPress = true;
+                }
+                if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+                    rightPress = true;
+                }
+                if(code == KeyEvent.VK_SPACE) {
+                    spacePress = true;
+                }
+                if(code == KeyEvent.VK_ESCAPE) {
+                    escPress = true;
+                }
+                if(code == KeyEvent.VK_E) {
+                    enterPress = true;
+                }
+                if(code == KeyEvent.VK_TAB) {
+                    tabPress = true;
+                }
+            }
 
 		}
 	}
@@ -210,7 +286,7 @@ public class KeyHandle implements KeyListener{
 		if(code == KeyEvent.VK_SPACE) {
 			spacePress = false;
 		}
-		if(code == KeyEvent.VK_ENTER) {
+		if(code == KeyEvent.VK_E) {
 			enterPress = false;
 		}
 		if(code == KeyEvent.VK_TAB) {
@@ -226,7 +302,10 @@ public class KeyHandle implements KeyListener{
 			skill3Press = false;
 		}
 		if(code == KeyEvent.VK_F) {
-			flashPress = false;
+			supportSkill1 = false;
+		}
+		if(code == KeyEvent.VK_R) {
+			supportSkill2 = false;
 		}
 	}
 	public boolean isSpacePress() {
@@ -268,18 +347,6 @@ public class KeyHandle implements KeyListener{
 		return skill3Press;
 	}
 
-	public boolean isAugment1Press() {
-		return augment1Press;
-	}
-
-	public boolean isAugment2Press() {
-		return augment2Press;
-	}
-
-	public boolean isAugment3Press() {
-		return augment3Press;
-	}
-
 	public boolean isTabPress() {
 		return tabPress;
 	}
@@ -310,11 +377,54 @@ public class KeyHandle implements KeyListener{
 		accessReturnLoopy = false;
 		accessLoadMap = false;
 	}
-	public boolean isFlashPress() {
-		return flashPress;
+	public boolean isSupportSkill1() {
+		return supportSkill1;
 	}
 
-	public void setFlashPress(boolean flashPress) {
-		this.flashPress = flashPress;
+	public void setSupportSkill1(boolean supportSkill1) {
+		this.supportSkill1 = supportSkill1;
+	}
+	public boolean isSupportSkill2() {
+		return supportSkill2;
+	}
+
+	public void setSupportSkill2(boolean supportSkill2) {
+		this.supportSkill2 = supportSkill2;
+	}
+    public boolean isAccessExitGame() {
+        return accessExitGame;
+    }
+
+    public void setAccessExitGame(boolean exitGame) {
+        this.accessExitGame = exitGame;
+    }
+
+    public boolean isAccessSaveGame() {
+        return accessSaveGame;
+    }
+
+    public void setAccessSaveGame(boolean saveGame) {
+        this.accessSaveGame = saveGame;
+    }
+	public boolean isResetSkillSupport() {
+		return isResetSkillSupport;
+	}
+
+	public void setResetSkillSupport(boolean resetSkillSupport) {
+		isResetSkillSupport = resetSkillSupport;
+	}
+	public boolean isAddSkillSupport() {
+		return isAddSkillSupport;
+	}
+
+	public void setAddSkillSupport(boolean addSkill) {
+		isAddSkillSupport = addSkill;
+	}
+	public String getYourAddSkillSupport() {
+		return yourAddSkillSupport;
+	}
+
+	public void setYourAddSkillSupport(String yourAddSkillSupport) {
+		this.yourAddSkillSupport = yourAddSkillSupport;
 	}
 }

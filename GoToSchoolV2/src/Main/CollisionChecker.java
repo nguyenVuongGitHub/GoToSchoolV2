@@ -277,7 +277,12 @@ public class CollisionChecker {
             quadTree.insert(point);
         }
         for(Entity skill : skills) {
-            RectangleQ range = new RectangleQ(skill.getBounds());
+            int padding = 600;
+            int x = skill.getBounds().x - padding;
+            int y = skill.getBounds().y - padding;
+            int w = skill.getBounds().width + padding*2;
+            int h = skill.getBounds().height + padding*2;
+            RectangleQ range = new RectangleQ(x,y,w,h);
             List<PointQ> pointsNearSkill =  quadTree.query(range);
             for(PointQ point : pointsNearSkill) {
                 Entity other = point.getUserData();
@@ -307,7 +312,13 @@ public class CollisionChecker {
         }
 
         for(Entity monster : monsters) {
-            RectangleQ range = new RectangleQ(monster.getBounds());
+            // khoảng range lớn hơn khoảng va chạm phần đệm là 30
+            int padding = 30;
+            int x = monster.getBounds().x - padding;
+            int y = monster.getBounds().y - padding;
+            int w = monster.getBounds().width + padding*2;
+            int h = monster.getBounds().height + padding*2;
+            RectangleQ range = new RectangleQ(x,y,w,h);
             List<PointQ> points = quadTree.query(range);
             for (PointQ point : points) {
                 Entity other = point.getUserData();
@@ -327,7 +338,13 @@ public class CollisionChecker {
             PointQ p = new PointQ(bounds.x + bounds.width/2, bounds.y + bounds.height/2, m);
             quadTree.insert(p);
         }
-        RectangleQ range = new RectangleQ(player.getBounds());
+        // khoảng range lớn hơn khoảng va chạm của người chơi
+        int padding = 600;
+        int x = player.getBounds().x - padding;
+        int y = player.getBounds().y - padding;
+        int w = player.getBounds().width + padding*2;
+        int h = player.getBounds().height + padding*2;
+        RectangleQ range = new RectangleQ(x,y,w,h);
         List<PointQ> points = quadTree.query(range);
 
         for (PointQ point : points) {
@@ -345,6 +362,7 @@ public class CollisionChecker {
             }
         }
         quadTree.clear();
+
     }
     private void checkSkeletonWeaponWithPlayer(Entity player, List<Entity> skeletonAttacks) {
         QuadTree quadTree = new QuadTree(20,gs.boundsQuadTree,gs);

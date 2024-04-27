@@ -50,7 +50,7 @@ public class PointX {
     }
     public double dot(PointX other)
     {
-        return x * other.y + y * other.x;
+        return x * other.x + y * other.y;
     }
     public PointX normalize()
     {

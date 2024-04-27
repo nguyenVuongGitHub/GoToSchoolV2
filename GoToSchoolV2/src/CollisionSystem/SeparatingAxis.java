@@ -4,7 +4,10 @@ import Entity.Entity;
 import Main.GameState;
 import tile.TileManager;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 
 public class SeparatingAxis {
@@ -31,6 +34,7 @@ public class SeparatingAxis {
             PointX vb = e1.getVertices().get((i+1) % e1.getVertices().size());
             PointX edge = vb.minusVector(va);
             PointX axis = new PointX(-edge.y, edge.x);
+            axis = axis.normalize();
 
             double min1 = INF;
             double max1 = -INF;
@@ -85,6 +89,7 @@ public class SeparatingAxis {
             PointX vb = e2.getVertices().get((i+1) % e2.getVertices().size());
             PointX edge = vb.minusVector(va);
             PointX axis = new PointX(-edge.y, edge.x);
+            axis = axis.normalize();
 
             double min1 = INF;
             double max1 = -INF;
@@ -135,8 +140,7 @@ public class SeparatingAxis {
         }
         e2.setCollision(true);
         e1.setCollision(true);
-        depth /= normal.length();
-        normal = normal.normalize();
+
         PointX centerA = PointX.getCenterPointFromList(e1.getVertices());
         PointX centerB = PointX.getCenterPointFromList(e2.getVertices());
 
@@ -148,8 +152,8 @@ public class SeparatingAxis {
         }
         if(move1)
         {
-            double nextX = e1.getWorldX() - depth / 2 * normal.getY();
-            double nextY = e1.getWorldY() - depth /2 * normal.getX();
+            double nextX = e1.getWorldX() - depth / 2 * normal.getX();
+            double nextY = e1.getWorldY() - depth /2 * normal.getY();
             int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile() , TileManager.highestLayer);
             int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
@@ -158,14 +162,14 @@ public class SeparatingAxis {
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile2) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile3) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile4)) {
-                e1.setWorldX(e1.getWorldX() - depth / 2 * normal.getY());
-                e1.setWorldY(e1.getWorldY() - depth /2 * normal.getX());
+                e1.setWorldX(e1.getWorldX() - depth / 2 * normal.getX());
+                e1.setWorldY(e1.getWorldY() - depth /2 * normal.getY());
             }
         }
         if(move2)
         {
-            double nextX = e2.getWorldX() + depth / 2 * normal.getY();
-            double nextY = e2.getWorldY() + depth /2 * normal.getX();
+            double nextX = e2.getWorldX() + depth / 2 * normal.getX();
+            double nextY = e2.getWorldY() + depth /2 * normal.getY();
             int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
@@ -174,8 +178,8 @@ public class SeparatingAxis {
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile2) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile3) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile4)) {
-                e2.setWorldX(e2.getWorldX() + depth / 2 * normal.getY());
-                e2.setWorldY(e2.getWorldY() + depth /2 * normal.getX());
+                e2.setWorldX(e2.getWorldX() + depth / 2 * normal.getX());
+                e2.setWorldY(e2.getWorldY() + depth /2 * normal.getY());
             }
         }
         return true;
@@ -198,7 +202,6 @@ public class SeparatingAxis {
         double sumRadius = e1.getRadius() + e2.getRadius();
         if(distance >= sumRadius)
         {
-            System.out.println("check");
             return false;
         }
         normal = center1.minusVector(center2).normalize();
@@ -206,8 +209,8 @@ public class SeparatingAxis {
 
         if(move1)
         {
-            double nextX = e1.getWorldX() - normal.getX() * depth /2;
-            double nextY = e1.getWorldY() - normal.getY() * depth /2;
+            double nextX = e1.getWorldX() + normal.getX() * depth /2;
+            double nextY = e1.getWorldY() + normal.getY() * depth /2;
             int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
@@ -216,14 +219,14 @@ public class SeparatingAxis {
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile2) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile3) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile4)) {
-                e1.setWorldX(e1.getWorldX() - normal.getX() * depth /2);
-                e1.setWorldY(e1.getWorldY() - normal.getY() * depth /2);
+                e1.setWorldX(e1.getWorldX() + normal.getX() * depth /2);
+                e1.setWorldY(e1.getWorldY() + normal.getY() * depth /2);
             }
         }
         if(move2)
         {
-            double nextX = e2.getWorldX() + normal.getX() * depth /2;
-            double nextY = e2.getWorldY() + normal.getY() * depth /2;
+            double nextX = e2.getWorldX() - normal.getX() * depth /2;
+            double nextY = e2.getWorldY() - normal.getY() * depth /2;
             int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
@@ -232,8 +235,8 @@ public class SeparatingAxis {
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile2) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile3) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile4)) {
-                e2.setWorldX(e2.getWorldX() + normal.getX() * depth /2);
-                e2.setWorldY(e2.getWorldY() + normal.getY() * depth /2);
+                e2.setWorldX(e2.getWorldX() - normal.getX() * depth /2);
+                e2.setWorldY(e2.getWorldY() - normal.getY() * depth /2);
             }
         }
         return true;
@@ -275,19 +278,20 @@ public class SeparatingAxis {
         double depth = INF;
         PointX normal = null;
         double axisDepth;
-
         for(int i=0; i<e1.getVertices().size(); i++) {
             PointX va = e1.getVertices().get(i);
             PointX vb = e1.getVertices().get((i + 1) % e1.getVertices().size());
             PointX edge = vb.minusVector(va);
             PointX axis = new PointX(-edge.y, edge.x);
+            axis = axis.normalize();
 
             double min1 = INF;
             double max1 = -INF;
 
+            double proj;
+
             for (int j = 0; j < e1.getVertices().size(); j++) {
-                PointX v = e1.getVertices().get(j);
-                double proj = axis.dot(v);
+                proj = axis.dot(e1.getVertices().get(j));
                 if (proj < min1) {
                     min1 = proj;
                 }
@@ -296,16 +300,16 @@ public class SeparatingAxis {
                 }
             }
 
-            PointX direction = axis.normalize();
-            PointX directionRadius = direction.multipleVector(e2.getRadius());
+            double min2;
+            double max2;
 
-            PointX centerCir = PointX.getCenterPointFromList(e2.getVertices());
+            PointX directionRadius = axis.normalize().multipleVector(e2.getRadius());
 
-            PointX vectorRadius1 = centerCir.sumVector(directionRadius);
-            PointX vectorRadius2 = centerCir.minusVector(directionRadius);
+            PointX vectorRadius1 = PointX.getCenterPointFromList(e2.getVertices()).sumVector(directionRadius);
+            PointX vectorRadius2 = PointX.getCenterPointFromList(e2.getVertices()).minusVector(directionRadius);
 
-            double min2 = axis.dot(vectorRadius2);
-            double max2 = axis.dot(vectorRadius1);
+            min2 = axis.dot(vectorRadius1);
+            max2 = axis.dot(vectorRadius2);
             if (min2 > max2) {
                 double tmp = min2;
                 min2 = max2;
@@ -323,12 +327,12 @@ public class SeparatingAxis {
         int cpIndex = FindClosestPointFromPolygonToCircle(e1, e2);
         PointX cp = e1.getVertices().get(cpIndex);
         PointX axis = cp.minusVector(PointX.getCenterPointFromList(e2.getVertices()));
+        axis = axis.normalize();
         double min1 = INF;
         double max1 = -INF;
         for(int i=0; i<e1.getVertices().size(); i++)
         {
-            PointX tmp = e1.getVertices().get(i);
-            double proj = axis.dot(tmp);
+            double proj = axis.dot(e1.getVertices().get(i));
             if(proj < min1)
             {
                 min1 = proj;
@@ -338,13 +342,15 @@ public class SeparatingAxis {
                 max1 = proj;
             }
         }
+        double min2;
+        double max2;
         PointX directionRadius = axis.normalize().multipleVector(e2.getRadius());
 
         PointX vectorRadius1 = PointX.getCenterPointFromList(e2.getVertices()).sumVector(directionRadius);
         PointX vectorRadius2 = PointX.getCenterPointFromList(e2.getVertices()).minusVector(directionRadius);
 
-        double min2 = axis.dot(vectorRadius1);
-        double max2 = axis.dot(vectorRadius2);
+        min2 = axis.dot(vectorRadius1);
+        max2 = axis.dot(vectorRadius2);
         if(min2 > max2)
         {
             double tmp = min2;
@@ -361,8 +367,7 @@ public class SeparatingAxis {
             depth = axisDepth;
             normal = axis;
         }
-        depth /= normal.length();
-        normal = normal.normalize();
+
         PointX centerPolygon = PointX.getCenterPointFromList(e1.getVertices());
         PointX centerCircle = PointX.getCenterPointFromList(e2.getVertices());
         PointX direction = centerCircle.minusVector(centerPolygon);
@@ -373,8 +378,8 @@ public class SeparatingAxis {
 
         if(move1)
         {
-            double nextX = e1.getWorldX() - normal.getX() * depth /2;
-            double nextY = e1.getWorldY() - normal.getY() * depth /2;
+            double nextX = e1.getWorldX() + normal.getX() * depth /2;
+            double nextY = e1.getWorldY() + normal.getY() * depth /2;
             int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
@@ -383,14 +388,14 @@ public class SeparatingAxis {
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile2) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile3) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile4)) {
-                e1.setWorldX(e1.getWorldX() - normal.getX() * depth /2);
-                e1.setWorldY(e1.getWorldY() - normal.getY() * depth /2);
+                e1.setWorldX(e1.getWorldX() + normal.getX() * depth /2);
+                e1.setWorldY(e1.getWorldY() + normal.getY() * depth /2);
             }
         }
         if(move2)
         {
-            double nextX = e2.getWorldX() + normal.getX() * depth /2;
-            double nextY = e2.getWorldY() + normal.getY() * depth /2;
+            double nextX = e2.getWorldX() + direction.normalize().getX() * depth /2;
+            double nextY = e2.getWorldY() + direction.normalize().getY() * depth /2;
             int tile = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile2 = gs.tileM.getLayer((int) (nextX + gs.getTile()) / gs.getTile(),(int) nextY / gs.getTile(), TileManager.highestLayer);
             int tile3 = gs.tileM.getLayer((int) nextX / gs.getTile(),(int) (nextY + gs.getTile()) / gs.getTile(), TileManager.highestLayer);
@@ -399,8 +404,8 @@ public class SeparatingAxis {
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile2) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile3) &&
                     gs.tileM.getWall().stream().noneMatch(w -> w.getValue() == tile4)) {
-                e2.setWorldX(e2.getWorldX() + normal.getX() * depth /2);
-                e2.setWorldY(e2.getWorldY() + normal.getY() * depth /2);
+                e2.setWorldX(e2.getWorldX() + direction.normalize().getX() * depth /2);
+                e2.setWorldY(e2.getWorldY() + direction.normalize().getY() * depth /2);
             }
         }
         return true;

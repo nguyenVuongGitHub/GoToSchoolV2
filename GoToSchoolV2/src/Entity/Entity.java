@@ -4,6 +4,7 @@ package Entity;
 
 import Main.GameState;
 import CollisionSystem.*;
+import Weapon.TypeSkill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,14 @@ public abstract class Entity {
 	protected GameState gs;
 	// CHARACTER ATTIBUTES
 	protected TYPE type;
+	protected TypeSkill typeSkill = new TypeSkill();
 	protected int speed;
 	protected int damage;
 	protected int hp;
 	protected boolean alive = true;
 	protected double worldX, worldY;
 	protected List<PointX> vertices = new ArrayList<>();
-	protected double radius = 25;
+	protected double radius = 80;
 	protected boolean collision = false;
 	protected boolean collisionOn = false;
 
@@ -168,4 +170,12 @@ public abstract class Entity {
 	public String getBeforeDirection() {
         return null;
     }
+
+	public TypeSkill getTypeSkill() {
+		return typeSkill;
+	}
+
+	public void setTypeSkill(TypeSkill typeSkill) {
+		this.typeSkill = typeSkill;
+	}
 }
