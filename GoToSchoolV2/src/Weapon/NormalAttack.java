@@ -1,5 +1,6 @@
 package Weapon;
 
+import AttackSkill.ATTACK_SKILL;
 import Entity.TYPE;
 import Main.GameState;
 
