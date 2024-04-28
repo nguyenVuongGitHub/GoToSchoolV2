@@ -40,6 +40,7 @@ public class Slime extends Monster{
         damage = 3;
         sight = 500;
         type = TYPE.MONSTER;
+        typeMonster = TypeMonster.SLIME;
         solidArea = new Rectangle(8,10,64- 16,64-10);
         getImage();
         clearVertices();

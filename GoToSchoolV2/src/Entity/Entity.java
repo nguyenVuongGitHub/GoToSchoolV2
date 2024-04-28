@@ -43,7 +43,7 @@ public abstract class Entity {
 
 	protected int screenX;
 	protected int screenY;
-
+	int scale = 1;
 	protected BufferedImage up1 = null, up2 = null, up3 = null, up4 = null, up5 = null, up6 = null,
 			down1 = null, down2 = null, down3 = null, down4 = null, down5 = null, down6 = null,
 			left1 = null, left2 = null, left3 = null, left4 = null, left5 = null, left6 = null,

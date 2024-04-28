@@ -3,6 +3,7 @@ package Entity;
 import CollisionSystem.PointX;
 import Main.CollisionChecker;
 import Main.GameState;
+import Main.UtilityTool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,7 +17,6 @@ public class Player extends Entity{
     public Player(GameState gs) {
         super(gs);
         init();
-
         screenX = gs.getWindowWidth()/2 - (gs.getTile()/2);
         screenY = gs.getWindowHeight()/2 - (gs.getTile()/2);
     }
@@ -31,48 +31,133 @@ public class Player extends Entity{
         damage = 1;
         direction = "down";
         solidArea = new Rectangle(50,64,32,30);
+        scale = 2;
         getImage();
         clearVertices();
         setPolygonVertices();
     }
-    @Override
-    public void getImage() {
+    /*public void getImage() {
         try {
 
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_1.png"));
 
-            up2 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_2.png"));
-            up3 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_3.png"));
-            up4 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_4.png"));
-            up5 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_5.png"));
-            up6 = ImageIO.read(getClass().getResourceAsStream("/player/player_up_6.png"));
+            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png")));
+            up1 = uTool.scaleImage(up1,scale);
+            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
+            up2 = uTool.scaleImage(up2,scale);
+            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
+            up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_4.png")));
+            up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_5.png")));
+            up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_6.png")));
 
-            down1 = ImageIO.read(getClass().getResourceAsStream("/player/player_down_1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/player/player_down_2.png"));
-            down3 = ImageIO.read(getClass().getResourceAsStream("/player/player_down_3.png"));
-            down4 = ImageIO.read(getClass().getResourceAsStream("/player/player_down_4.png"));
-            down5 = ImageIO.read(getClass().getResourceAsStream("/player/player_down_5.png"));
-            down6 = ImageIO.read(getClass().getResourceAsStream("/player/player_down_6.png"));
+            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
+            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
+            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
+            down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_4.png")));
+            down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_5.png")));
+            down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_6.png")));
 
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/player_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/player_left_2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/player/player_left_3.png"));
-            left4 = ImageIO.read(getClass().getResourceAsStream("/player/player_left_4.png"));
-            left5 = ImageIO.read(getClass().getResourceAsStream("/player/player_left_5.png"));
-            left6 = ImageIO.read(getClass().getResourceAsStream("/player/player_left_6.png"));
+            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
+            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
+            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
+            left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_4.png")));
+            left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_5.png")));
+            left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_6.png")));
 
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_4.png"));
-            right5 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_5.png"));
-            right6 = ImageIO.read(getClass().getResourceAsStream("/player/player_right_6.png"));
+            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
+            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
+            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
+            right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_4.png")));
+            right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_5.png")));
+            right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_6.png")));
 
             currentImage = down1;
         }catch(IOException e) {
             e.printStackTrace();
         }
+    }*/
+    @Override
+    public void getImage() {
+        try {
+            loadUpImages();
+            loadDownImages();
+            loadLeftImages();
+            loadRightImages();
+
+            // Set default image
+            currentImage = down1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    private void loadUpImages() throws IOException {
+        UtilityTool uTool = new UtilityTool();
+        up1 = loadImage("/player/player_up_1.png");
+        up2 = loadImage("/player/player_up_2.png");
+        up3 = loadImage("/player/player_up_3.png");
+        up4 = loadImage("/player/player_up_4.png");
+        up5 = loadImage("/player/player_up_5.png");
+        up6 = loadImage("/player/player_up_6.png");
+        up1 = uTool.scaleImage(up1,scale);
+        up2 = uTool.scaleImage(up2,scale);
+        up3 = uTool.scaleImage(up3,scale);
+        up4 = uTool.scaleImage(up4,scale);
+        up5 = uTool.scaleImage(up5,scale);
+        up6 = uTool.scaleImage(up6,scale);
+    }
+
+    private void loadDownImages() throws IOException {
+        UtilityTool uTool = new UtilityTool();
+        down1 = loadImage("/player/player_down_1.png");
+        down2 = loadImage("/player/player_down_2.png");
+        down3 = loadImage("/player/player_down_3.png");
+        down4 = loadImage("/player/player_down_4.png");
+        down5 = loadImage("/player/player_down_5.png");
+        down6 = loadImage("/player/player_down_6.png");
+        down1 = uTool.scaleImage(down1,scale);
+        down2 = uTool.scaleImage(down2,scale);
+        down3 = uTool.scaleImage(down3,scale);
+        down4 = uTool.scaleImage(down4,scale);
+        down5 = uTool.scaleImage(down5,scale);
+        down6 = uTool.scaleImage(down6,scale);
+    }
+
+    private void loadLeftImages() throws IOException {
+        UtilityTool uTool = new UtilityTool();
+        left1 = loadImage("/player/player_left_1.png");
+        left2 = loadImage("/player/player_left_2.png");
+        left3 = loadImage("/player/player_left_3.png");
+        left4 = loadImage("/player/player_left_4.png");
+        left5 = loadImage("/player/player_left_5.png");
+        left6 = loadImage("/player/player_left_6.png");
+        left1 = uTool.scaleImage(left1,scale);
+        left2 = uTool.scaleImage(left2,scale);
+        left3 = uTool.scaleImage(left3,scale);
+        left4 = uTool.scaleImage(left4,scale);
+        left5 = uTool.scaleImage(left5,scale);
+        left6 = uTool.scaleImage(left6,scale);
+    }
+
+    private void loadRightImages() throws IOException {
+        UtilityTool uTool = new UtilityTool();
+        right1 = loadImage("/player/player_right_1.png");
+        right2 = loadImage("/player/player_right_2.png");
+        right4 = loadImage("/player/player_right_4.png");
+        right3 = loadImage("/player/player_right_3.png");
+        right5 = loadImage("/player/player_right_5.png");
+        right6 = loadImage("/player/player_right_6.png");
+        right1 = uTool.scaleImage(right1,scale);
+        right2 = uTool.scaleImage(right2,scale);
+        right3 = uTool.scaleImage(right3,scale);
+        right4 = uTool.scaleImage(right4,scale);
+        right5 = uTool.scaleImage(right5,scale);
+        right6 = uTool.scaleImage(right6,scale);
+    }
+
+    private BufferedImage loadImage(String path) throws IOException {
+        return ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+    }
+
 
     @Override
     public void update() {
@@ -333,9 +418,9 @@ public class Player extends Entity{
             }
         }
 
-        g2.drawImage(currentImage, screenX, screenY, gs.getTile()*2, gs.getTile()*2, null);
+        g2.drawImage(currentImage, screenX, screenY, null);
 //        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, getBounds().width, getBounds().height);
-        drawVertices(g2);
+//        drawVertices(g2);
     }
     public String getBeforeDirection() {
         return beforeDirection;
