@@ -1,4 +1,4 @@
-package Weapon;
+package SPSkill;
 
 public enum SUPPORT_SKILL {
     Flash,

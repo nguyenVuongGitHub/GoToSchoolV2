@@ -19,7 +19,7 @@ import User.UserManager;
 import SPSkill.Flash;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
-import Weapon.SUPPORT_SKILL;
+import SPSkill.SUPPORT_SKILL;
 import tile.TileManager;
 
 

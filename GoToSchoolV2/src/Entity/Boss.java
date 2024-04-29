@@ -25,7 +25,6 @@ public class Boss extends Monster{
     BufferedImage[] imageDie;
     String state = "move";
     boolean changeState = false;
-    int scale = 6;
     public Boss(GameState gs) {
         super(gs);
         init();
@@ -51,8 +50,8 @@ public class Boss extends Monster{
         sight = 6000;
         type = TYPE.MONSTER;
         typeMonster = TypeMonster.BOSS;
-        solidArea = new Rectangle(24*scale,24*scale,50*scale,48*scale);
-
+        scale = 6;
+        solidArea = new Rectangle(30*scale,30*scale,45*scale,40*scale);
         getImage();
         clearVertices();
         setPolygonVertices();
@@ -84,7 +83,7 @@ public class Boss extends Monster{
                 g2.drawImage(currentImage, screenX, screenY, null);
             }
 //            g2.drawRect(screenX+getSolidArea().x,screenY+getSolidArea().y, getBounds().width, getBounds().height);
-            drawVertices(g2);
+//            drawVertices(g2);
         }
     }
 
@@ -131,79 +130,79 @@ public class Boss extends Monster{
                     TIME_COUNT_DOWN_ATTACK--;
                 }
             }
-//            collisionOn = false;
-//            gs.CC.checkEntityWithTile(this);
-//            int collisionWith;
-//
-//            // Trường hợp di chuyển bình thường khi  không có va chạm
-//            if(!collisionOn && canMoving){
-//                if(Objects.equals(direction, "up"))
-//                    worldY -= speed;
-//                if(Objects.equals(direction, "down"))
-//                    worldY += speed;
-//                if(Objects.equals(direction, "left"))
-//                    worldX -= speed;
-//                if(Objects.equals(direction, "right"))
-//                    worldX += speed;
-//                timeMoving--;
-//            }
-//
-//            // Kiểm tra nếu có va chạm và đối tượng có thể di chuyển
-//            if(collisionOn && canMoving) {
-//                // Kiểm tra hướng di chuyển của đối tượng
-//                if(Objects.equals(direction, "up") || Objects.equals(direction, "down")) {
-//                    // Kiểm tra va chạm với ô bên trái của đối tượng
-//                    collisionWith = gs.CC.checkEntityWithTile(this, "left");
-//                    // Nếu không có va chạm và vị trí của người chơi nằm bên trái đối tượng
-//                    if(collisionWith != CollisionChecker.LEFT && gs.player.getWorldX() <= this.worldX) {
-//                        // Di chuyển đối tượng sang trái
-//                        worldX -= speed;
-//                    }
-//
-//                    // Kiểm tra va chạm với ô bên phải của đối tượng
-//                    collisionWith = gs.CC.checkEntityWithTile(this, "right");
-//                    // Nếu không có va chạm và vị trí của người chơi nằm bên phải đối tượng
-//                    if(collisionWith != CollisionChecker.RIGHT && gs.player.getWorldX() > this.worldX) {
-//                        // Di chuyển đối tượng sang phải
-//                        worldX += speed;
-//                    }
-//                }
-//
-//                // Kiểm tra hướng di chuyển của đối tượng
-//                if(Objects.equals(direction, "left") || Objects.equals(direction, "right")) {
-//                    // Kiểm tra va chạm với ô phía trên của đối tượng
-//                    collisionWith = gs.CC.checkEntityWithTile(this, "up");
-//                    // Nếu không có va chạm và vị trí của người chơi nằm phía trên đối tượng
-//                    if(collisionWith != CollisionChecker.UP && gs.player.getWorldY() <= this.worldY) {
-//                        // Di chuyển đối tượng lên trên
-//                        worldY -= speed;
-//                    }
-//
-//                    // Kiểm tra va chạm với ô phía dưới của đối tượng
-//                    collisionWith = gs.CC.checkEntityWithTile(this, "down");
-//                    // Nếu không có va chạm và vị trí của người chơi nằm phía dưới đối tượng
-//                    if(collisionWith != CollisionChecker.DOWN && gs.player.getWorldY() > this.worldY) {
-//                        // Di chuyển đối tượng xuống dưới
-//                        worldY += speed;
-//                    }
-//                }
-//
-//                // Giảm thời gian di chuyển của đối tượng
-//                timeMoving--;
-//            }
-//            // trong trường hợp có va chạm và thời gian còn di chuyển được ( đang trong trạng thái AI)
-//            if(collisionOn && timeMoving > 0) {
-//                // đổi các hướng của đối tượng
-//                if(Objects.equals(direction, "right"))
-//                    direction = "left";
-//                if(Objects.equals(direction,"left"))
-//                    direction = "right";
-//                if(Objects.equals(direction,"up"))
-//                    direction = "down";
-//                if(Objects.equals(direction,"down"))
-//                    direction = "up";
-//                timeMoving--;
-//            }
+            collisionOn = false;
+            gs.CC.checkEntityWithTile(this);
+            int collisionWith;
+
+            // Trường hợp di chuyển bình thường khi  không có va chạm
+            if(!collisionOn && canMoving){
+                if(Objects.equals(direction, "up"))
+                    worldY -= speed;
+                if(Objects.equals(direction, "down"))
+                    worldY += speed;
+                if(Objects.equals(direction, "left"))
+                    worldX -= speed;
+                if(Objects.equals(direction, "right"))
+                    worldX += speed;
+                timeMoving--;
+            }
+
+            // Kiểm tra nếu có va chạm và đối tượng có thể di chuyển
+            if(collisionOn && canMoving) {
+                // Kiểm tra hướng di chuyển của đối tượng
+                if(Objects.equals(direction, "up") || Objects.equals(direction, "down")) {
+                    // Kiểm tra va chạm với ô bên trái của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "left");
+                    // Nếu không có va chạm và vị trí của người chơi nằm bên trái đối tượng
+                    if(collisionWith != CollisionChecker.LEFT && gs.player.getWorldX() <= this.worldX) {
+                        // Di chuyển đối tượng sang trái
+                        worldX -= speed;
+                    }
+
+                    // Kiểm tra va chạm với ô bên phải của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "right");
+                    // Nếu không có va chạm và vị trí của người chơi nằm bên phải đối tượng
+                    if(collisionWith != CollisionChecker.RIGHT && gs.player.getWorldX() > this.worldX) {
+                        // Di chuyển đối tượng sang phải
+                        worldX += speed;
+                    }
+                }
+
+                // Kiểm tra hướng di chuyển của đối tượng
+                if(Objects.equals(direction, "left") || Objects.equals(direction, "right")) {
+                    // Kiểm tra va chạm với ô phía trên của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "up");
+                    // Nếu không có va chạm và vị trí của người chơi nằm phía trên đối tượng
+                    if(collisionWith != CollisionChecker.UP && gs.player.getWorldY() <= this.worldY) {
+                        // Di chuyển đối tượng lên trên
+                        worldY -= speed;
+                    }
+
+                    // Kiểm tra va chạm với ô phía dưới của đối tượng
+                    collisionWith = gs.CC.checkEntityWithTile(this, "down");
+                    // Nếu không có va chạm và vị trí của người chơi nằm phía dưới đối tượng
+                    if(collisionWith != CollisionChecker.DOWN && gs.player.getWorldY() > this.worldY) {
+                        // Di chuyển đối tượng xuống dưới
+                        worldY += speed;
+                    }
+                }
+
+                // Giảm thời gian di chuyển của đối tượng
+                timeMoving--;
+            }
+            // trong trường hợp có va chạm và thời gian còn di chuyển được ( đang trong trạng thái AI)
+            if(collisionOn && timeMoving > 0) {
+                // đổi các hướng của đối tượng
+                if(Objects.equals(direction, "right"))
+                    direction = "left";
+                if(Objects.equals(direction,"left"))
+                    direction = "right";
+                if(Objects.equals(direction,"up"))
+                    direction = "down";
+                if(Objects.equals(direction,"down"))
+                    direction = "up";
+                timeMoving--;
+            }
         }
         spriteCounter++;
         if(spriteCounter > 5) {
@@ -257,16 +256,16 @@ public class Boss extends Monster{
     }
 
     public void attacking() {
-//        if(gs.lazeBoss == null) {
-//            gs.lazeBoss = new LazerBoss(gs);
-//            gs.lazeBoss.worldX = this.worldX;
-//            gs.lazeBoss.worldY = this.worldY;
-//            gs.lazeBoss.direction = this.direction;
-//            Random random = new Random();
-//            int angle  = random.nextInt(181) - 90;
-////            int angle = 10;
-//            gs.lazeBoss.setAngleTarget(Math.toRadians(angle));
-//        }
+        if(gs.lazeBoss == null) {
+            gs.lazeBoss = new LazerBoss(gs);
+            gs.lazeBoss.worldX = this.worldX;
+            gs.lazeBoss.worldY = this.worldY;
+            gs.lazeBoss.direction = this.direction;
+            Random random = new Random();
+            int angle  = random.nextInt(181) - 90;
+//            int angle = 10;
+            gs.lazeBoss.setAngleTarget(Math.toRadians(angle));
+        }
     }
     public void getImage() {
         try {
