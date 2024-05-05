@@ -7,6 +7,10 @@ import java.util.List;
 
 import javax.swing.*;
 
+import AttackSkill.ArrowLight;
+import AttackSkill.CircleFire;
+import AttackSkill.MoonLight;
+import AttackSkill.MultiArrow;
 import CollisionSystem.SeparatingAxis;
 import Entity.*;
 import Quadtree.RectangleQ;
@@ -61,9 +65,6 @@ public class GameState extends JPanel implements Runnable{
 	public int indexSkillSupport1 = 0;
 	public int indexSkillSupport2 = 1;
 	public Map<String,Integer> Map_chooseSkill = new HashMap<>();
-	public Entity flashSkill = null;
-	public Entity healing = null;
-	public Entity speedFaster = null;
 	public List<Entity> skeletonAttacks = new ArrayList<>();
 	public Entity lazeBoss = new LazerBoss(this);
 	public List<Entity> coins = new ArrayList<>();
@@ -123,6 +124,22 @@ public class GameState extends JPanel implements Runnable{
 				NormalAttack.TIME_COUNT_DOWN_ATTACK--;
 				if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
 					NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				MoonLight.TIME_COUNT_DOWN_ATTACK--;
+				if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+					MoonLight.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				ArrowLight.TIME_COUNT_DOWN_ATTACK--;
+				if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+					ArrowLight.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				MultiArrow.TIME_COUNT_DOWN_ATTACK--;
+				if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+					MultiArrow.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				CircleFire.TIME_COUNT_DOWN_ATTACK--;
+				if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+					CircleFire.TIME_COUNT_DOWN_ATTACK = -1;
 				}
 				Flash.TIME_COUNT_DOWN--;
 				if(Flash.TIME_COUNT_DOWN <= 0) {
@@ -227,12 +244,32 @@ public class GameState extends JPanel implements Runnable{
 			skillAttacks.add(normalAttack);
 			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
 		}
-//		for(Map.Entry<String,Integer> entry : Map_chooseSkill.entrySet()) {
-//			System.out.println(entry.getKey() + " " + entry.getValue());
+//		if (keyHandle.isSkill1Press() && MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+//			Entity moonLight = new MoonLight(this);
+//			skillAttacks.add(moonLight);
+//			MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
 //		}
-//		for(int i = 0; i < skillSupports.size(); i++) {
-//			System.out.println("skill " + (i+1) + " "  + skillSupports.get(i).getTypeSkill().typeSupport);
-//		}
+		if (keyHandle.isSkill1Press() && CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+			Entity moonLight = new CircleFire(this);
+			skillAttacks.add(moonLight);
+			CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
+		}
+		if (keyHandle.isSkill2Press() && ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+			Entity arrowLight = new ArrowLight(this);
+			skillAttacks.add(arrowLight);
+			ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
+		}
+		if (keyHandle.isSkill3Press() && MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+			Entity multiArrow1 = new MultiArrow(this);
+			Entity multiArrow2 = new MultiArrow(this);
+			Entity multiArrow3 = new MultiArrow(this);
+			multiArrow2.setAngleTarget(Math.toRadians((int)Math.toDegrees(multiArrow1.getAngleTarget()) - 10));
+			multiArrow3.setAngleTarget(Math.toRadians((int)Math.toDegrees(multiArrow1.getAngleTarget()) + 10));
+			skillAttacks.add(multiArrow1);
+			skillAttacks.add(multiArrow2);
+			skillAttacks.add(multiArrow3);
+			MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
+		}
 		if(keyHandle.isSupportSkill1() && loopy.getSkillHave() >= 1) {
 			Entity e = skillSupports.get(indexSkillSupport1);
 			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flash) {
@@ -334,7 +371,11 @@ public class GameState extends JPanel implements Runnable{
 	public int getWindowWidth() {return WINDOW_WIDTH;}
 	public int getMaxWorldCol() {return maxWorldCol;}
 	public int getMaxWorldRow() {return maxWorldRow;}
-
+	public boolean inSightWorld(double x, double y) {
+		int width = maxWorldRow*tile;
+		int height = maxWorldCol*tile;
+		return (x >= 0 || x <= width) && (y >= 0 || y <= height);
+	}
 	public void setGameExit() {
 		gameThread = null;
 	}

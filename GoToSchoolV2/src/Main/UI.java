@@ -18,7 +18,6 @@ public class UI {
     boolean isDrawChooseSkillsSupport = false;
 
 
-
     public UI(GameState gs) {
         this.gs = gs;
         try {
@@ -48,6 +47,8 @@ public class UI {
 
         }
     }
+
+    //====================================================================================
     private void playerSayAny(String words) {
         int x = 2 * gs.getTile() + 6*gs.getTile();
         int y = 2 * gs.getTile();
@@ -59,6 +60,7 @@ public class UI {
         y += gs.getTile();
         g2.drawString(words,x,y);
     }
+
     public void drawSubWindow(int x, int y, int width, int height, Graphics2D g2, int stroke, Color background, Color border,
                               int roundx,int roundy, int withx, int heighty,int arcw, int arch) {
 //        Color c = new Color(0,0,0,210);
@@ -77,6 +79,25 @@ public class UI {
         g2.setColor(c);
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+    }
+
+    //====================================================================================
+    private void drawLoopy() {
+        if(gs.keyHandle.isTabPress()) {
+            drawInformationPlayer();
+        }
+        if(isDrawNotice) {
+            drawNotice();
+        }
+        if(isDrawExitGame) {
+            drawDialogExitGame();
+        }
+        if(isDrawChooseSkillsSupport) {
+            drawChooseSkillSupport();
+        }
+        if(isPlayerSay) {
+            playerSayAny("SAVE SUCCESSFUL");
+        }
     }
     public void drawInformationPlayer() {
         int x = 2 * gs.getTile();
@@ -256,6 +277,29 @@ public class UI {
         }
 
     }
+    private void drawBuySkillSupport() {
+        int x = 2 * gs.getTile();
+        int y = 2 * gs.getTile();
+        int w = 7 * gs.getTile();
+        int h = 10 * gs.getTile();
+        drawSubWindow(x,y,w,h,g2);
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+        int xString = x+gs.getTile();
+        int yString = y+gs.getTile();
+        xString += gs.getTile();
+        g2.drawString("BUY SKILLS SUPPORT",xString,yString);
+        xString = 3 * gs.getTile();
+        g2.drawString("Coins : " + gs.user.getCoin(),xString,yString);
+        yString += gs.getTile();
+
+        yString += gs.getTile();
+        g2.drawString("SPACE to choose.",xString,yString);
+        yString += gs.getTile();
+        g2.drawString("Q to reset.",xString,yString);
+        yString += gs.getTile();
+        System.out.println(yString/gs.getTile());
+        g2.drawString("ESC to exit.",xString,yString);
+    }
     private void drawDialogExitGame() {
         int x = gs.getWindowWidth()/2 - 3*gs.getTile();
         int y = 2 * gs.getTile();
@@ -282,24 +326,7 @@ public class UI {
         }
 
     }
-    private void drawLoopy() {
-        if(gs.keyHandle.isTabPress()) {
-            drawInformationPlayer();
-        }
-        if(isDrawNotice) {
-            drawNotice();
-        }
-        if(isDrawExitGame) {
-            drawDialogExitGame();
-        }
-        if(isDrawChooseSkillsSupport) {
-            drawChooseSkillSupport();
-        }
-        if(isPlayerSay) {
-            playerSayAny("SAVE SUCCESSFUL");
-        }
-    }
-
+    //====================================================================================
     private void drawCampaign() {
         String numberOfEnemy = "Enemy : ";
         numberOfEnemy += String.valueOf(gs.monsters.size());
@@ -330,6 +357,9 @@ public class UI {
         g2.drawRect(x,y,125,30);
         g2.fillRect(x,y,(int)currentHp,30);
     }
+
+    //====================================================================================
+    // getter / setter
     public Font getMaruMonica() {
         return maruMonica;
     }
@@ -346,25 +376,21 @@ public class UI {
     public boolean isDrawNotice() {
         return isDrawNotice;
     }
-
     public boolean isDrawExitGame() {
         return isDrawExitGame;
     }
-
     public void setDrawExitGame(boolean drawExitGame) {
         isDrawExitGame = drawExitGame;
     }
     public boolean isPlayerSay() {
         return isPlayerSay;
     }
-
     public void setPlayerSay(boolean playerSay) {
         isPlayerSay = playerSay;
     }
     public boolean isDrawChooseSkillsSupport() {
         return isDrawChooseSkillsSupport;
     }
-
     public void setDrawChooseSkillsSupport(boolean drawChooseSkills) {
         isDrawChooseSkillsSupport = drawChooseSkills;
     }
