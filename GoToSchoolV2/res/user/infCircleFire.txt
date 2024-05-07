@@ -1,0 +1,3 @@
+lever :1
+time reduce; number Burning; damage; radius
+1;3;10;300

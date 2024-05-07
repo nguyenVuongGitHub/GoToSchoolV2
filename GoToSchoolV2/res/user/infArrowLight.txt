@@ -1,0 +1,4 @@
+lever :1
+time reduce; damage; speed; distance
+3;10;30;500
+3;11;30;500

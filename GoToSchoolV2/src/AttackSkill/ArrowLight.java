@@ -4,6 +4,7 @@ import CollisionSystem.PointX;
 import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
+import baseAttribute.BaseArrowLight;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,8 +12,9 @@ import java.nio.channels.Pipe;
 import java.util.Objects;
 
 public class ArrowLight extends BaseSkill {
-    public static int TIME_COUNT_DOWN_ATTACK = 1;
-    public static final int TIME_REDUCE = 1;
+    public static int TIME_COUNT_DOWN_ATTACK = 0;
+    public static int TIME_REDUCE = 0;
+    public static int LEVER = 0;
     public ArrowLight(GameState gs) {
         super(gs);
         init();
@@ -34,14 +36,12 @@ public class ArrowLight extends BaseSkill {
             if(!collisionOn && alive) {
                 if(distance <= 0) {
                     alive = false;
-                    distance = 500;
                 }
                 worldX += Math.cos(angleTarget) * speed;
                 worldY += Math.sin(angleTarget) * speed;
                 distance--;
             }else {
                 alive = false;
-                distance = 500;
             }
 
         }
@@ -64,15 +64,15 @@ public class ArrowLight extends BaseSkill {
     public void init() {
         type = TYPE.WEAPON;
         typeSkill.typeAttack = ATTACK_SKILL.ARROW_LIGHT;
-        damage = 10;
-        speed = 30;
-        distance = 500;
-        worldX = gs.player.getWorldX();
         worldY = gs.player.getWorldY();
+        worldX = gs.player.getWorldX();
         solidArea = new Rectangle(0,0,gs.getTile()/5,gs.getTile());
         angleTarget = anglePlayerAndMouse();
-//        angleTarget = Math.toRadians(0);
         alive = true;
+        speed = BaseArrowLight.speed;
+        distance = BaseArrowLight.distance;
+        damage = BaseArrowLight.damage;
+        TIME_REDUCE = BaseArrowLight.timeReduce;
         getImage();
         setPolygonVertices();
     }

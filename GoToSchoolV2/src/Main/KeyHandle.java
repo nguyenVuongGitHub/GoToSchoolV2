@@ -16,7 +16,7 @@ public class KeyHandle implements KeyListener{
 	GameState gs;
 	private boolean downPress, upPress, leftPress, rightPress, escPress, enterPress, spacePress, tabPress;
 
-    private boolean skill1Press,skill2Press,skill3Press;
+    private boolean skill1Press,skill2Press;
 	private boolean supportSkill1;
 	private boolean supportSkill2;
 
@@ -27,9 +27,12 @@ public class KeyHandle implements KeyListener{
     private boolean accessExitGame = false;
 
 	private boolean isResetSkillSupport = false;
+	private boolean isResetSkillAttack = false;
 	private boolean isAddSkillSupport = false;
-	private String yourAddSkillSupport = null;
+	private boolean isAddSkillAttack = false;
 
+	private String yourAddSkillSupport = null;
+	private String yourAddSkillAttack = null;
 
 	public KeyHandle(GameState gs) {
 		this.gs = gs;
@@ -100,9 +103,6 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_2) {
 					skill2Press = true;
 				}
-				if(code == KeyEvent.VK_3) {
-					skill3Press = true;
-				}
 				if(code == KeyEvent.VK_F) {
 					supportSkill1 = true;
 				}
@@ -139,30 +139,31 @@ public class KeyHandle implements KeyListener{
                 if(code == KeyEvent.VK_ESCAPE) {
                     gs.loopy.setShowDialogExit(false);
                 }
-            }else if(gs.loopy.isShowDialogChooseSkillsSupport()) {
+            }
+			else if(gs.loopy.isShowDialogChooseSkillsSupport()) {
 				if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()-1);
 					if(gs.loopy.getChooseSkill() < 1) {
-						gs.loopy.setChooseSkill(gs.user.getNumberSkillsUnlocked());
+						gs.loopy.setChooseSkill(gs.user.getMaxNumberSkillsSupportUnlocked());
 					}
 				}
 				if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
 					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()+1);
-					if(gs.loopy.getChooseSkill() > gs.user.getNumberSkillsUnlocked()) {
+					if(gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsSupportUnlocked()) {
 						gs.loopy.setChooseSkill(1);
 					}
 				}
 				if(code == KeyEvent.VK_SPACE) {
-					gs.loopy.setSkillHave(gs.loopy.getSkillHave()+1);
-					if(gs.loopy.getSkillHave() <= 2) {
+					gs.loopy.setSkillSuportHave(gs.loopy.getSkillSuportHave()+1);
+					if(gs.loopy.getSkillSuportHave() <= 2) {
 						if(gs.loopy.getChooseSkill() == 1) {
-							gs.Map_chooseSkill.put("flash",gs.loopy.getSkillHave());
+							gs.Map_chooseSkillSupport.put("flash",gs.loopy.getSkillSuportHave());
 							yourAddSkillSupport = "flash";
 						}else if(gs.loopy.getChooseSkill() == 2) {
-							gs.Map_chooseSkill.put("speed",gs.loopy.getSkillHave());
+							gs.Map_chooseSkillSupport.put("speed",gs.loopy.getSkillSuportHave());
 							yourAddSkillSupport = "speed";
 						}else if(gs.loopy.getChooseSkill() == 3) {
-							gs.Map_chooseSkill.put("healing",gs.loopy.getSkillHave());
+							gs.Map_chooseSkillSupport.put("healing",gs.loopy.getSkillSuportHave());
 							yourAddSkillSupport = "healing";
 						}
 						isAddSkillSupport = true;
@@ -174,40 +175,40 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_ESCAPE) {
 					gs.loopy.setShowDialogChooseSkillsSupport(false);
 				}
-			}else if(gs.loopy.isShowDialogChooseSkillsAttack()) {
+			}
+
+			else if(gs.loopy.isShowDialogChooseSkillsAttack()) {
 				if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
 					if (gs.loopy.getChooseSkill() < 1) {
-						gs.loopy.setChooseSkill(gs.user.getNumberSkillsUnlocked());
+						gs.loopy.setChooseSkill(gs.user.getMaxNumberSkillsAttackUnlocked());
 					}
 				}
 				if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
 					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() + 1);
-					if (gs.loopy.getChooseSkill() > gs.user.getNumberSkillsUnlocked()) {
+					if (gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsAttackUnlocked()) {
 						gs.loopy.setChooseSkill(1);
 					}
 				}
 				if (code == KeyEvent.VK_SPACE) {
-					gs.loopy.setSkillHave(gs.loopy.getSkillHave() + 1);
-					if (gs.loopy.getSkillHave() <= 2) {
+					gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
+					if (gs.loopy.getSkillAttackHave() <= 2) {
 						if (gs.loopy.getChooseSkill() == 1) {
-							gs.Map_chooseSkill.put("flash", gs.loopy.getSkillHave());
-							yourAddSkillSupport = "flash";
+							gs.Map_chooseSkillAttack.put("ArrowLight", gs.loopy.getSkillAttackHave());
 						} else if (gs.loopy.getChooseSkill() == 2) {
-							gs.Map_chooseSkill.put("speed", gs.loopy.getSkillHave());
-							yourAddSkillSupport = "speed";
+							gs.Map_chooseSkillAttack.put("MultiArrowLight", gs.loopy.getSkillAttackHave());
 						} else if (gs.loopy.getChooseSkill() == 3) {
-							gs.Map_chooseSkill.put("healing", gs.loopy.getSkillHave());
-							yourAddSkillSupport = "healing";
+							gs.Map_chooseSkillAttack.put("MoonLight", gs.loopy.getSkillAttackHave());
+						} else if (gs.loopy.getChooseSkill() == 4) {
+							gs.Map_chooseSkillAttack.put("CircleFire", gs.loopy.getSkillAttackHave());
 						}
-						isAddSkillSupport = true;
 					}
 				}
 				if (code == KeyEvent.VK_Q) {
-					isResetSkillSupport = true;
+					isResetSkillAttack = true;
 				}
 				if (code == KeyEvent.VK_ESCAPE) {
-					gs.loopy.setShowDialogChooseSkillsSupport(false);
+					gs.loopy.setShowDialogChooseSkillsAttack(false);
 				}
 			}
 			else {
@@ -277,9 +278,6 @@ public class KeyHandle implements KeyListener{
 		if(code == KeyEvent.VK_2) {
 			skill2Press = false;
 		}
-		if(code == KeyEvent.VK_3) {
-			skill3Press = false;
-		}
 		if(code == KeyEvent.VK_F) {
 			supportSkill1 = false;
 		}
@@ -320,10 +318,6 @@ public class KeyHandle implements KeyListener{
 
 	public boolean isSkill2Press() {
 		return skill2Press;
-	}
-
-	public boolean isSkill3Press() {
-		return skill3Press;
 	}
 
 	public boolean isTabPress() {
@@ -405,5 +399,28 @@ public class KeyHandle implements KeyListener{
 
 	public void setYourAddSkillSupport(String yourAddSkillSupport) {
 		this.yourAddSkillSupport = yourAddSkillSupport;
+	}
+	public boolean isResetSkillAttack() {
+		return isResetSkillAttack;
+	}
+
+	public void setResetSkillAttack(boolean resetSkillAttack) {
+		isResetSkillAttack = resetSkillAttack;
+	}
+
+	public boolean isAddSkillAttack() {
+		return isAddSkillAttack;
+	}
+
+	public void setAddSkillAttack(boolean addSkillAttack) {
+		isAddSkillAttack = addSkillAttack;
+	}
+
+	public String getYourAddSkillAttack() {
+		return yourAddSkillAttack;
+	}
+
+	public void setYourAddSkillAttack(String yourAddSkillAttack) {
+		this.yourAddSkillAttack = yourAddSkillAttack;
 	}
 }

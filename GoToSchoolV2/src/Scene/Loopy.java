@@ -1,6 +1,10 @@
 package Scene;
 
 
+import AttackSkill.ArrowLight;
+import AttackSkill.CircleFire;
+import AttackSkill.MoonLight;
+import AttackSkill.MultiArrow;
 import Main.GameState;
 import Main.State;
 import Main.UI;
@@ -25,8 +29,8 @@ public class Loopy {
     int chooseSkill = 1;
 
 
-    int skillHave = 0;
-
+    int skillAttackHave = 0;
+    int skillSuportHave = 0;
     public Loopy(GameState gs) {
         this.gs = gs;
     }
@@ -45,7 +49,7 @@ public class Loopy {
 
         gs.ui.setDrawExitGame(showDialogExit);
         gs.ui.setDrawChooseSkillsSupport(showDialogChooseSkillsSupport);
-
+        gs.ui.setDrawChooseSkillsAttack(showDialogChooseSkillsAttack);
         if(gs.keyHandle.isAddSkillSupport()) {
 
             Entity newSupport = null;
@@ -64,10 +68,16 @@ public class Loopy {
         if(gs.keyHandle.isResetSkillSupport()) {
             gs.Map_chooseSkillSupport.clear();
             gs.skillSupports.clear();
-            skillHave = 0;
+            skillSuportHave = 0;
             gs.keyHandle.setResetSkillSupport(false);
         }
 
+        if(gs.keyHandle.isResetSkillAttack()) {
+            gs.Map_chooseSkillAttack.clear();
+            gs.skillAttacks.clear();
+            skillAttackHave = 0;
+            gs.keyHandle.setResetSkillAttack(false);
+        }
         if(gs.keyHandle.isAccessSaveGame()) {
             gs.saveGame();
             gs.ui.setPlayerSay(true);
@@ -97,7 +107,7 @@ public class Loopy {
             if(gs.keyHandle.isEnterPress()) {
                 gs.ui.setDrawNotice(false);
 //                showDialogExit = true;
-                showDialogChooseSkillsSupport = true;
+                showDialogChooseSkillsAttack = true;
             }else {
                 if(!gs.ui.isDrawChooseSkillsSupport())
                     gs.ui.setDrawNotice(true);
@@ -151,12 +161,19 @@ public class Loopy {
     public void setShowDialogChooseSkillsSupport(boolean showDialogChooseSkills) {
         this.showDialogChooseSkillsSupport = showDialogChooseSkills;
     }
-    public int getSkillHave() {
-        return skillHave;
+    public int getSkillSuportHave() {
+        return skillSuportHave;
     }
 
-    public void setSkillHave(int skillHave) {
-        this.skillHave = skillHave;
+    public void setSkillSuportHave(int skillHave) {
+        this.skillSuportHave = skillHave;
+    }
+    public int getSkillAttackHave() {
+        return skillAttackHave;
+    }
+
+    public void setSkillAttackHave(int skillHave) {
+        this.skillAttackHave = skillHave;
     }
     public boolean isShowDialogChooseSkillsAttack() {
         return showDialogChooseSkillsAttack;

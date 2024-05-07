@@ -4,12 +4,14 @@ import CollisionSystem.PointX;
 import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
+import baseAttribute.BaseCircleFire;
 
 import java.awt.*;
 
 public class CircleFire extends BaseSkill {
+    public static int LEVER = 0;
     public static int TIME_COUNT_DOWN_ATTACK = 0;
-    public static final int TIME_REDUCE = 1;
+    public static int TIME_REDUCE = 1;
     public static int NUMBER_BURNING = 3;
     public int TIME_DELAY = 60;
     public int COUNT_TIME_DELAY = 0;
@@ -47,14 +49,14 @@ public class CircleFire extends BaseSkill {
     public void init() {
         type = TYPE.WEAPON;
         typeSkill.typeAttack = ATTACK_SKILL.CIRCLE_FIRE;
-        damage = 10;
-        radius = 600;
-        solidArea = new Rectangle(0,0, (int) radius, (int) radius);
+        alive = true;
+        damage = BaseCircleFire.damage;
+        radius = BaseCircleFire.radius;
+        TIME_REDUCE = BaseCircleFire.timeReduce;
+        NUMBER_BURNING = BaseCircleFire.numberBurning;
         worldX = PointX.getCenterPointFromList(gs.player.getVertices()).getX() - radius/2;
         worldY = PointX.getCenterPointFromList(gs.player.getVertices()).getY() - radius/2;
-//        angleTarget = anglePlayerAndMouse();
-//        angleTarget = Math.toRadians(0);
-        alive = true;
+        solidArea = new Rectangle(0,0, (int) radius, (int) radius);
         getImage();
         setPolygonVertices();
     }

@@ -1,0 +1,3 @@
+lever :1
+time reduce; damage; speed
+20;10;30

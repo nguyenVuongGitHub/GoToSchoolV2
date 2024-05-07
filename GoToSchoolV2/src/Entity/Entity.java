@@ -181,4 +181,8 @@ public abstract class Entity {
 	public void setTypeSkill(TypeSkill typeSkill) {
 		this.typeSkill = typeSkill;
 	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
 }

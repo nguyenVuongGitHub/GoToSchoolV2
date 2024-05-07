@@ -3,14 +3,16 @@ package AttackSkill;
 import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
+import baseAttribute.BaseMoonLight;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.util.Objects;
 
 public class MoonLight extends BaseSkill {
+    public static int LEVER = 0;
     public static int TIME_COUNT_DOWN_ATTACK = 1;
-    public static final int TIME_REDUCE = 1;
+    public static int TIME_REDUCE = 1;
 
     public MoonLight(GameState gs) {
         super(gs);
@@ -45,14 +47,15 @@ public class MoonLight extends BaseSkill {
     public void init() {
         type = TYPE.WEAPON;
         typeSkill.typeAttack = ATTACK_SKILL.MOON_LIGHT;
-        damage = 20;
-        speed = 40;
         worldX = gs.player.getWorldX();
         worldY = gs.player.getWorldY();
         solidArea = new Rectangle(0,0,gs.getTile(),gs.getTile());
         angleTarget = anglePlayerAndMouse();
         getImage();
         setPolygonVertices();
+        damage = BaseMoonLight.damage;
+        speed = BaseMoonLight.speed;
+        TIME_REDUCE = BaseMoonLight.timeReduce;
     }
 
     @Override

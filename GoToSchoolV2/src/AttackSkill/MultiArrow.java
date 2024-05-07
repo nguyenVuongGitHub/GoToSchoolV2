@@ -4,6 +4,7 @@ import CollisionSystem.PointX;
 import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
+import baseAttribute.BaseMultiArrow;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,7 +12,8 @@ import java.util.Objects;
 
 public class MultiArrow extends BaseSkill {
     public static int TIME_COUNT_DOWN_ATTACK = 1;
-    public static final int TIME_REDUCE = 1;
+    public static int TIME_REDUCE = 1;
+    public static int LEVER = 0;
     public MultiArrow(GameState gs) {
         super(gs);
         init();
@@ -33,14 +35,12 @@ public class MultiArrow extends BaseSkill {
             if(!collisionOn && alive) {
                 if(distance <= 0) {
                     alive = false;
-                    distance = 500;
                 }
                 worldX += Math.cos(angleTarget) * speed;
                 worldY += Math.sin(angleTarget) * speed;
                 distance--;
             }else {
                 alive = false;
-                distance = 500;
             }
 
         }
@@ -62,15 +62,15 @@ public class MultiArrow extends BaseSkill {
     public void init() {
         type = TYPE.WEAPON;
         typeSkill.typeAttack = ATTACK_SKILL.MULTI_ARROW;
-        damage = 10;
-        speed = 30;
-        distance = 500;
         worldX = gs.player.getWorldX();
         worldY = gs.player.getWorldY();
         solidArea = new Rectangle(0,0,gs.getTile()/5,gs.getTile());
         angleTarget = anglePlayerAndMouse();
-//        angleTarget = Math.toRadians(0);
         alive = true;
+        damage = BaseMultiArrow.damage;
+        speed = BaseMultiArrow.speed;
+        distance = BaseMultiArrow.distance;
+        TIME_REDUCE = BaseMultiArrow.timeReduce;
         getImage();
         setPolygonVertices();
     }
