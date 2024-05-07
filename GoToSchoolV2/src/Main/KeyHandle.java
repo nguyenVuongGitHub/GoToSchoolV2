@@ -174,6 +174,41 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_ESCAPE) {
 					gs.loopy.setShowDialogChooseSkillsSupport(false);
 				}
+			}else if(gs.loopy.isShowDialogChooseSkillsAttack()) {
+				if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
+					if (gs.loopy.getChooseSkill() < 1) {
+						gs.loopy.setChooseSkill(gs.user.getNumberSkillsUnlocked());
+					}
+				}
+				if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() + 1);
+					if (gs.loopy.getChooseSkill() > gs.user.getNumberSkillsUnlocked()) {
+						gs.loopy.setChooseSkill(1);
+					}
+				}
+				if (code == KeyEvent.VK_SPACE) {
+					gs.loopy.setSkillHave(gs.loopy.getSkillHave() + 1);
+					if (gs.loopy.getSkillHave() <= 2) {
+						if (gs.loopy.getChooseSkill() == 1) {
+							gs.Map_chooseSkill.put("flash", gs.loopy.getSkillHave());
+							yourAddSkillSupport = "flash";
+						} else if (gs.loopy.getChooseSkill() == 2) {
+							gs.Map_chooseSkill.put("speed", gs.loopy.getSkillHave());
+							yourAddSkillSupport = "speed";
+						} else if (gs.loopy.getChooseSkill() == 3) {
+							gs.Map_chooseSkill.put("healing", gs.loopy.getSkillHave());
+							yourAddSkillSupport = "healing";
+						}
+						isAddSkillSupport = true;
+					}
+				}
+				if (code == KeyEvent.VK_Q) {
+					isResetSkillSupport = true;
+				}
+				if (code == KeyEvent.VK_ESCAPE) {
+					gs.loopy.setShowDialogChooseSkillsSupport(false);
+				}
 			}
 			else {
 				accessSaveGame = false;

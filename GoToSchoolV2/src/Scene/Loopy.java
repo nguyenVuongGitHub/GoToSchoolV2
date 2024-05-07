@@ -17,6 +17,9 @@ public class Loopy {
 
     boolean showDialogChooseSkillsSupport = false;
 
+
+    boolean showDialogChooseSkillsAttack = false;
+
     int chooseDialogExit = 1;
 
     int chooseSkill = 1;
@@ -48,31 +51,18 @@ public class Loopy {
             Entity newSupport = null;
             if(gs.keyHandle.getYourAddSkillSupport().equals("flash")) {
                 newSupport = new Flash(gs);
-                System.out.println("add flash at " + (gs.Map_chooseSkill.get("flash")-1) );
             } else if (gs.keyHandle.getYourAddSkillSupport().equals("speed")) {
                 newSupport = new SpeedFaster(gs);
-                System.out.println("add speed at " + (gs.Map_chooseSkill.get("speed")-1));
             } else if (gs.keyHandle.getYourAddSkillSupport().equals("healing")) {
                 newSupport = new Healing(gs);
-                System.out.println("add healing " + (gs.Map_chooseSkill.get("healing")-1));
             }
 
             gs.skillSupports.add(newSupport);
-//            if(gs.Map_chooseSkill.containsKey("flash")) {
-//            }
-//            if(gs.Map_chooseSkill.containsKey("speed")) {
-//                Entity speed = new SpeedFaster(gs);
-//                gs.skillSupports.add(speed);
-//            }
-//            if(gs.Map_chooseSkill.containsKey("healing")) {
-//                Entity healing = new Healing(gs);
-//                gs.skillSupports.add(healing);
-//            }
             gs.keyHandle.setAddSkillSupport(false);
         }
 
         if(gs.keyHandle.isResetSkillSupport()) {
-            gs.Map_chooseSkill.clear();
+            gs.Map_chooseSkillSupport.clear();
             gs.skillSupports.clear();
             skillHave = 0;
             gs.keyHandle.setResetSkillSupport(false);
@@ -167,5 +157,12 @@ public class Loopy {
 
     public void setSkillHave(int skillHave) {
         this.skillHave = skillHave;
+    }
+    public boolean isShowDialogChooseSkillsAttack() {
+        return showDialogChooseSkillsAttack;
+    }
+
+    public void setShowDialogChooseSkillsAttack(boolean showDialogChooseSkillsAttack) {
+        this.showDialogChooseSkillsAttack = showDialogChooseSkillsAttack;
     }
 }
