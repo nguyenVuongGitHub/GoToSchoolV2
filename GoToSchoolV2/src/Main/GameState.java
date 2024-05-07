@@ -64,7 +64,9 @@ public class GameState extends JPanel implements Runnable{
 	public List<Entity> skillSupports = new ArrayList<>();
 	public int indexSkillSupport1 = 0;
 	public int indexSkillSupport2 = 1;
-	public Map<String,Integer> Map_chooseSkill = new HashMap<>();
+	public Map<String,Integer> Map_chooseSkillSupport = new HashMap<>();
+	public Map<String,Integer> Map_chooseSkillAttack = new HashMap<>();
+
 	public List<Entity> skeletonAttacks = new ArrayList<>();
 	public Entity lazeBoss = new LazerBoss(this);
 	public List<Entity> coins = new ArrayList<>();

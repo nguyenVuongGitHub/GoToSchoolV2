@@ -16,7 +16,7 @@ public class UI {
     boolean isDrawExitGame = false;
     boolean isPlayerSay = false;
     boolean isDrawChooseSkillsSupport = false;
-
+    boolean isDrawChooseSkillAttack = false;
 
     public UI(GameState gs) {
         this.gs = gs;
@@ -95,10 +95,171 @@ public class UI {
         if(isDrawChooseSkillsSupport) {
             drawChooseSkillSupport();
         }
+        if(isDrawChooseSkillAttack) {
+            drawChooseSkillAttack();
+        }
         if(isPlayerSay) {
             playerSayAny("SAVE SUCCESSFUL");
         }
     }
+
+    private void drawChooseSkillAttack() {
+        int x = 2 * gs.getTile();
+        int y = 2 * gs.getTile();
+        int w = 7 * gs.getTile();
+        int h = 10 * gs.getTile();
+        drawSubWindow(x,y,w,h,g2);
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+        int xString = x+gs.getTile();
+        int yString = y+gs.getTile();
+        xString += gs.getTile();
+        g2.drawString("SKILLS ATTACK",xString,yString);
+        yString += gs.getTile();
+        xString = 3 * gs.getTile();
+        if(gs.loopy.getSkillHave() <= 0) {
+            if(gs.loopy.getChooseSkill() == 1) {
+                g2.drawString("Arrow Light",xString,yString);
+                xString = 6 * gs.getTile();
+                g2.drawString("<--",xString,yString);
+                yString += gs.getTile();
+                xString = 3 * gs.getTile();
+                g2.drawString("Multi Arrow Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Moon Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Circle Fire",xString,yString);
+            }
+            else if(gs.loopy.getChooseSkill() == 2) {
+                g2.drawString("Arrow Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Multi Arrow Light",xString,yString);
+                xString = 6 * gs.getTile();
+                g2.drawString("<--",xString,yString);
+                xString = 3 * gs.getTile();
+                yString += gs.getTile();
+                g2.drawString("Moon Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Circle Fire",xString,yString);
+            }
+            else if(gs.loopy.getChooseSkill() == 3) {
+                g2.drawString("Arrow Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Multi Arrow Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Moon Light",xString,yString);
+                xString = 6 * gs.getTile();
+                g2.drawString("<--",xString,yString);
+                xString = 3 * gs.getTile();
+                yString += gs.getTile();
+                g2.drawString("Circle Fire",xString,yString);
+            }else if(gs.loopy.getChooseSkill() == 4) {
+                g2.drawString("Arrow Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Multi Arrow Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Moon Light",xString,yString);
+                yString += gs.getTile();
+                g2.drawString("Circle Fire",xString,yString);
+                xString = 6 * gs.getTile();
+                g2.drawString("<--",xString,yString);
+            }
+        }else {
+            if(gs.loopy.getChooseSkill() == 1) {
+                xString = 3 * gs.getTile();
+                g2.drawString("Arrow Light",xString,yString);
+                if(gs.Map_chooseSkillSupport.containsKey("Arrow-light")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillSupport.get("Arrow-light").toString(),xString,yString);
+                }
+                xString = 6 * gs.getTile();
+                g2.drawString("<--",xString,yString);
+                yString += gs.getTile();
+                xString = 3 * gs.getTile();
+                g2.drawString("Multi Arrow Light",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("M-A-l")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("M-A-l").toString(),xString,yString);
+                }
+                yString += gs.getTile();
+                xString = 3 * gs.getTile();
+                g2.drawString("Moon Light",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("M-L")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("M_L").toString(),xString,yString);
+                }
+            }
+            else if(gs.loopy.getChooseSkill() == 2) {
+                xString = 3 * gs.getTile();
+                g2.drawString("Flash",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("flash")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("flash").toString(),xString,yString);
+                }
+                xString = 3 * gs.getTile();
+                yString += gs.getTile();
+                g2.drawString("Speed",xString,yString);
+                xString = 6 * gs.getTile();
+                g2.drawString("<--",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("speed")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("speed").toString(),xString,yString);
+                }
+                yString += gs.getTile();
+                xString = 3 * gs.getTile();
+                g2.drawString("Healing",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("healing")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("healing").toString(),xString,yString);
+                }
+
+            }
+            else if(gs.loopy.getChooseSkill() == 3) {
+                xString = 3 * gs.getTile();
+                g2.drawString("Flash",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("flash")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("flash").toString(),xString,yString);
+                }
+                xString = 3 * gs.getTile();
+                yString += gs.getTile();
+                g2.drawString("Speed",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("speed")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("speed").toString(),xString,yString);
+                }
+                yString += gs.getTile();
+                xString = 3 * gs.getTile();
+                g2.drawString("Healing",xString,yString);
+                xString = 6 * gs.getTile();
+                g2.drawString("<--",xString,yString);
+                if(gs.Map_chooseSkillAttack.containsKey("healing")) {
+                    xString = 5 * gs.getTile();
+                    g2.drawString(gs.Map_chooseSkillAttack.get("healing").toString(),xString,yString);
+                }
+            }
+        }
+        xString = 3 * gs.getTile();
+        yString += gs.getTile();
+        g2.drawString("SPACE to choose.",xString,yString);
+        yString += gs.getTile();
+        g2.drawString("Q to reset.",xString,yString);
+        yString += gs.getTile();
+        System.out.println(yString/gs.getTile());
+        g2.drawString("ESC to exit.",xString,yString);
+        yString += gs.getTile();
+        if(!gs.Map_chooseSkillAttack.isEmpty()) {
+            for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillAttack.entrySet()) {
+                if(entry.getValue() == 1) {
+                    yString = 10 * gs.getTile();
+                    g2.drawString("Your skill support " + (entry.getValue()) + " : " + entry.getKey() ,xString,yString);
+                }else {
+                    yString = 11 * gs.getTile();
+                    g2.drawString("Your skill support " + (entry.getValue()) + " : " + entry.getKey() ,xString,yString);
+                }
+            }
+        }
+    }
+
     public void drawInformationPlayer() {
         int x = 2 * gs.getTile();
         int y = 2 * gs.getTile();
@@ -115,7 +276,7 @@ public class UI {
         g2.drawString("Lever unlocked : " + gs.user.getNumberLeversUnlocked(),xString,yString);
         yString += gs.getTile();
         g2.drawString("Your skill Support: ",xString,yString);
-        for(Map.Entry<String,Integer> entry : gs.Map_chooseSkill.entrySet()) {
+        for(Map.Entry<String,Integer> entry : gs.Map_chooseSkillSupport.entrySet()) {
             if(entry.getValue() == 1) {
                 yString = 7 * gs.getTile();
                 g2.drawString("Your skill support " + (entry.getValue()) + " : " + entry.getKey() ,xString,yString);
@@ -184,74 +345,74 @@ public class UI {
             if(gs.loopy.getChooseSkill() == 1) {
                 xString = 3 * gs.getTile();
                 g2.drawString("Flash",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("flash")) {
+                if(gs.Map_chooseSkillSupport.containsKey("flash")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("flash").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("flash").toString(),xString,yString);
                 }
                 xString = 6 * gs.getTile();
                 g2.drawString("<--",xString,yString);
                 yString += gs.getTile();
                 xString = 3 * gs.getTile();
                 g2.drawString("Speed",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("speed")) {
+                if(gs.Map_chooseSkillSupport.containsKey("speed")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("speed").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("speed").toString(),xString,yString);
                 }
                 yString += gs.getTile();
                 xString = 3 * gs.getTile();
                 g2.drawString("Healing",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("healing")) {
+                if(gs.Map_chooseSkillSupport.containsKey("healing")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("healing").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("healing").toString(),xString,yString);
                 }
             }
             else if(gs.loopy.getChooseSkill() == 2) {
                 xString = 3 * gs.getTile();
                 g2.drawString("Flash",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("flash")) {
+                if(gs.Map_chooseSkillSupport.containsKey("flash")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("flash").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("flash").toString(),xString,yString);
                 }
                 xString = 3 * gs.getTile();
                 yString += gs.getTile();
                 g2.drawString("Speed",xString,yString);
                 xString = 6 * gs.getTile();
                 g2.drawString("<--",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("speed")) {
+                if(gs.Map_chooseSkillSupport.containsKey("speed")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("speed").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("speed").toString(),xString,yString);
                 }
                 yString += gs.getTile();
                 xString = 3 * gs.getTile();
                 g2.drawString("Healing",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("healing")) {
+                if(gs.Map_chooseSkillSupport.containsKey("healing")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("healing").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("healing").toString(),xString,yString);
                 }
 
             }
             else if(gs.loopy.getChooseSkill() == 3) {
                 xString = 3 * gs.getTile();
                 g2.drawString("Flash",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("flash")) {
+                if(gs.Map_chooseSkillSupport.containsKey("flash")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("flash").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("flash").toString(),xString,yString);
                 }
                 xString = 3 * gs.getTile();
                 yString += gs.getTile();
                 g2.drawString("Speed",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("speed")) {
+                if(gs.Map_chooseSkillSupport.containsKey("speed")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("speed").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("speed").toString(),xString,yString);
                 }
                 yString += gs.getTile();
                 xString = 3 * gs.getTile();
                 g2.drawString("Healing",xString,yString);
                 xString = 6 * gs.getTile();
                 g2.drawString("<--",xString,yString);
-                if(gs.Map_chooseSkill.containsKey("healing")) {
+                if(gs.Map_chooseSkillSupport.containsKey("healing")) {
                     xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkill.get("healing").toString(),xString,yString);
+                    g2.drawString(gs.Map_chooseSkillSupport.get("healing").toString(),xString,yString);
                 }
             }
         }
@@ -264,8 +425,8 @@ public class UI {
         System.out.println(yString/gs.getTile());
         g2.drawString("ESC to exit.",xString,yString);
         yString += gs.getTile();
-        if(!gs.Map_chooseSkill.isEmpty()) {
-            for (Map.Entry<String,Integer> entry : gs.Map_chooseSkill.entrySet()) {
+        if(!gs.Map_chooseSkillSupport.isEmpty()) {
+            for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillSupport.entrySet()) {
                 if(entry.getValue() == 1) {
                     yString = 10 * gs.getTile();
                     g2.drawString("Your skill support " + (entry.getValue()) + " : " + entry.getKey() ,xString,yString);
@@ -275,7 +436,6 @@ public class UI {
                 }
             }
         }
-
     }
     private void drawBuySkillSupport() {
         int x = 2 * gs.getTile();
