@@ -116,29 +116,29 @@ public class UI {
     private void drawSubTitleSkillSupport(String nameSkill) {
         int x = 9 * gs.getTile() + gs.getTile()/2;
         int y = gs.getTile()/2;
-        int w = 7 * gs.getTile();
-        int h = 8 * gs.getTile();
+        int w = 8 * gs.getTile();
+        int h = 4 * gs.getTile();
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
         int xString = x + gs.getTile()/2;
         int yString = y + gs.getTile();
         g2.drawString(nameSkill,xString,yString);
         yString += gs.getTile();
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,23F));
         if(nameSkill.equals("Flicker")) {
-            g2.drawString("Teleports a certain distance in",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("the target direction.",xString,yString);
+            g2.drawString("Teleports a certain distance in the target direction.",xString,yString);
             yString += gs.getTile();
             g2.drawString(Flicker.TIME_REDUCE + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("Restore")) {
             g2.drawString("Recovers 30 Heath to player.",xString,yString);
-            yString += 2*gs.getTile();
+            yString += gs.getTile();
             g2.drawString(Restore.TIME_REDUCE + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("Sprint")) {
             g2.drawString("Increases player speed.",xString,yString);
-            yString += 2*gs.getTile();
+            yString += gs.getTile();
             g2.drawString(Sprint.TIME_REDUCE + "s Cooldown.",xString,yString);
         }
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
     }
     private void drawSubTitleSkillAttack(String nameSkill) {
         int x = 10 * gs.getTile() + gs.getTile()/2;
@@ -186,7 +186,7 @@ public class UI {
         int x = 2 * gs.getTile();
         int y = gs.getTile()/2;
         int w = 8 * gs.getTile();
-        int h = 9 * gs.getTile();
+        int h = 10 * gs.getTile();
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
         int xString = x+gs.getTile();
@@ -379,6 +379,8 @@ public class UI {
         }
         xString = 3 * gs.getTile();
         yString += gs.getTile();
+        g2.drawString("***********************",xString,yString);
+        yString += gs.getTile();
         g2.drawString("SPACE to choose.",xString,yString);
         yString += gs.getTile();
         g2.drawString("Q to reset.",xString,yString);
@@ -436,7 +438,7 @@ public class UI {
         int x = 2 * gs.getTile();
         int y = gs.getTile()/2;
         int w = 7 * gs.getTile();
-        int h = 10 * gs.getTile();
+        int h = 9 * gs.getTile();
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
         int xString = x+gs.getTile();
@@ -558,6 +560,8 @@ public class UI {
             }
         }
         xString = 3 * gs.getTile();
+        yString += gs.getTile();
+        g2.drawString("***********************",xString,yString);
         yString += gs.getTile();
         g2.drawString("SPACE to choose.",xString,yString);
         yString += gs.getTile();
