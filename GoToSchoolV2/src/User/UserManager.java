@@ -44,7 +44,6 @@ public class UserManager {
                     BaseArrowLight.damage[index]  = Integer.parseInt(token[1]);
                     BaseArrowLight.speed[index]  = Integer.parseInt(token[2]);
                     BaseArrowLight.distance[index]  = Integer.parseInt(token[3]);
-                    System.out.println(index + " " + BaseArrowLight.damage[index]);
                     index++;
                 }
             }

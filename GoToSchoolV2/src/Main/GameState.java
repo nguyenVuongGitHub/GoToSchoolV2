@@ -23,8 +23,8 @@ public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
 	private static final int tile = 64;
-	private static final int WINDOW_HEIGHT = 13 * tile;
-	private static final int WINDOW_WIDTH = 23 * tile;
+	private static final int WINDOW_HEIGHT = 13 * tile; //832
+	private static final int WINDOW_WIDTH = 23 * tile; //1427
 
 	private static final int maxScreenCol = WINDOW_WIDTH/tile;
 
@@ -236,11 +236,11 @@ public class GameState extends JPanel implements Runnable{
 	public void updateBattle() {
 
 		// ATTACK
-//		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
-//			Entity normalAttack = new NormalAttack(this);
-//			skillAttacks.add(normalAttack);
-//			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
-//		}
+		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
+			Entity normalAttack = new NormalAttack(this);
+			skillAttacks.add(normalAttack);
+			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
+		}
 		if(keyHandle.isSkill1Press() && loopy.getSkillAttackHave() >= 1) {
 			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
 				if(entry.getValue() == 1) {
@@ -386,14 +386,16 @@ public class GameState extends JPanel implements Runnable{
 		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, lazeBoss);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
-		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
+		skillAttacks.removeIf(attack ->
+				attack.getSpriteNum() == 5 &&
+			!attack.getAlive()
+		);
 		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
 		if(lazeBoss != null) {
-			if(!lazeBoss.getAlive()) {
+			if (!lazeBoss.getAlive()) {
 				lazeBoss = null;
 			}
 		}
-
 		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive
