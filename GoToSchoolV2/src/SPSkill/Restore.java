@@ -5,13 +5,13 @@ import Weapon.BaseSkill;
 
 import java.awt.*;
 
-public class Healing extends BaseSkill {
+public class Restore extends BaseSkill {
     public static int TIME_COUNT_DOWN = 0;
     public static final int TIME_REDUCE = 60;
     public static int NUMBER_HEALING = 3;
     public int TIME_DELAY = 10;
     public int COUNT_TIME_DELAY = 0;
-    public Healing(GameState gs) {
+    public Restore(GameState gs) {
         super(gs);
         init();
     }
@@ -41,7 +41,7 @@ public class Healing extends BaseSkill {
 
     @Override
     public void init() {
-        typeSkill.typeSupport = SUPPORT_SKILL.Healing;
+        typeSkill.typeSupport = SUPPORT_SKILL.Restore;
         damage = 10;
         alive = false;
     }

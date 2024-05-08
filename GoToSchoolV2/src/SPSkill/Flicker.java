@@ -5,10 +5,10 @@ import Weapon.BaseSkill;
 
 import java.awt.*;
 
-public class Flash extends BaseSkill {
+public class Flicker extends BaseSkill {
     public static int TIME_COUNT_DOWN = 0;
-    public static final int TIME_REDUCE = 2;
-    public Flash(GameState gs) {
+    public static final int TIME_REDUCE = 80;
+    public Flicker(GameState gs) {
         super(gs);
         init();
     }
@@ -47,8 +47,8 @@ public class Flash extends BaseSkill {
 
     @Override
     public void init() {
-        
-        typeSkill.typeSupport = SUPPORT_SKILL.Flash;
+
+        typeSkill.typeSupport = SUPPORT_SKILL.Flicker;
         alive = false;
         direction = gs.player.getDirection();
         distance = 2;
