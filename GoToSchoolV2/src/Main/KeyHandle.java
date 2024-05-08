@@ -157,14 +157,14 @@ public class KeyHandle implements KeyListener{
 					gs.loopy.setSkillSuportHave(gs.loopy.getSkillSuportHave()+1);
 					if(gs.loopy.getSkillSuportHave() <= 2) {
 						if(gs.loopy.getChooseSkill() == 1) {
-							gs.Map_chooseSkillSupport.put("flash",gs.loopy.getSkillSuportHave());
-							yourAddSkillSupport = "flash";
+							gs.Map_chooseSkillSupport.put("Flicker",gs.loopy.getSkillSuportHave());
+							yourAddSkillSupport = "Flicker";
 						}else if(gs.loopy.getChooseSkill() == 2) {
-							gs.Map_chooseSkillSupport.put("speed",gs.loopy.getSkillSuportHave());
-							yourAddSkillSupport = "speed";
+							gs.Map_chooseSkillSupport.put("Sprint",gs.loopy.getSkillSuportHave());
+							yourAddSkillSupport = "Sprint";
 						}else if(gs.loopy.getChooseSkill() == 3) {
-							gs.Map_chooseSkillSupport.put("healing",gs.loopy.getSkillSuportHave());
-							yourAddSkillSupport = "healing";
+							gs.Map_chooseSkillSupport.put("Restore",gs.loopy.getSkillSuportHave());
+							yourAddSkillSupport = "Restore";
 						}
 						isAddSkillSupport = true;
 					}

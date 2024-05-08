@@ -1,18 +1,13 @@
 package Scene;
 
 
-import AttackSkill.ArrowLight;
-import AttackSkill.CircleFire;
-import AttackSkill.MoonLight;
-import AttackSkill.MultiArrow;
 import Main.GameState;
 import Main.State;
-import Main.UI;
-import SPSkill.Flash;
-import SPSkill.Healing;
-import SPSkill.SpeedFaster;
-import User.UserManager;
+import SPSkill.Flicker;
 import  Entity.Entity;
+import SPSkill.Restore;
+import SPSkill.Sprint;
+
 import java.awt.*;
 
 public class Loopy {
@@ -54,11 +49,11 @@ public class Loopy {
 
             Entity newSupport = null;
             if(gs.keyHandle.getYourAddSkillSupport().equals("flash")) {
-                newSupport = new Flash(gs);
+                newSupport = new Flicker(gs);
             } else if (gs.keyHandle.getYourAddSkillSupport().equals("speed")) {
-                newSupport = new SpeedFaster(gs);
+                newSupport = new Sprint(gs);
             } else if (gs.keyHandle.getYourAddSkillSupport().equals("healing")) {
-                newSupport = new Healing(gs);
+                newSupport = new Restore(gs);
             }
 
             gs.skillSupports.add(newSupport);
@@ -108,12 +103,11 @@ public class Loopy {
                 gs.ui.setDrawNotice(false);
 //                showDialogExit = true;
                 showDialogChooseSkillsAttack = true;
+//                showDialogChooseSkillsSupport = true;
             }else {
-                if(!gs.ui.isDrawChooseSkillsSupport())
-                    gs.ui.setDrawNotice(true);
-
-                if(!gs.ui.isDrawExitGame())
-                    gs.ui.setDrawNotice(true);
+//                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsSupport());
+                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsAttack());
+//                gs.ui.setDrawNotice(!gs.ui.isDrawExitGame());
             }
         }
         else {

@@ -11,24 +11,20 @@ import AttackSkill.*;
 import CollisionSystem.SeparatingAxis;
 import Entity.*;
 import Quadtree.RectangleQ;
-import SPSkill.Healing;
-import SPSkill.SpeedFaster;
+import SPSkill.*;
 import Scene.Campaign;
 import Scene.Loopy;
 import User.UserManager;
-import SPSkill.Flash;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
-import SPSkill.SUPPORT_SKILL;
 import tile.TileManager;
-
 
 public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
 	private static final int tile = 64;
-	private static final int WINDOW_HEIGHT = 15 * tile;
-	private static final int WINDOW_WIDTH = 25 * tile;
+	private static final int WINDOW_HEIGHT = 13 * tile;
+	private static final int WINDOW_WIDTH = 23 * tile;
 
 	private static final int maxScreenCol = WINDOW_WIDTH/tile;
 
@@ -61,8 +57,6 @@ public class GameState extends JPanel implements Runnable{
 	public List<Entity> skillSupports = new ArrayList<>();
 	public int indexSkillSupport1 = 0;
 	public int indexSkillSupport2 = 1;
-	public int indexSkillAttack1 = 0;
-	public int indexSkillAttack2 = 1;
 
 	public Map<String,Integer> Map_chooseSkillSupport = new HashMap<>();
 	public Map<String,Integer> Map_chooseSkillAttack = new HashMap<>();
@@ -144,17 +138,17 @@ public class GameState extends JPanel implements Runnable{
 				if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
 					CircleFire.TIME_COUNT_DOWN_ATTACK = -1;
 				}
-				Flash.TIME_COUNT_DOWN--;
-				if(Flash.TIME_COUNT_DOWN <= 0) {
-					Flash.TIME_COUNT_DOWN = -1;
+				Flicker.TIME_COUNT_DOWN--;
+				if(Flicker.TIME_COUNT_DOWN <= 0) {
+					Flicker.TIME_COUNT_DOWN = -1;
 				}
-				Healing.TIME_COUNT_DOWN--;
-				if(Healing.TIME_COUNT_DOWN <= 0) {
-					Healing.TIME_COUNT_DOWN = -1;
+				Restore.TIME_COUNT_DOWN--;
+				if(Restore.TIME_COUNT_DOWN <= 0) {
+					Restore.TIME_COUNT_DOWN = -1;
 				}
-				SpeedFaster.TIME_COUNT_DOWN--;
-				if(SpeedFaster.TIME_COUNT_DOWN <= 0) {
-					SpeedFaster.TIME_COUNT_DOWN = -1;
+				Sprint.TIME_COUNT_DOWN--;
+				if(Sprint.TIME_COUNT_DOWN <= 0) {
+					Sprint.TIME_COUNT_DOWN = -1;
 				}
 //				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
@@ -314,40 +308,40 @@ public class GameState extends JPanel implements Runnable{
 
 		if(keyHandle.isSupportSkill1() && loopy.getSkillSuportHave() >= 1) {
 			Entity e = skillSupports.get(indexSkillSupport1);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flash) {
-				if(Flash.TIME_COUNT_DOWN <= 0) {
+			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
+				if(Flicker.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Flash.TIME_COUNT_DOWN = Flash.TIME_REDUCE;
+					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.SpeedFaster) {
-				if(SpeedFaster.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
+				if(Sprint.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					SpeedFaster.TIME_COUNT_DOWN = SpeedFaster.TIME_REDUCE;
+					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Healing) {
-				if(Healing.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
+				if(Restore.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Healing.TIME_COUNT_DOWN = Healing.TIME_REDUCE;
+					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
 				}
 			}
 			skillSupports.set(indexSkillSupport1,e);
 		}
 		if(keyHandle.isSupportSkill2() && loopy.getSkillSuportHave() == 2) {
 			Entity e = skillSupports.get(indexSkillSupport2);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flash) {
-				if(Flash.TIME_COUNT_DOWN <= 0) {
+			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
+				if(Flicker.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Flash.TIME_COUNT_DOWN = Flash.TIME_REDUCE;
+					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.SpeedFaster) {
-				if(SpeedFaster.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
+				if(Sprint.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					SpeedFaster.TIME_COUNT_DOWN = SpeedFaster.TIME_REDUCE;
+					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Healing) {
-				if(Healing.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
+				if(Restore.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Healing.TIME_COUNT_DOWN = Healing.TIME_REDUCE;
+					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
 				}
 			}
 			skillSupports.set(indexSkillSupport2,e);
