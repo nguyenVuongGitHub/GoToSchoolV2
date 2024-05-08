@@ -14,7 +14,6 @@ import java.util.Objects;
 public class ArrowLight extends BaseSkill {
     public static int TIME_COUNT_DOWN_ATTACK = 0;
     public static int TIME_REDUCE = 0;
-    public static int LEVER = 0;
     public ArrowLight(GameState gs) {
         super(gs);
         init();
@@ -69,10 +68,10 @@ public class ArrowLight extends BaseSkill {
         solidArea = new Rectangle(0,0,gs.getTile()/5,gs.getTile());
         angleTarget = anglePlayerAndMouse();
         alive = true;
-        speed = BaseArrowLight.speed;
-        distance = BaseArrowLight.distance;
-        damage = BaseArrowLight.damage;
-        TIME_REDUCE = BaseArrowLight.timeReduce;
+        speed = BaseArrowLight.speed[BaseArrowLight.LEVER];
+        distance = BaseArrowLight.distance[BaseArrowLight.LEVER];
+        damage = BaseArrowLight.damage[BaseArrowLight.LEVER];
+        TIME_REDUCE = BaseArrowLight.timeReduce[BaseArrowLight.LEVER];
         getImage();
         setPolygonVertices();
     }

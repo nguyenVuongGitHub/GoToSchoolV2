@@ -5,11 +5,11 @@ import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
 import baseAttribute.BaseCircleFire;
+import baseAttribute.BaseMoonLight;
 
 import java.awt.*;
 
 public class CircleFire extends BaseSkill {
-    public static int LEVER = 0;
     public static int TIME_COUNT_DOWN_ATTACK = 0;
     public static int TIME_REDUCE = 1;
     public static int NUMBER_BURNING = 3;
@@ -50,10 +50,10 @@ public class CircleFire extends BaseSkill {
         type = TYPE.WEAPON;
         typeSkill.typeAttack = ATTACK_SKILL.CIRCLE_FIRE;
         alive = true;
-        damage = BaseCircleFire.damage;
-        radius = BaseCircleFire.radius;
-        TIME_REDUCE = BaseCircleFire.timeReduce;
-        NUMBER_BURNING = BaseCircleFire.numberBurning;
+        damage = BaseCircleFire.damage[BaseCircleFire.LEVER];
+        radius = BaseCircleFire.radius[BaseCircleFire.LEVER];
+        TIME_REDUCE = BaseCircleFire.timeReduce[BaseCircleFire.LEVER];
+        NUMBER_BURNING = BaseCircleFire.numberBurning[BaseCircleFire.LEVER];
         worldX = PointX.getCenterPointFromList(gs.player.getVertices()).getX() - radius/2;
         worldY = PointX.getCenterPointFromList(gs.player.getVertices()).getY() - radius/2;
         solidArea = new Rectangle(0,0, (int) radius, (int) radius);

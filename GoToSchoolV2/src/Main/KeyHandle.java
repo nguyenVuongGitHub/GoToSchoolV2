@@ -5,6 +5,14 @@
  */
 package Main;
 
+import AttackSkill.ArrowLight;
+import AttackSkill.CircleFire;
+import AttackSkill.MoonLight;
+import AttackSkill.MultiArrow;
+import baseAttribute.BaseArrowLight;
+import baseAttribute.BaseCircleFire;
+import baseAttribute.BaseMoonLight;
+import baseAttribute.BaseMultiArrow;
 import com.sun.source.tree.IfTree;
 
 import java.awt.event.KeyEvent;
@@ -30,6 +38,7 @@ public class KeyHandle implements KeyListener{
 	private boolean isResetSkillAttack = false;
 	private boolean isAddSkillSupport = false;
 	private boolean isAddSkillAttack = false;
+	private boolean isUpgradeSkill = false;
 
 	private String yourAddSkillSupport = null;
 	private String yourAddSkillAttack = null;
@@ -209,6 +218,41 @@ public class KeyHandle implements KeyListener{
 				}
 				if (code == KeyEvent.VK_ESCAPE) {
 					gs.loopy.setShowDialogChooseSkillsAttack(false);
+				}
+			}else if (gs.loopy.isShowDialogUpgradeSkill()) {
+				if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
+					if (gs.loopy.getChooseSkill() < 1) {
+						gs.loopy.setChooseSkill(gs.user.getMaxNumberSkillsAttackUnlocked());
+					}
+				}
+				if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() + 1);
+					if (gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsAttackUnlocked()) {
+						gs.loopy.setChooseSkill(1);
+					}
+				}
+				if (code == KeyEvent.VK_SPACE) {
+					if(gs.user.getCoin() >= gs.user.getCoinNeedUpgrade()) {
+						if(gs.loopy.getChooseSkill() == 1) {
+							if(BaseArrowLight.LEVER < 50)
+								BaseArrowLight.LEVER++;
+						}else if(gs.loopy.getChooseSkill() == 2) {
+							if(BaseMultiArrow.LEVER < 50)
+								BaseMultiArrow.LEVER++;
+						}else if(gs.loopy.getChooseSkill() == 3) {
+							if(BaseMoonLight.LEVER < 50)
+								BaseMoonLight.LEVER++;
+						}else if(gs.loopy.getChooseSkill() == 4) {
+							if(BaseCircleFire.LEVER < 50)
+								BaseCircleFire.LEVER++;
+						}
+						gs.user.setCoin(gs.user.getCoin() - gs.user.getCoinNeedUpgrade());
+						gs.user.setCoinNeedUpgrade(gs.user.getCoinNeedUpgrade() + 10);
+					}
+				}
+				if (code == KeyEvent.VK_ESCAPE) {
+					gs.loopy.setShowDialogUpgradeSkill(false);
 				}
 			}
 			else {
@@ -422,5 +466,13 @@ public class KeyHandle implements KeyListener{
 
 	public void setYourAddSkillAttack(String yourAddSkillAttack) {
 		this.yourAddSkillAttack = yourAddSkillAttack;
+	}
+
+	public boolean isUpgradeSkill() {
+		return isUpgradeSkill;
+	}
+
+	public void setUpgradeSkill(boolean upgradeSkill) {
+		isUpgradeSkill = upgradeSkill;
 	}
 }

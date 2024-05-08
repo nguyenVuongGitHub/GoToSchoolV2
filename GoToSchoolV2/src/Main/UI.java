@@ -1,6 +1,9 @@
 package Main;
 
+import AttackSkill.ArrowLight;
 import AttackSkill.CircleFire;
+import AttackSkill.MoonLight;
+import AttackSkill.MultiArrow;
 import SPSkill.Flicker;
 import SPSkill.Restore;
 import SPSkill.Sprint;
@@ -26,6 +29,7 @@ public class UI {
     boolean isPlayerSay = false;
     boolean isDrawChooseSkillsSupport = false;
 
+    boolean isDrawUpgradeSkill = false;
 
     boolean isDrawChooseSkillsAttack = false;
 
@@ -106,6 +110,9 @@ public class UI {
         if(isDrawChooseSkillsSupport) {
             drawChooseSkillSupport();
         }
+        if(isDrawUpgradeSkill) {
+            drawUpgradeSkill();
+        }
         if(isDrawChooseSkillsAttack) {
             drawChooseSkillAttack();
         }
@@ -140,6 +147,62 @@ public class UI {
         }
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
     }
+    private void drawSubTitleSkillUpgrade(String nameSkill) {
+        int x = 10 * gs.getTile() + gs.getTile()/2;
+        int y = gs.getTile()/2 + 5*gs.getTile();
+        int w = 12 * gs.getTile();
+        int h = 5 * gs.getTile();
+        drawSubWindow(x,y,w,h,g2);
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+        int xString = x + gs.getTile()/2;
+        int yString = y + gs.getTile();
+        xString = x + gs.getTile()/2;
+        yString = y + gs.getTile();
+        g2.drawString(nameSkill,xString,yString);
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,23F));
+        if(nameSkill.equals("ArrowLight")) {
+            xString = 15 * gs.getTile();
+            g2.drawString("lever " + (BaseArrowLight.LEVER+1),xString,yString);
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing " + BaseArrowLight.damage[BaseArrowLight.LEVER+1] + " damage. ",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Upon impact, the arrow disappears.",xString,yString);
+            yString += gs.getTile();
+            g2.drawString(BaseArrowLight.timeReduce[BaseArrowLight.LEVER+1] + "s Cooldown.",xString,yString);
+        }else if(nameSkill.equals("MultiArrowLight")) {
+            xString = 15 * gs.getTile();
+            g2.drawString("lever " + (BaseMultiArrow.LEVER+1),xString,yString);
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing " + BaseMultiArrow.damage[BaseMultiArrow.LEVER+1] +" damage.",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Upon impact, the arrows vanish.",xString,yString);
+            yString += gs.getTile();
+            g2.drawString(BaseMultiArrow.timeReduce[BaseMultiArrow.LEVER+1] + "s Cooldown.",xString,yString);
+        }else if(nameSkill.equals("MoonLight")) {
+            xString = 15 * gs.getTile();
+            g2.drawString("lever " + (BaseMoonLight.LEVER+1),xString,yString);
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing " + BaseMoonLight.damage[BaseMoonLight.LEVER+1]+" damage",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("and passing through objects until it exits the map.",xString,yString);
+            yString += gs.getTile();
+            g2.drawString(BaseMoonLight.timeReduce[BaseMoonLight.LEVER+1] + "s Cooldown.",xString,yString);
+        }else if(nameSkill.equals("CircleFire")) {
+            xString = 15 * gs.getTile();
+            g2.drawString("lever " + (BaseCircleFire.LEVER+1),xString,yString);
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius[BaseCircleFire.LEVER+1] + ", igniting enemies for " + BaseCircleFire.damage[BaseCircleFire.LEVER+1] + " damage each time they ",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("enter the area.",xString,yString);
+            yString += gs.getTile();
+            g2.drawString(BaseCircleFire.timeReduce[BaseCircleFire.LEVER+1] + "s Cooldown.",xString,yString);
+        }
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+    }
     private void drawSubTitleSkillAttack(String nameSkill) {
         int x = 10 * gs.getTile() + gs.getTile()/2;
         int y = gs.getTile()/2;
@@ -150,35 +213,63 @@ public class UI {
         int xString = x + gs.getTile()/2;
         int yString = y + gs.getTile();
         g2.drawString(nameSkill,xString,yString);
-        xString = 15 * gs.getTile();
-        g2.drawString("lever " + CircleFire.LEVER,xString,yString);
-        xString = x + gs.getTile()/2;
-        yString += gs.getTile();
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,23F));
         if(nameSkill.equals("ArrowLight")) {
-            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing " + BaseArrowLight.damage + " damage. ",xString,yString);
+            xString = 15 * gs.getTile();
+            if(BaseArrowLight.LEVER+1 == BaseArrowLight.MAX_LEVER) {
+                g2.drawString("lever MAX",xString,yString);
+            }else {
+                g2.drawString("lever " + BaseArrowLight.LEVER,xString,yString);
+            }
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing " + BaseArrowLight.damage[BaseArrowLight.LEVER] + " damage. ",xString,yString);
             yString += gs.getTile();
             g2.drawString("Upon impact, the arrow disappears.",xString,yString);
             yString += gs.getTile();
-            g2.drawString(BaseArrowLight.timeReduce + "s Cooldown.",xString,yString);
+            g2.drawString(BaseArrowLight.timeReduce[BaseArrowLight.LEVER] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MultiArrowLight")) {
-            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing " + BaseMultiArrow.damage +" damage.",xString,yString);
+            xString = 15 * gs.getTile();
+            if(BaseMultiArrow.LEVER+1 == BaseMultiArrow.MAX_LEVER) {
+                g2.drawString("lever MAX",xString,yString);
+            }else {
+                g2.drawString("lever " + BaseMultiArrow.LEVER,xString,yString);
+            }
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing " + BaseMultiArrow.damage[BaseMultiArrow.LEVER] +" damage.",xString,yString);
             yString += gs.getTile();
             g2.drawString("Upon impact, the arrows vanish.",xString,yString);
             yString += gs.getTile();
-            g2.drawString(BaseMultiArrow.timeReduce + "s Cooldown.",xString,yString);
+            g2.drawString(BaseMultiArrow.timeReduce[BaseMultiArrow.LEVER] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MoonLight")) {
-            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing " + BaseMoonLight.damage+" damage",xString,yString);
+            xString = 15 * gs.getTile();
+            if(BaseMoonLight.LEVER+1 == BaseMoonLight.MAX_LEVER) {
+                g2.drawString("lever MAX",xString,yString);
+            }else {
+                g2.drawString("lever " + BaseMoonLight.LEVER,xString,yString);
+            }
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing " + BaseMoonLight.damage[BaseMoonLight.LEVER]+" damage",xString,yString);
             yString += gs.getTile();
             g2.drawString("and passing through objects until it exits the map.",xString,yString);
             yString += gs.getTile();
-            g2.drawString(BaseMoonLight.timeReduce + "s Cooldown.",xString,yString);
+            g2.drawString(BaseMoonLight.timeReduce[BaseMoonLight.LEVER] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("CircleFire")) {
-            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius + ", igniting enemies for " + BaseCircleFire.damage + " damage each time they ",xString,yString);
+            xString = 15 * gs.getTile();
+            if(BaseCircleFire.LEVER+1 == BaseCircleFire.MAX_LEVER) {
+                g2.drawString("lever MAX",xString,yString);
+            }else {
+                g2.drawString("lever " + BaseCircleFire.LEVER,xString,yString);
+            }
+            xString = x + gs.getTile()/2;
+            yString += gs.getTile();
+            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius[BaseCircleFire.LEVER] + ", igniting enemies for " + BaseCircleFire.damage[BaseCircleFire.LEVER] + " damage each time they ",xString,yString);
             yString += gs.getTile();
             g2.drawString("enter the area.",xString,yString);
             yString += gs.getTile();
-            g2.drawString(BaseCircleFire.timeReduce + "s Cooldown.",xString,yString);
+            g2.drawString(BaseCircleFire.timeReduce[BaseCircleFire.LEVER] + "s Cooldown.",xString,yString);
         }
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
     }
@@ -569,27 +660,92 @@ public class UI {
         yString += gs.getTile();
         g2.drawString("ESC to exit.",xString,yString);
     }
-    private void drawBuySkillSupport() {
+    private void drawUpgradeSkill() {
         int x = 2 * gs.getTile();
-        int y = 2 * gs.getTile();
-        int w = 7 * gs.getTile();
-        int h = 10 * gs.getTile();
+        int y = gs.getTile()/2;
+        int w = 8 * gs.getTile();
+        int h = 12 * gs.getTile();
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
         int xString = x+gs.getTile();
         int yString = y+gs.getTile();
-        xString += gs.getTile();
-        g2.drawString("BUY SKILLS SUPPORT",xString,yString);
         xString = 3 * gs.getTile();
-        g2.drawString("Coins : " + gs.user.getCoin(),xString,yString);
+        g2.drawString("UPGRADE SKILLS",xString,yString);
+        xString = 7 * gs.getTile();
+        g2.drawString("Coin " + gs.user.getCoin(),xString,yString);
         yString += gs.getTile();
+        xString = 3 * gs.getTile();
 
+        if(gs.loopy.getChooseSkill() == 1) {
+            g2.drawString("Arrow Light",xString,yString);
+            xString = 8 * gs.getTile();
+            g2.drawString("<--",xString,yString);
+            drawSubTitleSkillAttack("ArrowLight");
+            if(BaseArrowLight.LEVER+1 < BaseArrowLight.MAX_LEVER) {
+                drawSubTitleSkillUpgrade("ArrowLight");
+            }
+
+            xString = 3 * gs.getTile();
+            yString += gs.getTile();
+            g2.drawString("Multi Arrow Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Moon Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Circle Fire",xString,yString);
+        }
+        else if(gs.loopy.getChooseSkill() == 2) {
+            g2.drawString("Arrow Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Multi Arrow Light",xString,yString);
+            xString = 8 * gs.getTile();
+            g2.drawString("<--",xString,yString);
+            drawSubTitleSkillAttack("MultiArrowLight");
+            if(BaseMultiArrow.LEVER+1 < BaseMultiArrow.MAX_LEVER)
+                drawSubTitleSkillUpgrade("MultiArrowLight");
+            xString = 3 * gs.getTile();
+            yString += gs.getTile();
+            g2.drawString("Moon Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Circle Fire",xString,yString);
+        }
+        else if(gs.loopy.getChooseSkill() == 3) {
+            g2.drawString("Arrow Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Multi Arrow Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Moon Light",xString,yString);
+            xString = 8 * gs.getTile();
+            g2.drawString("<--",xString,yString);
+            drawSubTitleSkillAttack("MoonLight");
+            if(BaseMoonLight.LEVER+1 < BaseMoonLight.MAX_LEVER)
+                drawSubTitleSkillUpgrade("MoonLight");
+            xString = 3 * gs.getTile();
+            yString += gs.getTile();
+            g2.drawString("Circle Fire",xString,yString);
+        }else if(gs.loopy.getChooseSkill() == 4) {
+            g2.drawString("Arrow Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Multi Arrow Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Moon Light",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("Circle Fire",xString,yString);
+            xString = 8 * gs.getTile();
+            g2.drawString("<--",xString,yString);
+            drawSubTitleSkillAttack("CircleFire");
+            if(BaseCircleFire.LEVER+1 < BaseCircleFire.MAX_LEVER)
+                drawSubTitleSkillUpgrade("CircleFire");
+        }
+        xString = 3 * gs.getTile();
         yString += gs.getTile();
-        g2.drawString("SPACE to choose.",xString,yString);
+        g2.drawString("***********************",xString,yString);
+        yString += gs.getTile();
+        g2.drawString("Coin need update : " + gs.user.getCoinNeedUpgrade(), xString, yString);
+        yString += gs.getTile();
+        g2.drawString("SPACE to choose to update.",xString,yString);
         yString += gs.getTile();
         g2.drawString("Q to reset.",xString,yString);
         yString += gs.getTile();
-        System.out.println(yString/gs.getTile());
         g2.drawString("ESC to exit.",xString,yString);
     }
     private void drawDialogExitGame() {
@@ -692,6 +848,13 @@ public class UI {
 
     public void setDrawChooseSkillsAttack(boolean drawChooseSkillsAttack) {
         isDrawChooseSkillsAttack = drawChooseSkillsAttack;
+    }
+    public boolean isDrawUpgradeSkill() {
+        return isDrawUpgradeSkill;
+    }
+
+    public void setDrawUpgradeSkill(boolean drawUpgradeSkill) {
+        isDrawUpgradeSkill = drawUpgradeSkill;
     }
 
 }

@@ -13,7 +13,6 @@ import java.util.Objects;
 public class MultiArrow extends BaseSkill {
     public static int TIME_COUNT_DOWN_ATTACK = 1;
     public static int TIME_REDUCE = 1;
-    public static int LEVER = 0;
     public MultiArrow(GameState gs) {
         super(gs);
         init();
@@ -67,10 +66,10 @@ public class MultiArrow extends BaseSkill {
         solidArea = new Rectangle(0,0,gs.getTile()/5,gs.getTile());
         angleTarget = anglePlayerAndMouse();
         alive = true;
-        damage = BaseMultiArrow.damage;
-        speed = BaseMultiArrow.speed;
-        distance = BaseMultiArrow.distance;
-        TIME_REDUCE = BaseMultiArrow.timeReduce;
+        damage = BaseMultiArrow.damage[BaseMultiArrow.LEVER];
+        speed = BaseMultiArrow.speed[BaseMultiArrow.LEVER];
+        distance = BaseMultiArrow.distance[BaseMultiArrow.LEVER];
+        TIME_REDUCE = BaseMultiArrow.timeReduce[BaseMultiArrow.LEVER];
         getImage();
         setPolygonVertices();
     }

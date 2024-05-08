@@ -19,6 +19,8 @@ import baseAttribute.BaseMultiArrow;
 public class UserManager {
 
     private long coin;
+    private long coinNeedUpgrade = 0;
+
     private short numberLeversUnlocked;
     private short maxNumberSkillsSupportUnlocked;
     private short maxNumberSkillsAttackUnlocked;
@@ -26,120 +28,96 @@ public class UserManager {
     }
     private void readFileArrowLight() {
         int lever = 0;
-        int damage = 0;
-        int timeReduce = 0;
-        int speed = 0;
-        int distance = 0;
         try {
             InputStream input = getClass().getResourceAsStream("/user/infArrowLight.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(input));
             String line = br.readLine(); // read lever
             lever = Integer.parseInt(line.split(":")[1]);
-            for(int i = 1; i <= lever; i++) {
-                br.readLine(); // break line
-            }
-            if((line = br.readLine()) != null) {
-                String[] token = line.split(";");
-                timeReduce = Integer.parseInt(token[0]);
-                damage = Integer.parseInt(token[1]);
-                speed = Integer.parseInt(token[2]);
-                distance = Integer.parseInt(token[3]);
+
+            br.readLine(); // break line title
+
+            int index = 0;
+            for(int i = 0; i < BaseArrowLight.MAX_LEVER; i++) {
+                if((line = br.readLine()) != null) {
+                    String[] token = line.split(";");
+                    BaseArrowLight.timeReduce[index]  = Integer.parseInt(token[0]);
+                    BaseArrowLight.damage[index]  = Integer.parseInt(token[1]);
+                    BaseArrowLight.speed[index]  = Integer.parseInt(token[2]);
+                    BaseArrowLight.distance[index]  = Integer.parseInt(token[3]);
+                    System.out.println(index + " " + BaseArrowLight.damage[index]);
+                    index++;
+                }
             }
         }catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        ArrowLight.LEVER = lever;
-        BaseArrowLight.damage = damage;
-        BaseArrowLight.timeReduce = timeReduce;
-        BaseArrowLight.speed = speed;
-        BaseArrowLight.distance = distance;
+        BaseArrowLight.LEVER = lever;
     }
     private void readFileMultiArrowLight() {
         int lever = 0;
-        int damage = 0;
-        int timeReduce = 0;
-        int speed = 0;
-        int distance = 0;
         try {
             InputStream input = getClass().getResourceAsStream("/user/infMultiArrow.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(input));
             String line = br.readLine(); // read lever
             lever = Integer.parseInt(line.split(":")[1]);
-            for(int i = 1; i <= lever; i++) {
-                br.readLine(); // break line
-            }
-            if((line = br.readLine()) != null) {
+            br.readLine(); // break line title
+
+            int index = 0;
+            while((line = br.readLine()) != null) {
                 String[] token = line.split(";");
-                damage = Integer.parseInt(token[0]);
-                timeReduce = Integer.parseInt(token[1]);
-                speed = Integer.parseInt(token[2]);
-                distance = Integer.parseInt(token[3]);
+                BaseMultiArrow.timeReduce[index] = Integer.parseInt(token[0]);
+                BaseMultiArrow.damage[index] = Integer.parseInt(token[1]);
+                BaseMultiArrow.speed[index] = Integer.parseInt(token[2]);
+                BaseMultiArrow.distance[index] = Integer.parseInt(token[3]);
+                index++;
             }
         }catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        MultiArrow.LEVER = lever;
-        BaseMultiArrow.damage = damage;
-        BaseMultiArrow.timeReduce = timeReduce;
-        BaseMultiArrow.speed = speed;
-        BaseMultiArrow.distance = distance;
+        BaseMultiArrow.LEVER = lever;
     }
     private void readFileCircleFire() {
         int lever = 0;
-        int timeReduce = 0;
-        int numberBurning = 0;
-        int damage = 0;
-        int radius = 0;
         try {
             InputStream input = getClass().getResourceAsStream("/user/infCircleFire.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(input));
             String line = br.readLine(); // read lever
             lever = Integer.parseInt(line.split(":")[1]);
-            for(int i = 1; i <= lever; i++) {
-                br.readLine(); // break line
-            }
-            if((line = br.readLine()) != null) {
+            br.readLine(); // break line title
+            int index = 0;
+            while((line = br.readLine()) != null) {
                 String[] token = line.split(";");
-                timeReduce = Integer.parseInt(token[0]);
-                numberBurning = Integer.parseInt(token[1]);
-                damage = Integer.parseInt(token[2]);
-                radius = Integer.parseInt(token[3]);
+                BaseCircleFire.timeReduce[index] = Integer.parseInt(token[0]);
+                BaseCircleFire.numberBurning[index] = Integer.parseInt(token[1]);
+                BaseCircleFire.damage[index] = Integer.parseInt(token[2]);
+                BaseCircleFire.radius[index] = Integer.parseInt(token[3]);
+                index++;
             }
         }catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        CircleFire.LEVER = lever;
-        BaseCircleFire.timeReduce = timeReduce;
-        BaseCircleFire.numberBurning = numberBurning;
-        BaseCircleFire.damage = damage;
-        BaseCircleFire.radius = radius;
+        BaseCircleFire.LEVER = lever;
     }
     private void readFileMoonLight() {
         int lever = 0;
-        int timeReduce = 0;
-        int damage = 0;
-        int speed = 0;
         try {
             InputStream input = getClass().getResourceAsStream("/user/infMoonLight.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(input));
             String line = br.readLine(); // read lever
             lever = Integer.parseInt(line.split(":")[1]);
-            for(int i = 1; i <= lever; i++) {
-                br.readLine(); // break line
-            }
-            if((line = br.readLine()) != null) {
+            br.readLine(); // break line title
+            int index = 0;
+            while((line = br.readLine()) != null) {
                 String[] token = line.split(";");
-                timeReduce = Integer.parseInt(token[0]);
-                damage = Integer.parseInt(token[1]);
-                speed = Integer.parseInt(token[2]);
+                BaseMoonLight.timeReduce[index] = Integer.parseInt(token[0]);
+                BaseMoonLight.damage[index] = Integer.parseInt(token[1]);
+                BaseMoonLight.speed[index] = Integer.parseInt(token[2]);
+                index++;
             }
         }catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        MoonLight.LEVER = lever;
-        BaseMoonLight.timeReduce = timeReduce;
-        BaseMoonLight.speed = speed;
-        BaseMoonLight.damage = damage;
+        BaseMoonLight.LEVER = lever;
     }
     public void readAttributeClasses() {
         readFileArrowLight();
@@ -185,8 +163,76 @@ public class UserManager {
                 // Kiểm tra nếu dòng chứa "lever"
                 if (line.startsWith("lever")) {
                     // Cập nhật giá trị "lever" từ 2 thành 3
-                    line = "lever :" + ArrowLight.LEVER;
-                    System.out.println(line);
+                    line = "lever :" + BaseArrowLight.LEVER;
+                }
+                content.append(line).append("\n");
+            }
+            reader.close();
+            FileWriter fw = new FileWriter(filePath);
+            fw.write(content.toString());
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("An error occurred while saving the file: " + e.getMessage());
+        }
+    }
+    private void saveFileMultiArrowLight() {
+        try{
+            String filePath = "GotoSchoolV2/res/user/infMultiArrow.txt";
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            String line;
+            StringBuilder content = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                // Kiểm tra nếu dòng chứa "lever"
+                if (line.startsWith("lever")) {
+                    // Cập nhật giá trị "lever" từ 2 thành 3
+                    line = "lever :" + BaseMultiArrow.LEVER;
+                }
+                content.append(line).append("\n");
+            }
+            reader.close();
+            FileWriter fw = new FileWriter(filePath);
+            fw.write(content.toString());
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("An error occurred while saving the file: " + e.getMessage());
+        }
+    }
+    private void saveFileMoonLight() {
+        try{
+            String filePath = "GotoSchoolV2/res/user/infMoonLight.txt";
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            String line;
+            StringBuilder content = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                // Kiểm tra nếu dòng chứa "lever"
+                if (line.startsWith("lever")) {
+                    // Cập nhật giá trị "lever" từ 2 thành 3
+                    line = "lever :" + BaseMoonLight.LEVER;
+                }
+                content.append(line).append("\n");
+            }
+            reader.close();
+            FileWriter fw = new FileWriter(filePath);
+            fw.write(content.toString());
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("An error occurred while saving the file: " + e.getMessage());
+        }
+    }
+    private void saveFileCircleFire() {
+        try{
+            String filePath = "GotoSchoolV2/res/user/infCircleFire.txt";
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            String line;
+            StringBuilder content = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                // Kiểm tra nếu dòng chứa "lever"
+                if (line.startsWith("lever")) {
+                    // Cập nhật giá trị "lever" từ 2 thành 3
+                    line = "lever :" + BaseMultiArrow.LEVER;
                 }
                 content.append(line).append("\n");
             }
@@ -203,6 +249,9 @@ public class UserManager {
     public void saveFile() {
         saveFileUser();
         saveFileArrowLight();
+        saveFileMultiArrowLight();
+        saveFileCircleFire();
+        saveFileMoonLight();
     }
     public long getCoin() {
         return coin;
@@ -227,5 +276,12 @@ public class UserManager {
     }
     public short getMaxNumberLevers() {
         return (short) 5;
+    }
+    public long getCoinNeedUpgrade() {
+        return coinNeedUpgrade;
+    }
+
+    public void setCoinNeedUpgrade(long coinNeedUpgrade) {
+        this.coinNeedUpgrade = coinNeedUpgrade;
     }
 }

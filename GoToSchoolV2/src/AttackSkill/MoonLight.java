@@ -10,7 +10,6 @@ import java.awt.*;
 import java.util.Objects;
 
 public class MoonLight extends BaseSkill {
-    public static int LEVER = 0;
     public static int TIME_COUNT_DOWN_ATTACK = 1;
     public static int TIME_REDUCE = 1;
 
@@ -53,9 +52,9 @@ public class MoonLight extends BaseSkill {
         angleTarget = anglePlayerAndMouse();
         getImage();
         setPolygonVertices();
-        damage = BaseMoonLight.damage;
-        speed = BaseMoonLight.speed;
-        TIME_REDUCE = BaseMoonLight.timeReduce;
+        damage = BaseMoonLight.damage[BaseMoonLight.LEVER];
+        speed = BaseMoonLight.speed[BaseMoonLight.LEVER];
+        TIME_REDUCE = BaseMoonLight.timeReduce[BaseMoonLight.LEVER];
     }
 
     @Override

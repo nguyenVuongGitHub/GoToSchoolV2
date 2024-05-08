@@ -19,6 +19,9 @@ public class Loopy {
 
     boolean showDialogChooseSkillsAttack = false;
 
+
+    boolean showDialogUpgradeSkill = false;
+
     int chooseDialogExit = 1;
 
     int chooseSkill = 1;
@@ -45,6 +48,7 @@ public class Loopy {
         gs.ui.setDrawExitGame(showDialogExit);
         gs.ui.setDrawChooseSkillsSupport(showDialogChooseSkillsSupport);
         gs.ui.setDrawChooseSkillsAttack(showDialogChooseSkillsAttack);
+        gs.ui.setDrawUpgradeSkill(showDialogUpgradeSkill);
         if(gs.keyHandle.isAddSkillSupport()) {
 
             Entity newSupport = null;
@@ -102,12 +106,14 @@ public class Loopy {
             if(gs.keyHandle.isEnterPress()) {
                 gs.ui.setDrawNotice(false);
 //                showDialogExit = true;
-                showDialogChooseSkillsAttack = true;
+//                showDialogChooseSkillsAttack = true;
+                showDialogUpgradeSkill = true;
 //                showDialogChooseSkillsSupport = true;
             }else {
 //                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsSupport());
-                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsAttack());
+//                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsAttack());
 //                gs.ui.setDrawNotice(!gs.ui.isDrawExitGame());
+                gs.ui.setDrawNotice(!gs.ui.isDrawUpgradeSkill());
             }
         }
         else {
@@ -175,5 +181,12 @@ public class Loopy {
 
     public void setShowDialogChooseSkillsAttack(boolean showDialogChooseSkillsAttack) {
         this.showDialogChooseSkillsAttack = showDialogChooseSkillsAttack;
+    }
+    public boolean isShowDialogUpgradeSkill() {
+        return showDialogUpgradeSkill;
+    }
+
+    public void setShowDialogUpgradeSkill(boolean showDialogUpgradeSkill) {
+        this.showDialogUpgradeSkill = showDialogUpgradeSkill;
     }
 }
