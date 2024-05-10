@@ -5,5 +5,5 @@ public enum ATTACK_SKILL {
     ARROW_LIGHT,
     CIRCLE_FIRE,
     MULTI_ARROW,
-    UPGRADED
+    MOON_LIGHT
 }

@@ -1,4 +1,5 @@
 package Main;
+import AttackSkill.ATTACK_SKILL;
 import Entity.*;
 import Quadtree.PointQ;
 import Quadtree.QuadTree;
@@ -286,17 +287,28 @@ public class CollisionChecker {
             List<PointQ> pointsNearSkill =  quadTree.query(range);
             for(PointQ point : pointsNearSkill) {
                 Entity other = point.getUserData();
-                if(other != skill && skill.getBounds().intersects(other.getBounds())) {
-                    skill.setAlive(false);
-                    int newHP = other.getHP();
-                    newHP -= skill.getDamage() + gs.player.getDamage();
-                    other.setHP(newHP);
-//                    if(other.getHP() <= 0) {
-//                        other.setAlive(false);
-//                    }
-//                    if(!other.getAlive()) {
-//                        other.generateCoin();
-//                    }
+                if(skill.getTypeSkill().typeAttack == ATTACK_SKILL.NORMAL
+                        || skill.getTypeSkill().typeAttack == ATTACK_SKILL.ARROW_LIGHT
+                        || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MULTI_ARROW
+                ) {
+                    if(SeparatingAxis.polygonCollisionDetectFirstStatic(skill,other,false,false)) {
+                        skill.setAlive(false);
+                        int newHP = other.getHP();
+                        newHP -= skill.getDamage() + gs.player.getDamage();
+                        other.setHP(newHP);
+                    }
+                }
+                else if(skill.getTypeSkill().typeAttack == ATTACK_SKILL.CIRCLE_FIRE
+                        || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MOON_LIGHT
+                ) {
+                    if(SeparatingAxis.CirclePolygonCollisionDectect(skill,other,false,false)) {
+                        if(skill.getTypeSkill().typeAttack != ATTACK_SKILL.CIRCLE_FIRE) {
+                            skill.setAlive(false);
+                        }
+                        int newHP = other.getHP();
+                        newHP -= skill.getDamage() + gs.player.getDamage();
+                        other.setHP(newHP);
+                    }
                 }
             }
         }

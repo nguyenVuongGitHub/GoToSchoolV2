@@ -3,12 +3,11 @@ package Scene;
 
 import Main.GameState;
 import Main.State;
-import Main.UI;
-import SPSkill.Flash;
-import SPSkill.Healing;
-import SPSkill.SpeedFaster;
-import User.UserManager;
+import SPSkill.Flicker;
 import  Entity.Entity;
+import SPSkill.Restore;
+import SPSkill.Sprint;
+
 import java.awt.*;
 
 public class Loopy {
@@ -17,13 +16,19 @@ public class Loopy {
 
     boolean showDialogChooseSkillsSupport = false;
 
+
+    boolean showDialogChooseSkillsAttack = false;
+
+
+    boolean showDialogUpgradeSkill = false;
+
     int chooseDialogExit = 1;
 
     int chooseSkill = 1;
 
 
-    int skillHave = 0;
-
+    int skillAttackHave = 0;
+    int skillSuportHave = 0;
     public Loopy(GameState gs) {
         this.gs = gs;
     }
@@ -42,42 +47,36 @@ public class Loopy {
 
         gs.ui.setDrawExitGame(showDialogExit);
         gs.ui.setDrawChooseSkillsSupport(showDialogChooseSkillsSupport);
-
+        gs.ui.setDrawChooseSkillsAttack(showDialogChooseSkillsAttack);
+        gs.ui.setDrawUpgradeSkill(showDialogUpgradeSkill);
         if(gs.keyHandle.isAddSkillSupport()) {
 
             Entity newSupport = null;
             if(gs.keyHandle.getYourAddSkillSupport().equals("flash")) {
-                newSupport = new Flash(gs);
-                System.out.println("add flash at " + (gs.Map_chooseSkill.get("flash")-1) );
+                newSupport = new Flicker(gs);
             } else if (gs.keyHandle.getYourAddSkillSupport().equals("speed")) {
-                newSupport = new SpeedFaster(gs);
-                System.out.println("add speed at " + (gs.Map_chooseSkill.get("speed")-1));
+                newSupport = new Sprint(gs);
             } else if (gs.keyHandle.getYourAddSkillSupport().equals("healing")) {
-                newSupport = new Healing(gs);
-                System.out.println("add healing " + (gs.Map_chooseSkill.get("healing")-1));
+                newSupport = new Restore(gs);
             }
 
             gs.skillSupports.add(newSupport);
-//            if(gs.Map_chooseSkill.containsKey("flash")) {
-//            }
-//            if(gs.Map_chooseSkill.containsKey("speed")) {
-//                Entity speed = new SpeedFaster(gs);
-//                gs.skillSupports.add(speed);
-//            }
-//            if(gs.Map_chooseSkill.containsKey("healing")) {
-//                Entity healing = new Healing(gs);
-//                gs.skillSupports.add(healing);
-//            }
             gs.keyHandle.setAddSkillSupport(false);
         }
 
         if(gs.keyHandle.isResetSkillSupport()) {
-            gs.Map_chooseSkill.clear();
+            gs.Map_chooseSkillSupport.clear();
             gs.skillSupports.clear();
-            skillHave = 0;
+            skillSuportHave = 0;
             gs.keyHandle.setResetSkillSupport(false);
         }
 
+        if(gs.keyHandle.isResetSkillAttack()) {
+            gs.Map_chooseSkillAttack.clear();
+            gs.skillAttacks.clear();
+            skillAttackHave = 0;
+            gs.keyHandle.setResetSkillAttack(false);
+        }
         if(gs.keyHandle.isAccessSaveGame()) {
             gs.saveGame();
             gs.ui.setPlayerSay(true);
@@ -103,17 +102,49 @@ public class Loopy {
             }else {
                 gs.ui.setDrawNotice(true);
             }
-        }else if(checkChange(gs.player,21,44)) {
+        }
+        // save game
+        else if(checkChange(gs.player,21,44)) {
             if(gs.keyHandle.isEnterPress()) {
-                gs.ui.setDrawNotice(false);
-//                showDialogExit = true;
+                showDialogExit = true;
+//                showDialogChooseSkillsAttack = true;
+//                showDialogUpgradeSkill = true;
+//                showDialogChooseSkillsSupport = true;
+            }else {
+//                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsSupport());
+//                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsAttack());
+                gs.ui.setDrawNotice(!gs.ui.isDrawExitGame());
+//                gs.ui.setDrawNotice(!gs.ui.isDrawUpgradeSkill());
+            }
+        }
+        else if(checkChange(gs.player,15,30)
+                ||checkChange(gs.player,16,30)
+                ||checkChange(gs.player,15,31)
+                ||checkChange(gs.player,16,31)) {
+            if(gs.keyHandle.isEnterPress()) {
                 showDialogChooseSkillsSupport = true;
             }else {
-                if(!gs.ui.isDrawChooseSkillsSupport())
-                    gs.ui.setDrawNotice(true);
-
-                if(!gs.ui.isDrawExitGame())
-                    gs.ui.setDrawNotice(true);
+                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsSupport());
+            }
+        }
+        else if(checkChange(gs.player,19,30)
+                ||checkChange(gs.player,20,30)
+                ||checkChange(gs.player,19,31)
+                ||checkChange(gs.player,20,31)) {
+            if(gs.keyHandle.isEnterPress()) {
+                showDialogChooseSkillsAttack = true;
+            }else {
+                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsAttack());
+            }
+        }
+        else if(checkChange(gs.player,23,30)
+                ||checkChange(gs.player,24,30)
+                ||checkChange(gs.player,23,31)
+                ||checkChange(gs.player,24,31)) {
+            if(gs.keyHandle.isEnterPress()) {
+                showDialogUpgradeSkill = true;
+            }else {
+                gs.ui.setDrawNotice(!gs.ui.isDrawUpgradeSkill());
             }
         }
         else {
@@ -161,11 +192,32 @@ public class Loopy {
     public void setShowDialogChooseSkillsSupport(boolean showDialogChooseSkills) {
         this.showDialogChooseSkillsSupport = showDialogChooseSkills;
     }
-    public int getSkillHave() {
-        return skillHave;
+    public int getSkillSuportHave() {
+        return skillSuportHave;
     }
 
-    public void setSkillHave(int skillHave) {
-        this.skillHave = skillHave;
+    public void setSkillSuportHave(int skillHave) {
+        this.skillSuportHave = skillHave;
+    }
+    public int getSkillAttackHave() {
+        return skillAttackHave;
+    }
+
+    public void setSkillAttackHave(int skillHave) {
+        this.skillAttackHave = skillHave;
+    }
+    public boolean isShowDialogChooseSkillsAttack() {
+        return showDialogChooseSkillsAttack;
+    }
+
+    public void setShowDialogChooseSkillsAttack(boolean showDialogChooseSkillsAttack) {
+        this.showDialogChooseSkillsAttack = showDialogChooseSkillsAttack;
+    }
+    public boolean isShowDialogUpgradeSkill() {
+        return showDialogUpgradeSkill;
+    }
+
+    public void setShowDialogUpgradeSkill(boolean showDialogUpgradeSkill) {
+        this.showDialogUpgradeSkill = showDialogUpgradeSkill;
     }
 }

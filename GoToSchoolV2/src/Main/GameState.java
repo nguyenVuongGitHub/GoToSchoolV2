@@ -7,28 +7,25 @@ import java.util.List;
 
 import javax.swing.*;
 
+import AttackSkill.*;
 import CollisionSystem.SeparatingAxis;
 import Entity.*;
 import Quadtree.RectangleQ;
-import SPSkill.Healing;
-import SPSkill.SpeedFaster;
+import SPSkill.*;
 import Scene.Campaign;
 import Scene.Loopy;
 import Scene.Survival;
 import User.UserManager;
-import SPSkill.Flash;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
-import SPSkill.SUPPORT_SKILL;
 import tile.TileManager;
-
 
 public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
 	private static final int tile = 64;
-	private static final int WINDOW_HEIGHT = 15 * tile;
-	private static final int WINDOW_WIDTH = 25 * tile;
+	private static final int WINDOW_HEIGHT = 13 * tile; //832
+	private static final int WINDOW_WIDTH = 23 * tile; //1427
 
 	private static final int maxScreenCol = WINDOW_WIDTH/tile;
 
@@ -62,16 +59,15 @@ public class GameState extends JPanel implements Runnable{
 	public List<Entity> skillSupports = new ArrayList<>();
 	public int indexSkillSupport1 = 0;
 	public int indexSkillSupport2 = 1;
-	public Map<String,Integer> Map_chooseSkill = new HashMap<>();
-	public Entity flashSkill = null;
-	public Entity healing = null;
-	public Entity speedFaster = null;
+
+	public Map<String,Integer> Map_chooseSkillSupport = new HashMap<>();
+	public Map<String,Integer> Map_chooseSkillAttack = new HashMap<>();
+
 	public List<Entity> skeletonAttacks = new ArrayList<>();
 	public Entity lazeBoss = new LazerBoss(this);
 	public List<Entity> coins = new ArrayList<>();
 
     // OTHER VARIABLE
-
 	public GameState() {
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		this.setBackground(new Color(77,138,179,255));
@@ -83,7 +79,8 @@ public class GameState extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	public void initGame() {
-		user.readFile("/user/infUser.txt");
+		user.readFile();
+		user.readAttributeClasses();
 		// something here
 		survival.loadMap();
 	}
@@ -126,17 +123,34 @@ public class GameState extends JPanel implements Runnable{
 				if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
 					NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;
 				}
-				Flash.TIME_COUNT_DOWN--;
-				if(Flash.TIME_COUNT_DOWN <= 0) {
-					Flash.TIME_COUNT_DOWN = -1;
+				MoonLight.TIME_COUNT_DOWN_ATTACK--;
+				if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+					MoonLight.TIME_COUNT_DOWN_ATTACK = -1;
 				}
-				Healing.TIME_COUNT_DOWN--;
-				if(Healing.TIME_COUNT_DOWN <= 0) {
-					Healing.TIME_COUNT_DOWN = -1;
+//				System.out.println(ArrowLight.TIME_REDUCE);
+				ArrowLight.TIME_COUNT_DOWN_ATTACK--;
+				if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+					ArrowLight.TIME_COUNT_DOWN_ATTACK = -1;
 				}
-				SpeedFaster.TIME_COUNT_DOWN--;
-				if(SpeedFaster.TIME_COUNT_DOWN <= 0) {
-					SpeedFaster.TIME_COUNT_DOWN = -1;
+				MultiArrow.TIME_COUNT_DOWN_ATTACK--;
+				if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+					MultiArrow.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				CircleFire.TIME_COUNT_DOWN_ATTACK--;
+				if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+					CircleFire.TIME_COUNT_DOWN_ATTACK = -1;
+				}
+				Flicker.TIME_COUNT_DOWN--;
+				if(Flicker.TIME_COUNT_DOWN <= 0) {
+					Flicker.TIME_COUNT_DOWN = -1;
+				}
+				Restore.TIME_COUNT_DOWN--;
+				if(Restore.TIME_COUNT_DOWN <= 0) {
+					Restore.TIME_COUNT_DOWN = -1;
+				}
+				Sprint.TIME_COUNT_DOWN--;
+				if(Sprint.TIME_COUNT_DOWN <= 0) {
+					Sprint.TIME_COUNT_DOWN = -1;
 				}
 //				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
@@ -229,48 +243,107 @@ public class GameState extends JPanel implements Runnable{
 			skillAttacks.add(normalAttack);
 			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
 		}
-//		for(Map.Entry<String,Integer> entry : Map_chooseSkill.entrySet()) {
-//			System.out.println(entry.getKey() + " " + entry.getValue());
-//		}
-//		for(int i = 0; i < skillSupports.size(); i++) {
-//			System.out.println("skill " + (i+1) + " "  + skillSupports.get(i).getTypeSkill().typeSupport);
-//		}
-		if(keyHandle.isSupportSkill1() && loopy.getSkillHave() >= 1) {
+		if(keyHandle.isSkill1Press() && loopy.getSkillAttackHave() >= 1) {
+			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
+				if(entry.getValue() == 1) {
+					Entity e;
+					if(entry.getKey().equals("ArrowLight")) {
+						if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new ArrowLight(this);
+							ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}else if(entry.getKey().equals("MultiArrowLight")) {
+						if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new MultiArrow(this);
+							MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}else if(entry.getKey().equals("MoonLight")) {
+						if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new MoonLight(this);
+							MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}else if(entry.getKey().equals("CircleFire")) {
+						if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new CircleFire(this);
+							CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}
+				}
+			}
+		}
+		if(keyHandle.isSkill2Press() && loopy.getSkillAttackHave() == 2) {
+			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
+				if(entry.getValue() == 2) {
+					Entity e;
+					if(entry.getKey().equals("ArrowLight")) {
+						if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new ArrowLight(this);
+							ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}else if(entry.getKey().equals("MultiArrowLight")) {
+						if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new MultiArrow(this);
+							MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}else if(entry.getKey().equals("MoonLight")) {
+						if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new MoonLight(this);
+							MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}else if(entry.getKey().equals("CircleFire")) {
+						if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+							e = new CircleFire(this);
+							CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
+							skillAttacks.add(e);
+						}
+					}
+				}
+			}
+		}
+
+		if(keyHandle.isSupportSkill1() && loopy.getSkillSuportHave() >= 1) {
 			Entity e = skillSupports.get(indexSkillSupport1);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flash) {
-				if(Flash.TIME_COUNT_DOWN <= 0) {
+			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
+				if(Flicker.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Flash.TIME_COUNT_DOWN = Flash.TIME_REDUCE;
+					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.SpeedFaster) {
-				if(SpeedFaster.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
+				if(Sprint.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					SpeedFaster.TIME_COUNT_DOWN = SpeedFaster.TIME_REDUCE;
+					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Healing) {
-				if(Healing.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
+				if(Restore.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Healing.TIME_COUNT_DOWN = Healing.TIME_REDUCE;
+					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
 				}
 			}
 			skillSupports.set(indexSkillSupport1,e);
 		}
-		if(keyHandle.isSupportSkill2() && loopy.getSkillHave() == 2) {
+		if(keyHandle.isSupportSkill2() && loopy.getSkillSuportHave() == 2) {
 			Entity e = skillSupports.get(indexSkillSupport2);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flash) {
-				if(Flash.TIME_COUNT_DOWN <= 0) {
+			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
+				if(Flicker.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Flash.TIME_COUNT_DOWN = Flash.TIME_REDUCE;
+					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.SpeedFaster) {
-				if(SpeedFaster.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
+				if(Sprint.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					SpeedFaster.TIME_COUNT_DOWN = SpeedFaster.TIME_REDUCE;
+					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
 				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Healing) {
-				if(Healing.TIME_COUNT_DOWN <= 0) {
+			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
+				if(Restore.TIME_COUNT_DOWN <= 0) {
 					e.setAlive(true);
-					Healing.TIME_COUNT_DOWN = Healing.TIME_REDUCE;
+					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
 				}
 			}
 			skillSupports.set(indexSkillSupport2,e);
@@ -316,14 +389,16 @@ public class GameState extends JPanel implements Runnable{
 		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, lazeBoss);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
-		skillAttacks.removeIf( normalAttack -> !normalAttack.getAlive());
+		skillAttacks.removeIf(attack ->
+				attack.getSpriteNum() == 5 &&
+			!attack.getAlive()
+		);
 		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
 		if(lazeBoss != null) {
-			if(!lazeBoss.getAlive()) {
+			if (!lazeBoss.getAlive()) {
 				lazeBoss = null;
 			}
 		}
-
 		// Loại bỏ quái vật đã chết
 		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive
@@ -337,14 +412,18 @@ public class GameState extends JPanel implements Runnable{
 	public int getWindowWidth() {return WINDOW_WIDTH;}
 	public int getMaxWorldCol() {return maxWorldCol;}
 	public int getMaxWorldRow() {return maxWorldRow;}
-
+	public boolean inSightWorld(double x, double y) {
+		int width = maxWorldRow*tile;
+		int height = maxWorldCol*tile;
+		return (x >= 0 || x <= width) && (y >= 0 || y <= height);
+	}
 	public void setGameExit() {
 		gameThread = null;
 	}
 
 	public void saveGame() {
 		if(gameThread != null) {
-			user.saveFile("GotoSchoolV2/res/user/infUser.txt");
+			user.saveFile();
 		}
 	}
 }

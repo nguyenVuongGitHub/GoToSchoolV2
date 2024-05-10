@@ -5,14 +5,14 @@ import Weapon.BaseSkill;
 
 import java.awt.*;
 
-public class SpeedFaster extends BaseSkill {
+public class Sprint extends BaseSkill {
     public static int TIME_COUNT_DOWN = 0;
-    public static final int TIME_REDUCE = 30;
+    public static final int TIME_REDUCE = 60;
     public int TIME_DELAY = 3;
     public int COUNT_TIME_DELAY = 0;
     int newSpeed;
     int normalSpeed;
-    public SpeedFaster(GameState gs) {
+    public Sprint(GameState gs) {
         super(gs);
         init();
     }
@@ -42,7 +42,7 @@ public class SpeedFaster extends BaseSkill {
 
     @Override
     public void init() {
-        typeSkill.typeSupport = SUPPORT_SKILL.SpeedFaster;
+        typeSkill.typeSupport = SUPPORT_SKILL.Sprint;
         speed = gs.player.getSpeed() * 4;
         newSpeed = speed;
         normalSpeed = gs.player.getSpeed();

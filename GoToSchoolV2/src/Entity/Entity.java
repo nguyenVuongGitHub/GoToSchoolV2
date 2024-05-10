@@ -166,6 +166,9 @@ public abstract class Entity {
 				(int) (screenX + vertices.get(0).getX() - worldX),
 				(int) (screenY + vertices.get(0).getY() - worldY));
 	}
+	public void drawCircle(Graphics2D g2) {
+		g2.drawOval(screenX,screenY, (int) radius, (int) radius);
+	}
 
 	public String getBeforeDirection() {
         return null;
@@ -177,5 +180,9 @@ public abstract class Entity {
 
 	public void setTypeSkill(TypeSkill typeSkill) {
 		this.typeSkill = typeSkill;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
 	}
 }
