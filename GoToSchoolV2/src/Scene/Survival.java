@@ -25,7 +25,7 @@ public class Survival {
     boolean mapExist = false;
     final int BASE_NUMBER_MOBS = 4;
     int numberDay = 0;
-    boolean endOfDay = false;
+    boolean endOfDay = false, meeting = false;
     int selected = 0;
     List<Integer> listBlessing = new ArrayList<Integer>();
     List<Integer> listItem = new ArrayList<Integer>();
@@ -45,6 +45,13 @@ public class Survival {
         this.gs = gs;
         this.um = um;
         this.ui = ui;
+    }
+    public boolean getMeeting()
+    {
+        return meeting;
+    }
+    public void setMeeting(boolean condition) {
+        meeting = condition;
     }
     public boolean getEndOfDay()
     {
@@ -136,10 +143,21 @@ public class Survival {
                 height = gs.getTile() * 5;
         int gap = gs.getTile() *2;
         //draw choices table
-        g2.fillRect(x, y ,width, height);
-        g2.fillRect(x + width + gap, y ,width, height);
-        g2.fillRect(x + (width + gap) * 2, y ,width, height);
-
+        for(int i=0; i<listBlessing.size(); i++) {
+            g2.fillRect(x + (width + gap) * i, y, width, height);
+            if (gs.mouseHandle.getWorldX() > x + (width + gap) * i && gs.mouseHandle.getWorldX() < x + (width + gap) * i + width) {
+                if(gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + height)
+                {
+                    selected = i+1;
+                    if(gs.mouseHandle.isMouseLeftPress())
+                    {
+                        setEndOfDay(false);
+                        //Give effect
+                        System.out.println(selected);
+                    }
+                }
+            }
+        }
         //Default text color
         Color c2 = new Color(255, 255, 255);
         //Hover text color
@@ -147,6 +165,7 @@ public class Survival {
 
         g2.setFont(maruMonica.deriveFont(Font.BOLD,20F));
         x += gs.getTile();
+
         for(int i=0; i<listBlessing.size(); i++)
         {
             switch (listBlessing.get(i))
@@ -235,49 +254,60 @@ public class Survival {
     }
     public void meetShopkeeper()
     {
+        //Draw background
+        Color c = new Color(0,0,0,180);
+        g2.setColor(c);
+        //draw dark mark
+        g2.fillRect(0, 0 ,gs.getWindowWidth(), gs.getWindowHeight());
+
+        Color c1 = new Color(60, 40, 40);
+        g2.setColor(c1);
         //Draw shop with 4 random items
-        System.out.println("Hello my hero!");
+        g2.fillRect(100, 100 ,gs.getTile(), gs.getTile());
+
     }
     public void update() {
 
-        if(!endOfDay)
+        if(!(endOfDay || meeting))
         {
             gs.updateBattle();
         }
         if(gs.monsters.isEmpty())
         {
-            if(numberDay % 5 == 0)
+            if(numberDay != 0)
             {
-                meetShopkeeper();
-            }
-            //Appear table of the blessing at the end of day
-            endOfDay = true;
-            //Create random list of blessing
-            listBlessing.clear();
-            Random ran = new Random();
-            do
-            {
-                int ranNumber = new Random().nextInt(6-1 + 1) + 1;
-                if(!listBlessing.contains(ranNumber))
-                {
-                    listBlessing.add(ranNumber);
-                }
-            }
-            while(listBlessing.size()<3);
-            if(numberDay % 5 == 4)
-            {
+                //Appear table of the blessing at the end of day
+                endOfDay = true;
                 //Create random list of blessing
-                listItem.clear();
+                listBlessing.clear();
+                Random ran = new Random();
                 do
                 {
                     int ranNumber = new Random().nextInt(6-1 + 1) + 1;
-                    if(!listItem.contains(ranNumber))
+                    if(!listBlessing.contains(ranNumber))
                     {
-                        listItem.add(ranNumber);
+                        listBlessing.add(ranNumber);
                     }
                 }
-                while(listItem.size()<4);
+                while(listBlessing.size()<3);
+
+                if(numberDay % 5 == 0)
+                {
+                    setMeeting(true);
+                    //Create random list of item for shop
+                    listItem.clear();
+                    do
+                    {
+                        int ranNumber = new Random().nextInt(6-1 + 1) + 1;
+                        if(!listItem.contains(ranNumber))
+                        {
+                            listItem.add(ranNumber);
+                        }
+                    }
+                    while(listItem.size()<4);
+                }
             }
+
             //Spawn mobs , begin new day
             newState();
         }
@@ -308,6 +338,10 @@ public class Survival {
         if(endOfDay)
         {
             chooseBlessing(g2);
+        }
+        else if(meeting)
+        {
+            meetShopkeeper();
         }
         else
         {

@@ -129,8 +129,26 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
 					gs.survival.setSelected(gs.survival.getSelected() % 3 + 1);
 				}
-				if(code == KeyEvent.VK_ENTER) {
+				if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
 					gs.survival.setEndOfDay(false);
+					//Give effect of blessing
+				}
+			}
+			else if(gs.survival.getMeeting())
+			{
+				if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+					if (gs.survival.getSelected() - 1 <= 0) {
+						gs.survival.setSelected(4);
+					} else {
+						gs.survival.setSelected(gs.survival.getSelected() - 1);
+					}
+				}
+				if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+					gs.survival.setSelected(gs.survival.getSelected() % 4 + 1);
+				}
+				if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+					gs.survival.setEndOfDay(false);
+					//Give item
 				}
 			}
 			else
