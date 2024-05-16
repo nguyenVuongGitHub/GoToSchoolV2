@@ -1,2 +1,2 @@
-coin; max number skill support unlocked; max number skill attack unlocked; number lever unlocked
-159;3;4;2
+coin; max number skill support unlocked; max number skill attack unlocked; number lever unlocked 
+9;3;4;2

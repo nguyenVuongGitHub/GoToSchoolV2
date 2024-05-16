@@ -231,7 +231,7 @@ public class UserManager {
                 // Kiểm tra nếu dòng chứa "lever"
                 if (line.startsWith("lever")) {
                     // Cập nhật giá trị "lever" từ 2 thành 3
-                    line = "lever :" + BaseMultiArrow.LEVER;
+                    line = "lever :" + BaseCircleFire.LEVER;
                 }
                 content.append(line).append("\n");
             }

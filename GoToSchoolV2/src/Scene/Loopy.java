@@ -59,7 +59,6 @@ public class Loopy {
             } else if (gs.keyHandle.getYourAddSkillSupport().equals("healing")) {
                 newSupport = new Restore(gs);
             }
-
             gs.skillSupports.add(newSupport);
             gs.keyHandle.setAddSkillSupport(false);
         }
@@ -107,14 +106,8 @@ public class Loopy {
         else if(checkChange(gs.player,21,44)) {
             if(gs.keyHandle.isEnterPress()) {
                 showDialogExit = true;
-//                showDialogChooseSkillsAttack = true;
-//                showDialogUpgradeSkill = true;
-//                showDialogChooseSkillsSupport = true;
             }else {
-//                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsSupport());
-//                gs.ui.setDrawNotice(!gs.ui.isDrawChooseSkillsAttack());
                 gs.ui.setDrawNotice(!gs.ui.isDrawExitGame());
-//                gs.ui.setDrawNotice(!gs.ui.isDrawUpgradeSkill());
             }
         }
         else if(checkChange(gs.player,15,30)

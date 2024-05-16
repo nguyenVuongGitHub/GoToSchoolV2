@@ -100,9 +100,6 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_ESCAPE) {
 					escPress = true;
 				}
-				if(code == KeyEvent.VK_E) {
-					enterPress = true;
-				}
 				if(code == KeyEvent.VK_TAB) {
 					tabPress = true;
 				}
@@ -112,10 +109,10 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_2) {
 					skill2Press = true;
 				}
-				if(code == KeyEvent.VK_F) {
+				if(code == KeyEvent.VK_Q) {
 					supportSkill1 = true;
 				}
-				if(code == KeyEvent.VK_R) {
+				if(code == KeyEvent.VK_E) {
 					supportSkill2 = true;
 				}
 			}
@@ -322,10 +319,10 @@ public class KeyHandle implements KeyListener{
 		if(code == KeyEvent.VK_2) {
 			skill2Press = false;
 		}
-		if(code == KeyEvent.VK_F) {
+		if(code == KeyEvent.VK_Q) {
 			supportSkill1 = false;
 		}
-		if(code == KeyEvent.VK_R) {
+		if(code == KeyEvent.VK_E) {
 			supportSkill2 = false;
 		}
 	}
