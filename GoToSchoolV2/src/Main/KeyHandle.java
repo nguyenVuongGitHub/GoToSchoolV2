@@ -192,9 +192,6 @@ public class KeyHandle implements KeyListener{
 				if(code == KeyEvent.VK_K) {
 					skill2Press = true;
 				}
-				if(code == KeyEvent.VK_L) {
-					skill3Press = true;
-				}
 			}
 		}else if(gs.state == State.LOOPY) {
 
