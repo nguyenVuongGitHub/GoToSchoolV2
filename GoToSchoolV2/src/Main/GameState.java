@@ -24,8 +24,8 @@ public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE GLOBAL
 	private static final int tile = 64;
-	private static final int WINDOW_HEIGHT = 13 * tile; //832
-	private static final int WINDOW_WIDTH = 23 * tile; //1427
+	private static final int WINDOW_HEIGHT = 13 * tile; //832 px
+	private static final int WINDOW_WIDTH = 23 * tile; //1472 px
 
 	private static final int maxScreenCol = WINDOW_WIDTH/tile;
 
@@ -50,7 +50,7 @@ public class GameState extends JPanel implements Runnable{
 	public SeparatingAxis SAT = new SeparatingAxis(this);
 	public Loopy loopy = new Loopy(this);
 	public TileManager tileM = new TileManager(this);
-
+	public ChangeScene changeScene = new ChangeScene(this);
 	// ENTITY
 	public 	Entity player = new Player(this);
 	public List<Entity> monsters = new ArrayList<>();
@@ -182,6 +182,7 @@ public class GameState extends JPanel implements Runnable{
 			}
 			loopy.update();
 		}
+		changeScene.update();
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -195,7 +196,7 @@ public class GameState extends JPanel implements Runnable{
 			survival.draw(g2);
 		}
 		ui.draw(g2);
-
+		changeScene.draw(g2);
 		g2.dispose();
 		
 	}

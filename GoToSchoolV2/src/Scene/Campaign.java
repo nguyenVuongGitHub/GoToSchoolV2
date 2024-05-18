@@ -201,12 +201,14 @@ public class Campaign {
         }
         if(gs.keyHandle.isAccessReturnLoopy()) {
             gs.state = State.LOOPY;
-            gs.changeState = true;
+//            gs.changeState = true;
+            gs.changeScene.setAlive(true);
             gs.keyHandle.resetAllData();
             gs.player.setWorldX(29* gs.getTile());
             gs.player.setWorldY(28* gs.getTile());
         }
         if(gs.keyHandle.isAccessLoadMap()) {
+            gs.changeScene.setAlive(true);
             loadMap(choose);
             gs.keyHandle.setAccessLoadMap(false);
             showDialog = false;
