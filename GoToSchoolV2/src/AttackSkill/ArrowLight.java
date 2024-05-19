@@ -4,11 +4,10 @@ import CollisionSystem.PointX;
 import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
-import baseAttribute.BaseArrowLight;
+import baseAttributeSkills.BaseArrowLight;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.nio.channels.Pipe;
 import java.util.Objects;
 
 public class ArrowLight extends BaseSkill {

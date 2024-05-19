@@ -1,0 +1,127 @@
+----------------- 19-5-2024 : Vương -----------------
+
+* các biến gây khó hiểu trước khi có file devlog  {
+    changeScene: biến quản lý việc chuyển cảnh
+}
+
+
+
+* Thêm file
+    - res :
+        + Các hoạt ảnh chuyển cảnh : (res/changeScene/in), (res/changeScene/out)
+        + Các map 4,map 5 và map 5 đang lỗi.
+        + Hình ảnh nhân vật tấn công
+        + infBoss, infSkeleton, infSlime : các chỉ số sức mạnh của quái vật, mỗi lever tương ứng với mỗi dòng và có sức mạnh tương tự
+        + ảnh chiêu thức (đánh thường)
+    - src :
+        + BaseBoss, BaseSkeleton, BaseSlime : nơi để chứa dữ liệu từ các file txt
+        + package: environment
+            . EnvironmentManager : để quản lý các trạng thái môi trường ( tối, mưa, bão,... )
+            . Lighting : hiệu ứng ánh sáng xung quanh người chơi, và phần còn lại sẽ tối.
+        + BorderPanel : dùng để tạo viền đen của game bao quanh màn hình game
+
+
+* Sửa file
+    - res :
+        + tile map sửa mới.
+        + thông số của các chiêu thức ( infArrowLight, infCircleFire, infMoonLight,infMultiArrow)
+            [
+                Mô tả :
+                ArrowLight : bắn 1 mũi tên về phía trước ( bị hủy khi gặp va chạm )
+                CircleFire : tạo một vòng tròn có bán kính r tại trung tâm người chơi ( đốt sát thương )
+                MoonLight : bắn 1 vầng sáng về phía trước ( không bị hủy khi va chạm, khi ra khỏi map sẽ tự hủy )
+                MultiArrow : giống ArrowLight nhưng bắn 3 tia.
+            ]
+        + thông số quản lý người dùng (user)
+    - src :
+
+     + package: AttackSkill
+        chỉ đổi tên package import
+
+     + sửa tên BaseAttribute -> baseAttributeSkills
+
+     + Boss.java {
+        . cập nhật giá trị HP và damage theo BaseBoss. (line:53,54)
+        . xóa các đỉnh khi boss chuyển sang trạng thái chết (line:118)
+        . sửa vị trí boss bắn người chơi (line:266-281)
+     }
+
+     + Skeleton.java {
+        . cập nhật giá trị HP và damage theo BaseSkeleton. (line:46,47)
+     }
+
+     + Skeleton.java {
+         . cập nhật giá trị HP và damage theo BaseSlime. (line:44,45)
+     }
+
+     + ChangeScene.java {
+        . chuyển 1 cảnh mặc định -> 3 cảnh random ( 3 out, 3 in )
+     }
+
+     + CollisionChecker.java {
+        . hàm : void checkEntityWithTile(Entity entity)
+            [
+                kiểm tra nếu ra khỏi ngoài map [64,64] thì sẽ cho quái vật cook luôn -> giảm được lỗi "out of index"
+            ]
+        . hàm : checkPlayerWithCoins(Entity player, List<Entity> coins)
+            [
+                cập nhật kinh nghiệm dựa theo số vàng của người chơi đã nhặt được.
+            ]
+     }
+
+     + KeyHandle.java {
+        . thêm lựa chọn từng màn chơi ( 6 -> 15) bằng 2 phím trái phải hoặc A D
+     }
+
+     + UI.java {
+        . sửa khung thoát game nằm tại vị trí người chơi.
+        . hàm void drawCampaign()
+            [
+                nếu tại map 5 thì sẽ có môi trường là tối.
+            ]
+        . thêm khung đếm ngược thời gian skill hiển thị
+     }
+
+     + Player.java {
+        . tạo danh sách biến chứa hình ảnh tấn công. ( left_attack, right_attack, up_attack, down_attack )
+        . load ảnh từ nguồn tại các hàm : loadUpImage, loadDownImage, loadLeftImage, loadRightImage
+        . khi còn hoạt ảnh chuyển cảnh thì không thể di chuyển (line:174)
+     }
+
+     + UserManager.java {
+        . sửa để đọc lại file txt cho đúng với format các file txt.
+     }
+
+     + lazeBoss.java {
+        . không cần tính theo trái phải để lật hình, xoay trực tiếp bằng góc đã được tính
+        . sửa dame bằng dame của boss từ BaseBoss
+     }
+
+     + NormalAttack.java {
+        . sửa solidArea cho khớp với hình (0,0,gs.getTile()/2,gs.getTile()/2) -> (32,32,gs.getTile(),gs.getTile())
+     }
+
+     + SkeletonWeapon.java {
+        . chỉnh damage theo damage của skeleton thông qua BaseSkeleton
+     }
+
+     + Campaign.java {
+        . Hàm : loadMap(int index)
+            [
+                thêm vị trí các quái ở các map.
+            ]
+
+        . Hàm : dialogChooseMap(Graphics2D g2)
+            [
+                sửa chọn màn từ 1 trang -> 3 trang, mỗi trang 5 màn.
+            ]
+     }
+     + Loopy.java {
+        . sửa lại switch case tại hàm update -> sửa thành công lỗi null pointer
+     }
+
+* Xóa file
+    + Exp từ package object : vì kinh nghiệm đã được tính theo số vàng.
+
+* Vấn đề đang gặp:
+* Công việc hiện tại:

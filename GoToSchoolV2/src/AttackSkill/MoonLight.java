@@ -3,7 +3,7 @@ package AttackSkill;
 import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
-import baseAttribute.BaseMoonLight;
+import baseAttributeSkills.BaseMoonLight;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

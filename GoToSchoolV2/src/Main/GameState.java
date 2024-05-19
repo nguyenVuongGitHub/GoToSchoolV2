@@ -17,6 +17,7 @@ import Scene.Loopy;
 import User.UserManager;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
+import environment.EnviromentManager;
 import tile.TileManager;
 
 public class GameState extends JPanel implements Runnable{
@@ -41,7 +42,7 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.LOOPY;
+	public State state = State.CAMPAIGN;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
@@ -49,6 +50,7 @@ public class GameState extends JPanel implements Runnable{
 	public Loopy loopy = new Loopy(this);
 	public TileManager tileM = new TileManager(this);
 	public ChangeScene changeScene = new ChangeScene(this);
+    public EnviromentManager enviromentManager = new EnviromentManager(this);
 	// ENTITY
 	public 	Entity player = new Player(this);
 	public List<Entity> monsters = new ArrayList<>();
@@ -62,13 +64,13 @@ public class GameState extends JPanel implements Runnable{
 	public Map<String,Integer> Map_chooseSkillAttack = new HashMap<>();
 
 	public List<Entity> skeletonAttacks = new ArrayList<>();
-	public Entity lazeBoss = new LazerBoss(this);
+	public Entity lazeBoss = null;
 	public List<Entity> coins = new ArrayList<>();
-
+	public Color baseColor = new Color(77,138,179,255);
     // OTHER VARIABLE
 	public GameState() {
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-		this.setBackground(new Color(77,138,179,255));
+		this.setBackground(baseColor);
 		this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.emptySet());
 		this.addKeyListener(keyHandle);
 		this.addMouseListener(mouseHandle);
@@ -77,8 +79,10 @@ public class GameState extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	public void initGame() {
-		user.readFile();
-		user.readAttributeClasses();
+		user.readFileUser();
+		user.readAttributeClassesSkill();
+		user.readAttributeClassesMonster();
+        enviromentManager.init();
 		// something here
 		loopy.loadMap();
 	}
@@ -175,8 +179,10 @@ public class GameState extends JPanel implements Runnable{
 		}else if(state == State.LOOPY) {
 			// trường hợp từ CAMPAIGN hoặc SURVIVAL trở về LOOPY thì cần load map lại
 			if(changeState) {
-				loopy.loadMap();
-				changeState = false;
+				if(changeScene.getNumberDraw() == 2) {
+					loopy.loadMap();
+					changeState = false;
+				}
 			}
 			loopy.update();
 		}
@@ -185,6 +191,8 @@ public class GameState extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		// Khử răng cưa
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if(state == State.LOOPY) {
 			loopy.draw(g2);
@@ -235,6 +243,12 @@ public class GameState extends JPanel implements Runnable{
 	}
 
 	public void updateBattle() {
+        if(monsters.isEmpty()) {
+			// nếu trong màn chơi mà tiêu diệt hết quái vật thì
+            campaign.setNextLever(true); // set có thể next lever
+            campaign.setLoadMapDone(false); // reset load map
+			campaign.setShowDialog(true); // hiển thị bảng chọn map
+        }
 
 		// ATTACK
 		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
@@ -246,31 +260,42 @@ public class GameState extends JPanel implements Runnable{
 			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
 				if(entry.getValue() == 1) {
 					Entity e;
-					if(entry.getKey().equals("ArrowLight")) {
-						if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new ArrowLight(this);
-							ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MultiArrowLight")) {
-						if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MultiArrow(this);
-							MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MoonLight")) {
-						if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MoonLight(this);
-							MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("CircleFire")) {
-						if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new CircleFire(this);
-							CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}
+                    switch (entry.getKey()) {
+                        case "ArrowLight" -> {
+                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                e = new ArrowLight(this);
+                                ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
+                                skillAttacks.add(e);
+                            }
+                        }
+                        case "MultiArrowLight" -> {
+                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                Entity e2 = new MultiArrow(this);
+                                e = new MultiArrow(this);
+                                e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
+                                Entity e3 = new MultiArrow(this);
+                                e3.setAngleTarget(e2.getAngleTarget() + Math.toRadians(15));
+                                MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
+                                skillAttacks.add(e);
+                                skillAttacks.add(e2);
+                                skillAttacks.add(e3);
+                            }
+                        }
+                        case "MoonLight" -> {
+                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                e = new MoonLight(this);
+                                MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
+                                skillAttacks.add(e);
+                            }
+                        }
+                        case "CircleFire" -> {
+                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                e = new CircleFire(this);
+                                CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
+                                skillAttacks.add(e);
+                            }
+                        }
+                    }
 				}
 			}
 		}
@@ -278,31 +303,42 @@ public class GameState extends JPanel implements Runnable{
 			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
 				if(entry.getValue() == 2) {
 					Entity e;
-					if(entry.getKey().equals("ArrowLight")) {
-						if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new ArrowLight(this);
-							ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MultiArrowLight")) {
-						if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MultiArrow(this);
-							MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MoonLight")) {
-						if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MoonLight(this);
-							MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("CircleFire")) {
-						if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new CircleFire(this);
-							CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}
+                    switch (entry.getKey()) {
+                        case "ArrowLight" -> {
+                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                e = new ArrowLight(this);
+                                ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
+                                skillAttacks.add(e);
+                            }
+                        }
+                        case "MultiArrowLight" -> {
+                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                Entity e2 = new MultiArrow(this);
+                                e = new MultiArrow(this);
+                                e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
+                                Entity e3 = new MultiArrow(this);
+                                e3.setAngleTarget(e2.getAngleTarget() + Math.toRadians(15));
+                                MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
+                                skillAttacks.add(e);
+                                skillAttacks.add(e2);
+                                skillAttacks.add(e3);
+                            }
+                        }
+                        case "MoonLight" -> {
+                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                e = new MoonLight(this);
+                                MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
+                                skillAttacks.add(e);
+                            }
+                        }
+                        case "CircleFire" -> {
+                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                e = new CircleFire(this);
+                                CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
+                                skillAttacks.add(e);
+                            }
+                        }
+                    }
 				}
 			}
 		}
@@ -420,8 +456,7 @@ public class GameState extends JPanel implements Runnable{
 	}
 
 	public void saveGame() {
-		if(gameThread != null) {
 			user.saveFile();
-		}
+			loopy.setShowDialogExit(false);
 	}
 }

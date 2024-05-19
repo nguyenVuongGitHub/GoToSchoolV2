@@ -14,6 +14,13 @@ public class Player extends Entity{
 
     int timeCount = 0;
     String beforeDirection = direction;
+    BufferedImage[] up_attack;
+    BufferedImage[] down_attack;
+    BufferedImage[] left_attack;
+    BufferedImage[] right_attack;
+
+    String state = "move";
+
     public Player(GameState gs) {
         super(gs);
         init();
@@ -28,53 +35,13 @@ public class Player extends Entity{
         type = TYPE.PLAYER;
         hp = 100;
         speed = 15;
-        damage = 1;
         direction = "down";
-        solidArea = new Rectangle(50,64,32,30);
+        solidArea = new Rectangle(50,40,32,44);
         scale = 2;
         getImage();
         clearVertices();
         setPolygonVertices();
     }
-    /*public void getImage() {
-        try {
-
-
-            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png")));
-            up1 = uTool.scaleImage(up1,scale);
-            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
-            up2 = uTool.scaleImage(up2,scale);
-            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
-            up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_4.png")));
-            up5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_5.png")));
-            up6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_6.png")));
-
-            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
-            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
-            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
-            down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_4.png")));
-            down5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_5.png")));
-            down6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_6.png")));
-
-            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
-            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
-            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
-            left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_4.png")));
-            left5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_5.png")));
-            left6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_6.png")));
-
-            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
-            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
-            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
-            right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_4.png")));
-            right5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_5.png")));
-            right6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_6.png")));
-
-            currentImage = down1;
-        }catch(IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     @Override
     public void getImage() {
         try {
@@ -98,12 +65,23 @@ public class Player extends Entity{
         up4 = loadImage("/player/player_up_4.png");
         up5 = loadImage("/player/player_up_5.png");
         up6 = loadImage("/player/player_up_6.png");
+
+        up_attack = new BufferedImage[4];
+        up_attack[0] = loadImage("/player/player_up_attack1.png");
+        up_attack[1] = loadImage("/player/player_up_attack2.png");
+        up_attack[2] = loadImage("/player/player_up_attack3.png");
+        up_attack[3] = loadImage("/player/player_up_attack4.png");
+        for(int i = 0; i < 4; i++) {
+            up_attack[i] = uTool.scaleImage(up_attack[i],scale);
+        }
+
         up1 = uTool.scaleImage(up1,scale);
         up2 = uTool.scaleImage(up2,scale);
         up3 = uTool.scaleImage(up3,scale);
         up4 = uTool.scaleImage(up4,scale);
         up5 = uTool.scaleImage(up5,scale);
         up6 = uTool.scaleImage(up6,scale);
+
     }
 
     private void loadDownImages() throws IOException {
@@ -114,6 +92,16 @@ public class Player extends Entity{
         down4 = loadImage("/player/player_down_4.png");
         down5 = loadImage("/player/player_down_5.png");
         down6 = loadImage("/player/player_down_6.png");
+
+        down_attack = new BufferedImage[4];
+        down_attack[0] = loadImage("/player/player_down_attack1.png");
+        down_attack[1] = loadImage("/player/player_down_attack2.png");
+        down_attack[2] = loadImage("/player/player_down_attack3.png");
+        down_attack[3] = loadImage("/player/player_down_attack4.png");
+        for(int i = 0; i < 4; i++) {
+            down_attack[i] = uTool.scaleImage(down_attack[i],scale);
+        }
+
         down1 = uTool.scaleImage(down1,scale);
         down2 = uTool.scaleImage(down2,scale);
         down3 = uTool.scaleImage(down3,scale);
@@ -130,6 +118,16 @@ public class Player extends Entity{
         left4 = loadImage("/player/player_left_4.png");
         left5 = loadImage("/player/player_left_5.png");
         left6 = loadImage("/player/player_left_6.png");
+
+        left_attack = new BufferedImage[4];
+        left_attack[0] = loadImage("/player/player_L_attack1.png");
+        left_attack[1] = loadImage("/player/player_L_attack2.png");
+        left_attack[2] = loadImage("/player/player_L_attack3.png");
+        left_attack[3] = loadImage("/player/player_L_attack4.png");
+        for(int i = 0; i < 4; i++) {
+            left_attack[i] = uTool.scaleImage(left_attack[i],scale);
+        }
+
         left1 = uTool.scaleImage(left1,scale);
         left2 = uTool.scaleImage(left2,scale);
         left3 = uTool.scaleImage(left3,scale);
@@ -146,6 +144,16 @@ public class Player extends Entity{
         right3 = loadImage("/player/player_right_3.png");
         right5 = loadImage("/player/player_right_5.png");
         right6 = loadImage("/player/player_right_6.png");
+
+        right_attack = new BufferedImage[4];
+        right_attack[0] = loadImage("/player/player_R_attack1.png");
+        right_attack[1] = loadImage("/player/player_R_attack2.png");
+        right_attack[2] = loadImage("/player/player_R_attack3.png");
+        right_attack[3] = loadImage("/player/player_R_attack4.png");
+        for(int i = 0; i < 4; i++) {
+            right_attack[i] = uTool.scaleImage(right_attack[i],scale);
+        }
+
         right1 = uTool.scaleImage(right1,scale);
         right2 = uTool.scaleImage(right2,scale);
         right3 = uTool.scaleImage(right3,scale);
@@ -163,35 +171,36 @@ public class Player extends Entity{
     public void update() {
             // CHECK COLLISION
             collisionOn = false;
-            if(gs.keyHandle.isUpPress() && gs.keyHandle.isLeftPress()) {
-                direction = "up-left";
-                beforeDirection = direction;
-            }else if(gs.keyHandle.isUpPress() && gs.keyHandle.isRightPress()) {
-                direction = "up-right";
-                beforeDirection = direction;
-            }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isLeftPress()) {
-                direction = "down-left";
-                beforeDirection = direction;
-            }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isRightPress()) {
-                direction = "down-right";
-                beforeDirection = direction;
-            }else if(gs.keyHandle.isUpPress()) {
-                direction = "up";
-                beforeDirection = direction;
-            }else if(gs.keyHandle.isDownPress()) {
-                direction = "down";
-                beforeDirection = direction;
-            }else if(gs.keyHandle.isLeftPress()) {
-                direction = "left";
-                beforeDirection = direction;
-            }else if(gs.keyHandle.isRightPress()) {
-                direction = "right";
-                beforeDirection = direction;
+            if(!gs.changeScene.isAlive()) {
+                if(gs.keyHandle.isUpPress() && gs.keyHandle.isLeftPress()) {
+                    direction = "up-left";
+                    beforeDirection = direction;
+                }else if(gs.keyHandle.isUpPress() && gs.keyHandle.isRightPress()) {
+                    direction = "up-right";
+                    beforeDirection = direction;
+                }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isLeftPress()) {
+                    direction = "down-left";
+                    beforeDirection = direction;
+                }else if(gs.keyHandle.isDownPress() && gs.keyHandle.isRightPress()) {
+                    direction = "down-right";
+                    beforeDirection = direction;
+                }else if(gs.keyHandle.isUpPress()) {
+                    direction = "up";
+                    beforeDirection = direction;
+                }else if(gs.keyHandle.isDownPress()) {
+                    direction = "down";
+                    beforeDirection = direction;
+                }else if(gs.keyHandle.isLeftPress()) {
+                    direction = "left";
+                    beforeDirection = direction;
+                }else if(gs.keyHandle.isRightPress()) {
+                    direction = "right";
+                    beforeDirection = direction;
+                }
+                else {
+                    direction = "nan";
+                }
             }
-            else {
-                direction = "nan";
-            }
-
             gs.CC.checkPlayerWithTile(this);
 
             if(!collisionOn) {
@@ -398,22 +407,22 @@ public class Player extends Entity{
             }
         }
         if(gs.keyHandle.isDownPress()) {
-            if(spriteNum == 1) {
+            if (spriteNum == 1) {
                 currentImage = down1;
             }
-            if(spriteNum == 2) {
+            if (spriteNum == 2) {
                 currentImage = down2;
             }
-            if(spriteNum == 3) {
+            if (spriteNum == 3) {
                 currentImage = down3;
             }
-            if(spriteNum == 4) {
+            if (spriteNum == 4) {
                 currentImage = down4;
             }
-            if(spriteNum == 5) {
+            if (spriteNum == 5) {
                 currentImage = down5;
             }
-            if(spriteNum == 6) {
+            if (spriteNum == 6) {
                 currentImage = down6;
             }
         }

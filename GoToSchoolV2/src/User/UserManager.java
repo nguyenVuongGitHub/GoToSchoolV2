@@ -5,25 +5,25 @@
 package User;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import AttackSkill.*;
-import Entity.*;
-import baseAttribute.BaseArrowLight;
-import baseAttribute.BaseCircleFire;
-import baseAttribute.BaseMoonLight;
-import baseAttribute.BaseMultiArrow;
+import baseAttributeMonsters.BaseBoss;
+import baseAttributeMonsters.BaseSkeleton;
+import baseAttributeMonsters.BaseSlime;
+import baseAttributeSkills.BaseArrowLight;
+import baseAttributeSkills.BaseCircleFire;
+import baseAttributeSkills.BaseMoonLight;
+import baseAttributeSkills.BaseMultiArrow;
 
 public class UserManager {
 
     private long coin;
-    private long coinNeedUpgrade = 0;
-
+    private long experience;
+    private long coinNeedUpgrade;
     private short numberLeversUnlocked;
     private short maxNumberSkillsSupportUnlocked;
     private short maxNumberSkillsAttackUnlocked;
+    private short maxStateCampaign;
+
     public UserManager() {
     }
     private void readFileArrowLight() {
@@ -118,24 +118,108 @@ public class UserManager {
         }
         BaseMoonLight.LEVER = lever;
     }
-    public void readAttributeClasses() {
+    private void readFileSlime() {
+        try {
+            InputStream input = getClass().getResourceAsStream("/user/infSlime.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            String line;
+            br.readLine(); // break line title
+
+            int index = 0;
+            for(int i = 0; i < BaseSlime.MAX_LEVER; i++) {
+                if((line = br.readLine()) != null) {
+                    String[] token = line.split(";");
+                    BaseSlime.damage[index]  = Integer.parseInt(token[0]);
+                    BaseSlime.hp[index]  = Integer.parseInt(token[1]);
+                    index++;
+                }
+            }
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if(experience / 100 < BaseSlime.MAX_LEVER) {
+            BaseSlime.LEVER = (int) (experience / 100);
+        }else {
+            BaseSlime.LEVER = BaseSlime.MAX_LEVER-1;
+        }
+    }
+    private void readFileSkeleton() {
+        try {
+            InputStream input = getClass().getResourceAsStream("/user/infSkeleton.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            String line ; // read lever
+            br.readLine(); // break line title
+            int index = 0;
+            for(int i = 0; i < BaseSkeleton.MAX_LEVER; i++) {
+                if((line = br.readLine()) != null) {
+                    String[] token = line.split(";");
+                    BaseSkeleton.damage[index]  = Integer.parseInt(token[0]);
+                    BaseSkeleton.hp[index]  = Integer.parseInt(token[1]);
+                    index++;
+                }
+            }
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if(experience / 100 < BaseSkeleton.MAX_LEVER) {
+            BaseSkeleton.LEVER = (int) (experience / 100);
+        }else {
+            BaseSkeleton.LEVER = BaseSkeleton.MAX_LEVER-1;
+        }
+    }
+    private void readFileBoss() {
+
+        try {
+            InputStream input = getClass().getResourceAsStream("/user/infBoss.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            String line; // read lever
+            br.readLine(); // break line title
+
+            int index = 0;
+            for(int i = 0; i < BaseBoss.MAX_LEVER; i++) {
+                if((line = br.readLine()) != null) {
+                    String[] token = line.split(";");
+                    BaseBoss.damage[index]  = Integer.parseInt(token[0]);
+                    BaseBoss.hp[index]  = Integer.parseInt(token[1]);
+                    index++;
+                }
+            }
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if(experience / 100 < BaseBoss.MAX_LEVER) {
+            BaseBoss.LEVER = (int) (experience / 100);
+        }else {
+            BaseBoss.LEVER = BaseBoss.MAX_LEVER-1;
+        }
+    }
+
+    public void readAttributeClassesSkill() {
         readFileArrowLight();
         readFileMultiArrowLight();
         readFileCircleFire();
         readFileMoonLight();
     }
-    public void readFile() {
+    public void readAttributeClassesMonster() {
+        readFileSlime();
+        readFileSkeleton();
+        readFileBoss();
+    }
+    public void readFileUser() {
         try {
             InputStream input = getClass().getResourceAsStream("/user/infUser.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(input));
             String line;
             br.readLine(); // break first line
-            while ((line = br.readLine()) != null) {
+            if ((line = br.readLine()) != null) {
                 String[] token = line.split(";");
                 coin = Long.parseLong(token[0]);
-                maxNumberSkillsSupportUnlocked = Short.parseShort(token[1]);
-                maxNumberSkillsAttackUnlocked = Short.parseShort(token[2]);
-                numberLeversUnlocked = Short.parseShort(token[3]);
+                coinNeedUpgrade = Long.parseLong(token[1]);
+                experience = Long.parseLong(token[2]);
+                maxNumberSkillsSupportUnlocked = Short.parseShort(token[3]);
+                maxNumberSkillsAttackUnlocked = Short.parseShort(token[4]);
+                numberLeversUnlocked = Short.parseShort(token[5]);
+                maxStateCampaign = Short.parseShort(token[6]);
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -144,8 +228,9 @@ public class UserManager {
     private void saveFileUser() {
         try{
             FileWriter fw = new FileWriter("GotoSchoolV2/res/user/infUser.txt");
-            fw.write("coin; max number skill support unlocked; max number skill attack unlocked; number lever unlocked \n");
-            fw.write(coin + ";" + maxNumberSkillsSupportUnlocked + ";" + maxNumberSkillsAttackUnlocked + ";" + numberLeversUnlocked + "\n");
+            fw.write("coin; coin need update;experience ;max number skill support unlocked;" +
+                    " max number skill attack unlocked; number lever campaign unlocked; max state campaign\n");
+            fw.write(coin + ";" + coinNeedUpgrade + ";" + experience + ";" + maxNumberSkillsSupportUnlocked + ";" + maxNumberSkillsAttackUnlocked + ";" + numberLeversUnlocked +";" + maxStateCampaign+ "\n");
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -244,7 +329,6 @@ public class UserManager {
             System.err.println("An error occurred while saving the file: " + e.getMessage());
         }
     }
-
     public void saveFile() {
         saveFileUser();
         saveFileArrowLight();
@@ -282,5 +366,19 @@ public class UserManager {
 
     public void setCoinNeedUpgrade(long coinNeedUpgrade) {
         this.coinNeedUpgrade = coinNeedUpgrade;
+    }
+    public long getExperience() {
+        return experience;
+    }
+
+    public void setExperience(long experience) {
+        this.experience = experience;
+    }
+    public short getMaxStateCampaign() {
+        return maxStateCampaign;
+    }
+
+    public void setMaxStateCampaign(short maxStateCampaign) {
+        this.maxStateCampaign = maxStateCampaign;
     }
 }

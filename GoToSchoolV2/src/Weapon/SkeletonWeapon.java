@@ -2,6 +2,7 @@ package Weapon;
 
 import Entity.TYPE;
 import Main.GameState;
+import baseAttributeMonsters.BaseSkeleton;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,7 +28,7 @@ public class SkeletonWeapon extends BaseSkill{
     public void init() {
         type = TYPE.WEAPON;
         distance = 50;
-        damage = 5;
+        damage = BaseSkeleton.damage[BaseSkeleton.LEVER];
         speed = 10;
         solidArea = new Rectangle(0,0,gs.getTile()/2,gs.getTile()/2);
         getImage();

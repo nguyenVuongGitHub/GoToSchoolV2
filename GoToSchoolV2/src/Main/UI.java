@@ -4,16 +4,19 @@ import AttackSkill.ArrowLight;
 import AttackSkill.CircleFire;
 import AttackSkill.MoonLight;
 import AttackSkill.MultiArrow;
+import Entity.Entity;
 import SPSkill.Flicker;
 import SPSkill.Restore;
+import SPSkill.SUPPORT_SKILL;
 import SPSkill.Sprint;
-import baseAttribute.BaseArrowLight;
-import baseAttribute.BaseCircleFire;
-import baseAttribute.BaseMoonLight;
-import baseAttribute.BaseMultiArrow;
+import baseAttributeSkills.BaseArrowLight;
+import baseAttributeSkills.BaseCircleFire;
+import baseAttributeSkills.BaseMoonLight;
+import baseAttributeSkills.BaseMultiArrow;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -750,7 +753,7 @@ public class UI {
     }
     private void drawDialogExitGame() {
         int x = gs.getWindowWidth()/2 - 3*gs.getTile();
-        int y = 2 * gs.getTile();
+        int y = gs.getWindowHeight()/2 - ( 3 * gs.getTile())/2;
         int w = 6 * gs.getTile();
         int h = 3 * gs.getTile();
         drawSubWindow(x,y,w,h,g2);
@@ -776,6 +779,9 @@ public class UI {
     }
     //====================================================================================
     private void drawCampaign() {
+        if(gs.campaign.getChoose() == 5) {
+            gs.enviromentManager.draw(g2,"dark");
+        }
         String numberOfEnemy = "Enemy : ";
         numberOfEnemy += String.valueOf(gs.monsters.size());
         int x = getXforCenterdText(numberOfEnemy);
@@ -788,6 +794,163 @@ public class UI {
         drawFrameHpPlayer();
         if(gs.keyHandle.isTabPress()) {
             gs.ui.drawInformationPlayer();
+        }
+        drawCooldownSkill();
+    }
+    private void drawCooldownSkill() {
+        int x,y,w,h;
+        int xString, yString;
+        y = 12 * gs.getTile();
+        yString = y + gs.getTile()/2;
+        w = gs.getTile();
+        h = gs.getTile();
+        // skill 1
+        x = 9 * gs.getTile();
+        xString = x + gs.getTile()/4;
+
+        drawSubWindow(x,y,w,h,g2);
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,20F));
+        if(gs.loopy.getSkillAttackHave() > 1) {
+            for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillAttack.entrySet()) {
+                if(entry.getValue() == 1) {
+                    switch (entry.getKey()) {
+                        case "ArrowLight" -> {
+                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                        case "MultiArrowLight" -> {
+                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                        case "MoonLight" -> {
+                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                        case "CircleFire" -> {
+                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // skill 2
+        x = 10 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        if(gs.loopy.getSkillAttackHave() == 2) {
+            for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillAttack.entrySet()) {
+                if(entry.getValue() == 2) {
+                    switch (entry.getKey()) {
+                        case "ArrowLight" -> {
+                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                        case "MultiArrowLight" -> {
+                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                        case "MoonLight" -> {
+                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                        case "CircleFire" -> {
+                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // skill support 1
+        x = 11 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        if(gs.loopy.getSkillSuportHave() > 1) {
+            for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillSupport.entrySet()) {
+                if(entry.getValue() == 1) {
+                    switch (entry.getKey()) {
+                        case "Flicker" -> {
+                            if (Flicker.TIME_COUNT_DOWN <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(Flicker.TIME_COUNT_DOWN), xString, yString);
+                            }
+                        }
+                        case "Sprint" -> {
+                            if (Sprint.TIME_COUNT_DOWN <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(Sprint.TIME_COUNT_DOWN), xString, yString);
+                            }
+                        }
+                        case "Restore" -> {
+                            if (Restore.TIME_COUNT_DOWN <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(Restore.TIME_COUNT_DOWN), xString, yString);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // skill support 2
+        x = 12 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        if(gs.loopy.getSkillSuportHave() == 2) {
+            for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillSupport.entrySet()) {
+                if(entry.getValue() == 2) {
+                    switch (entry.getKey()) {
+                        case "Flicker" -> {
+                            if (Flicker.TIME_COUNT_DOWN <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(Flicker.TIME_COUNT_DOWN), xString, yString);
+                            }
+                        }
+                        case "Sprint" -> {
+                            if (Sprint.TIME_COUNT_DOWN <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(Sprint.TIME_COUNT_DOWN), xString, yString);
+                            }
+                        }
+                        case "Restore" -> {
+                            if (Restore.TIME_COUNT_DOWN <= 0) {
+                                g2.drawString("Done", xString, yString);
+                            } else {
+                                g2.drawString(String.valueOf(Restore.TIME_COUNT_DOWN), xString, yString);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     private void drawFrameHpPlayer() {

@@ -4,7 +4,7 @@ import Main.CollisionChecker;
 import Main.GameState;
 import Main.UtilityTool;
 import Weapon.LazerBoss;
-import Weapon.SkeletonWeapon;
+import baseAttributeMonsters.BaseBoss;
 import objects.Coin;
 
 import javax.imageio.ImageIO;
@@ -44,14 +44,14 @@ public class Boss extends Monster{
 
     @Override
     public void init() {
-        hp = 5;
         speed = 5;
-        damage = 20;
         sight = 6000;
         type = TYPE.MONSTER;
         typeMonster = TypeMonster.BOSS;
         scale = 6;
         solidArea = new Rectangle(30*scale,30*scale,45*scale,40*scale);
+        hp = BaseBoss.hp[BaseBoss.LEVER];
+        damage = BaseBoss.damage[BaseBoss.LEVER];
         getImage();
         clearVertices();
         setPolygonVertices();
@@ -115,6 +115,7 @@ public class Boss extends Monster{
     public void update() {
         if(hp <= 0) {
             state = "die";
+            clearVertices();
         }else {
             setAI();
             if(gs.player.worldX <= this.worldX + (double) this.getBounds().width / 2) {
@@ -262,8 +263,22 @@ public class Boss extends Monster{
             gs.lazeBoss.worldY = this.worldY;
             gs.lazeBoss.direction = this.direction;
             Random random = new Random();
-            int angle  = random.nextInt(181) - 90;
-//            int angle = 10;
+            int angle;
+            Point centerBoss = new Point((int) (vertices.getFirst().getX() + getBounds().getWidth()/2), (int) (vertices.getFirst().getY() + getBounds().getHeight()/2));
+            if(centerBoss.getY() < gs.player.getWorldY()) {
+                if(centerBoss.getX() < gs.player.getWorldX()) {
+                    angle  = random.nextInt(90); // 0 ~ 90
+                }else {
+                    angle  = random.nextInt(90) + 90; // 90 ~ 180
+                }
+            }else {
+                if(centerBoss.getX() > gs.player.getWorldX()) {
+                    angle  = random.nextInt(90) + 180; // 180 ~ 270
+
+                }else {
+                    angle  = random.nextInt(90) + 270; // 270 ~ 360
+                }
+            }
             gs.lazeBoss.setAngleTarget(Math.toRadians(angle));
         }
     }

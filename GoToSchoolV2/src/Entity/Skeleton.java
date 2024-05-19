@@ -3,6 +3,7 @@ package Entity;
 import Main.CollisionChecker;
 import Main.GameState;
 import Weapon.SkeletonWeapon;
+import baseAttributeMonsters.BaseSkeleton;
 import objects.Coin;
 
 import javax.imageio.ImageIO;
@@ -37,13 +38,13 @@ public class Skeleton extends Monster{
 
     @Override
     public void init() {
-        hp = 10;
         speed = 8;
-        damage = 5;
         sight = 500;
         type = TYPE.MONSTER;
         typeMonster = TypeMonster.SKELETON;
         solidArea = new Rectangle(0,0,64,64);
+        hp = BaseSkeleton.hp[BaseSkeleton.LEVER];
+        damage = BaseSkeleton.damage[BaseSkeleton.LEVER];
         getImage();
         clearVertices();
         setPolygonVertices();
