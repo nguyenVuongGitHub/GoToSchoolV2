@@ -38,6 +38,8 @@ public class GameState extends JPanel implements Runnable{
 	// VARIABLE SYSTEM
 	private final static int FPS = 30;
 	Thread gameThread;
+	ThreadTiming timing = new ThreadTiming();
+	Thread timingThread;
 	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
@@ -51,6 +53,7 @@ public class GameState extends JPanel implements Runnable{
 	public TileManager tileM = new TileManager(this);
 	public ChangeScene changeScene = new ChangeScene(this);
     public EnviromentManager enviromentManager = new EnviromentManager(this);
+    public AttackController aController = new AttackController(this);
 	// ENTITY
 	public 	Entity player = new Player(this);
 	public List<Entity> monsters = new ArrayList<>();
@@ -89,6 +92,8 @@ public class GameState extends JPanel implements Runnable{
 	public void runGame() {
 		gameThread = new Thread(this);
 		gameThread.start();
+		timingThread = new Thread(timing);
+		timingThread.start();
 	}
 	@Override
 	public void run() {
@@ -121,39 +126,6 @@ public class GameState extends JPanel implements Runnable{
 			}
 			// mỗi giây
 			if(timer >= 1000000000) {
-				NormalAttack.TIME_COUNT_DOWN_ATTACK--;
-				if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
-					NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				MoonLight.TIME_COUNT_DOWN_ATTACK--;
-				if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-					MoonLight.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-//				System.out.println(ArrowLight.TIME_REDUCE);
-				ArrowLight.TIME_COUNT_DOWN_ATTACK--;
-				if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-					ArrowLight.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				MultiArrow.TIME_COUNT_DOWN_ATTACK--;
-				if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-					MultiArrow.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				CircleFire.TIME_COUNT_DOWN_ATTACK--;
-				if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-					CircleFire.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				Flicker.TIME_COUNT_DOWN--;
-				if(Flicker.TIME_COUNT_DOWN <= 0) {
-					Flicker.TIME_COUNT_DOWN = -1;
-				}
-				Restore.TIME_COUNT_DOWN--;
-				if(Restore.TIME_COUNT_DOWN <= 0) {
-					Restore.TIME_COUNT_DOWN = -1;
-				}
-				Sprint.TIME_COUNT_DOWN--;
-				if(Sprint.TIME_COUNT_DOWN <= 0) {
-					Sprint.TIME_COUNT_DOWN = -1;
-				}
 //				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
@@ -250,139 +222,10 @@ public class GameState extends JPanel implements Runnable{
 			campaign.setShowDialog(true); // hiển thị bảng chọn map
         }
 
-		// ATTACK
-		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
-			Entity normalAttack = new NormalAttack(this);
-			skillAttacks.add(normalAttack);
-			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
-		}
-		if(keyHandle.isSkill1Press() && loopy.getSkillAttackHave() >= 1) {
-			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
-				if(entry.getValue() == 1) {
-					Entity e;
-                    switch (entry.getKey()) {
-                        case "ArrowLight" -> {
-                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                e = new ArrowLight(this);
-                                ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
-                                skillAttacks.add(e);
-                            }
-                        }
-                        case "MultiArrowLight" -> {
-                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                Entity e2 = new MultiArrow(this);
-                                e = new MultiArrow(this);
-                                e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
-                                Entity e3 = new MultiArrow(this);
-                                e3.setAngleTarget(e2.getAngleTarget() + Math.toRadians(15));
-                                MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
-                                skillAttacks.add(e);
-                                skillAttacks.add(e2);
-                                skillAttacks.add(e3);
-                            }
-                        }
-                        case "MoonLight" -> {
-                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                e = new MoonLight(this);
-                                MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
-                                skillAttacks.add(e);
-                            }
-                        }
-                        case "CircleFire" -> {
-                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                e = new CircleFire(this);
-                                CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
-                                skillAttacks.add(e);
-                            }
-                        }
-                    }
-				}
-			}
-		}
-		if(keyHandle.isSkill2Press() && loopy.getSkillAttackHave() == 2) {
-			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
-				if(entry.getValue() == 2) {
-					Entity e;
-                    switch (entry.getKey()) {
-                        case "ArrowLight" -> {
-                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                e = new ArrowLight(this);
-                                ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
-                                skillAttacks.add(e);
-                            }
-                        }
-                        case "MultiArrowLight" -> {
-                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                Entity e2 = new MultiArrow(this);
-                                e = new MultiArrow(this);
-                                e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
-                                Entity e3 = new MultiArrow(this);
-                                e3.setAngleTarget(e2.getAngleTarget() + Math.toRadians(15));
-                                MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
-                                skillAttacks.add(e);
-                                skillAttacks.add(e2);
-                                skillAttacks.add(e3);
-                            }
-                        }
-                        case "MoonLight" -> {
-                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                e = new MoonLight(this);
-                                MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
-                                skillAttacks.add(e);
-                            }
-                        }
-                        case "CircleFire" -> {
-                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                e = new CircleFire(this);
-                                CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
-                                skillAttacks.add(e);
-                            }
-                        }
-                    }
-				}
-			}
-		}
+        if(aController != null) {
+            aController.update();
+        }
 
-		if(keyHandle.isSupportSkill1() && loopy.getSkillSuportHave() >= 1) {
-			Entity e = skillSupports.get(indexSkillSupport1);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
-				if(Flicker.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
-				if(Sprint.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
-				if(Restore.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
-				}
-			}
-			skillSupports.set(indexSkillSupport1,e);
-		}
-		if(keyHandle.isSupportSkill2() && loopy.getSkillSuportHave() == 2) {
-			Entity e = skillSupports.get(indexSkillSupport2);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
-				if(Flicker.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
-				if(Sprint.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
-				if(Restore.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
-				}
-			}
-			skillSupports.set(indexSkillSupport2,e);
-		}
 		// MONSTER
 		for(Entity monster : monsters) {
 			if(monster != null) {

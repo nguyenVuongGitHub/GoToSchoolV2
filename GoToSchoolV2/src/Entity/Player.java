@@ -38,6 +38,7 @@ public class Player extends Entity{
         direction = "down";
         solidArea = new Rectangle(50,40,32,44);
         scale = 2;
+        stateEntity = "move";
         getImage();
         clearVertices();
         setPolygonVertices();
@@ -171,6 +172,7 @@ public class Player extends Entity{
     public void update() {
             // CHECK COLLISION
             collisionOn = false;
+
             if(!gs.changeScene.isAlive()) {
                 if(gs.keyHandle.isUpPress() && gs.keyHandle.isLeftPress()) {
                     direction = "up-left";
@@ -201,6 +203,8 @@ public class Player extends Entity{
                     direction = "nan";
                 }
             }
+
+
             gs.CC.checkPlayerWithTile(this);
 
             if(!collisionOn) {
@@ -318,115 +322,252 @@ public class Player extends Entity{
 
             }
 
-            spriteCounter++;
-            if(spriteCounter > 3) {
-                spriteCounter = 0;
-                if(spriteNum == 1) {
-                    spriteNum = 2;
+            if(stateEntity.equals("move")) {
+                spriteCounter++;
+                if(spriteCounter > 3) {
+                    spriteCounter = 0;
+                    if(spriteNum == 1) {
+                        spriteNum = 2;
+                    }
+                    else if(spriteNum == 2) {
+                        spriteNum = 3;
+                    }
+                    else if(spriteNum == 3) {
+                        spriteNum = 4;
+                    }
+                    else if(spriteNum == 4) {
+                        spriteNum = 5;
+                    }
+                    else if(spriteNum == 5) {
+                        spriteNum = 6;
+                    }
+                    else if(spriteNum == 6) {
+                        spriteNum = 1;
+                    }
                 }
-                else if(spriteNum == 2) {
-                    spriteNum = 3;
-                }
-                else if(spriteNum == 3) {
-                    spriteNum = 4;
-                }
-                else if(spriteNum == 4) {
-                    spriteNum = 5;
-                }
-                else if(spriteNum == 5) {
-                    spriteNum = 6;
-                }
-                else if(spriteNum == 6) {
-                    spriteNum = 1;
+            }else if(stateEntity.equals("attack")) {
+                spriteCounter++;
+                if(spriteCounter > 3) {
+                    spriteCounter = 0;
+                    if(spriteNum == 1) {
+                        spriteNum = 2;
+                    }
+                    else if(spriteNum == 2) {
+                        spriteNum = 3;
+                    }
+                    else if(spriteNum == 3) {
+                        spriteNum = 4;
+                    }
+                    else if(spriteNum == 4) {
+                        spriteNum = 1;
+                    }
                 }
             }
+
             clearVertices();
             setPolygonVertices();
     }
 
     @Override
     public void draw(Graphics2D g2) {
-        if(gs.keyHandle.isRightPress()) {
-            if(spriteNum == 1) {
-                currentImage = right1;
+        if(stateEntity.equals("move")) {
+            if(gs.keyHandle.isRightPress()) {
+                if(spriteNum == 1) {
+                    currentImage = right1;
+                }
+                if(spriteNum == 2) {
+                    currentImage = right2;
+                }
+                if(spriteNum == 3) {
+                    currentImage = right3;
+                }
+                if(spriteNum == 4) {
+                    currentImage = right4;
+                }
+                if(spriteNum == 5) {
+                    currentImage = right5;
+                }
+                if(spriteNum == 6) {
+                    currentImage = right6;
+                }
             }
-            if(spriteNum == 2) {
-                currentImage = right2;
+            if(gs.keyHandle.isLeftPress()) {
+                if(spriteNum == 1) {
+                    currentImage = left1;
+                }
+                if(spriteNum == 2) {
+                    currentImage = left2;
+                }
+                if(spriteNum == 3) {
+                    currentImage = left3;
+                }
+                if(spriteNum == 4) {
+                    currentImage = left4;
+                }
+                if(spriteNum == 5) {
+                    currentImage = left5;
+                }
+                if(spriteNum == 6) {
+                    currentImage = left6;
+                }
             }
-            if(spriteNum == 3) {
-                currentImage = right3;
+            if(gs.keyHandle.isUpPress()) {
+                if(spriteNum == 1) {
+                    currentImage = up1;
+                }
+                if(spriteNum == 2) {
+                    currentImage = up2;
+                }
+                if(spriteNum == 3) {
+                    currentImage = up3;
+                }
+                if(spriteNum == 4) {
+                    currentImage = up4;
+                }
+                if(spriteNum == 5) {
+                    currentImage = up5;
+                }
+                if(spriteNum == 6) {
+                    currentImage = up6;
+                }
             }
-            if(spriteNum == 4) {
-                currentImage = right4;
-            }
-            if(spriteNum == 5) {
-                currentImage = right5;
-            }
-            if(spriteNum == 6) {
-                currentImage = right6;
+            if(gs.keyHandle.isDownPress()) {
+                if (spriteNum == 1) {
+                    currentImage = down1;
+                }
+                if (spriteNum == 2) {
+                    currentImage = down2;
+                }
+                if (spriteNum == 3) {
+                    currentImage = down3;
+                }
+                if (spriteNum == 4) {
+                    currentImage = down4;
+                }
+                if (spriteNum == 5) {
+                    currentImage = down5;
+                }
+                if (spriteNum == 6) {
+                    currentImage = down6;
+                }
             }
         }
-        if(gs.keyHandle.isLeftPress()) {
-            if(spriteNum == 1) {
-                currentImage = left1;
-            }
-            if(spriteNum == 2) {
-                currentImage = left2;
-            }
-            if(spriteNum == 3) {
-                currentImage = left3;
-            }
-            if(spriteNum == 4) {
-                currentImage = left4;
-            }
-            if(spriteNum == 5) {
-                currentImage = left5;
-            }
-            if(spriteNum == 6) {
-                currentImage = left6;
-            }
-        }
-        if(gs.keyHandle.isUpPress()) {
-            if(spriteNum == 1) {
-                currentImage = up1;
-            }
-            if(spriteNum == 2) {
-                currentImage = up2;
-            }
-            if(spriteNum == 3) {
-                currentImage = up3;
-            }
-            if(spriteNum == 4) {
-                currentImage = up4;
-            }
-            if(spriteNum == 5) {
-                currentImage = up5;
-            }
-            if(spriteNum == 6) {
-                currentImage = up6;
-            }
-        }
-        if(gs.keyHandle.isDownPress()) {
-            if (spriteNum == 1) {
-                currentImage = down1;
-            }
-            if (spriteNum == 2) {
-                currentImage = down2;
-            }
-            if (spriteNum == 3) {
-                currentImage = down3;
-            }
-            if (spriteNum == 4) {
-                currentImage = down4;
-            }
-            if (spriteNum == 5) {
-                currentImage = down5;
-            }
-            if (spriteNum == 6) {
-                currentImage = down6;
-            }
-        }
+        else if(stateEntity.equals("attack")) {
+            switch (direction) {
+                case "up", "up-left", "up-right":
+                    if(spriteNum == 1) {
+                        currentImage = up_attack[0];
+                    }else if(spriteNum == 2) {
+                        currentImage = up_attack[1];
+                    }else if(spriteNum == 3) {
+                        currentImage = up_attack[2];
+                    }else if(spriteNum == 4) {
+                        currentImage = up_attack[3];
+                    }
+                    break;
+                case "down", "down-left", "down-right":
+                    if(spriteNum == 1) {
+                        currentImage = down_attack[0];
+                    }else if(spriteNum == 2) {
+                        currentImage = down_attack[1];
+                    }else if(spriteNum == 3) {
+                        currentImage = down_attack[2];
+                    }else if(spriteNum == 4) {
+                        currentImage = down_attack[3];
+                    }
+                    break;
+                case "left":
+                    if(spriteNum == 1) {
+                        currentImage = left_attack[0];
+                    }else if(spriteNum == 2) {
+                        currentImage = left_attack[1];
+                    }else if(spriteNum == 3) {
+                        currentImage = left_attack[2];
+                    }else if(spriteNum == 4) {
+                        currentImage = left_attack[3];
+                    }
+                    break;
+                case "right":
+                    if(spriteNum == 1) {
+                        currentImage = right_attack[0];
+                    }else if(spriteNum == 2) {
+                        currentImage = right_attack[1];
+                    }else if(spriteNum == 3) {
+                        currentImage = right_attack[2];
+                    }else if(spriteNum == 4) {
+                        currentImage = right_attack[3];
+                    }
+                    break;
+                case "nan" :
+                    switch (beforeDirection) {
+                        case "up", "up-left", "up-right":
+                            if (spriteNum == 1) {
+                                currentImage = up_attack[0];
+                            } else if (spriteNum == 2) {
+                                currentImage = up_attack[1];
+                            } else if (spriteNum == 3) {
+                                currentImage = up_attack[2];
+                            } else if (spriteNum == 4) {
+                                currentImage = up_attack[3];
+                            }
+                            break;
+                        case "down", "down-left", "down-right":
+                            if (spriteNum == 1) {
+                                currentImage = down_attack[0];
+                            } else if (spriteNum == 2) {
+                                currentImage = down_attack[1];
+                            } else if (spriteNum == 3) {
+                                currentImage = down_attack[2];
+                            } else if (spriteNum == 4) {
+                                currentImage = down_attack[3];
+                            }
+                            break;
+                        case "left":
+                            if (spriteNum == 1) {
+                                currentImage = left_attack[0];
+                            } else if (spriteNum == 2) {
+                                currentImage = left_attack[1];
+                            } else if (spriteNum == 3) {
+                                currentImage = left_attack[2];
+                            } else if (spriteNum == 4) {
+                                currentImage = left_attack[3];
+                            }
+                            break;
+                        case "right":
+                            if (spriteNum == 1) {
+                                currentImage = right_attack[0];
+                            } else if (spriteNum == 2) {
+                                currentImage = right_attack[1];
+                            } else if (spriteNum == 3) {
+                                currentImage = right_attack[2];
+                            } else if (spriteNum == 4) {
+                                currentImage = right_attack[3];
+                            }
+                            break;
+                    }
+                    break;
 
+
+            }
+            if(spriteNum == 4) {
+                spriteNum = 1;
+                switch (beforeDirection) {
+                    case "up", "up-left", "up-right":
+                        currentImage = up1;
+                        break;
+                    case "down", "down-left", "down-right":
+                        currentImage = down1;
+                        break;
+                    case "left":
+                        currentImage = left1;
+                        break;
+                    case "right":
+                        currentImage = right1;
+                        break;
+                }
+                stateEntity = "move";
+            }
+        }
         g2.drawImage(currentImage, screenX, screenY, null);
 //        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, getBounds().width, getBounds().height);
 //        drawVertices(g2);
@@ -434,5 +575,6 @@ public class Player extends Entity{
     public String getBeforeDirection() {
         return beforeDirection;
     }
+    // kiểm tra vị trí của chuột so với người chơi để đưa ra hình ảnh hợp lý
 }
 

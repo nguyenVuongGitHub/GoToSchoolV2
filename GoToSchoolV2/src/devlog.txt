@@ -125,3 +125,17 @@
 
 * Vấn đề đang gặp:
 * Công việc hiện tại:
+
+----------------- 22-5-2024 : Vương -----------------
+* Thêm file
+    + AttackController.java : sử lý tấn công của người chơi tùy theo chế độ
+    + ThreadTiming.java : xử lý đếm thời gian thực bằng luồng khác trong game. không còn dựa theo vòng lặp game.
+* Sửa file
+    + Thêm hoạt ảnh tấn công cho người chơi.
+    + GameState.java {
+        .hàm updateBattle()
+            [
+                thay vì update tấn công thì sửa lại thành có một file quản lý ( AttackController )
+            ]
+    }
+* Xóa file

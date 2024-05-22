@@ -810,7 +810,7 @@ public class UI {
 
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,20F));
-        if(gs.loopy.getSkillAttackHave() > 1) {
+        if(gs.loopy.getSkillAttackHave() >= 1) {
             for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillAttack.entrySet()) {
                 if(entry.getValue() == 1) {
                     switch (entry.getKey()) {
