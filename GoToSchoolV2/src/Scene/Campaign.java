@@ -386,6 +386,180 @@ public class Campaign {
                     gs.monsters.add(monster);
                 }
                 break;
+            case 6:
+                gs.tileM.loadMap("/maps/map6_1.txt",1);
+                gs.tileM.loadMap("/maps/map6_2.txt",2);
+                for(int i = 0; i < 1 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*46);
+                    monster.setWorldY(gs.getTile()*28);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 3 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*10);
+                    monster.setWorldY(gs.getTile()*3);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*40);
+                    monster.setWorldY(gs.getTile()*10);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*59);
+                    monster.setWorldY(gs.getTile()*10);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*18);
+                    monster.setWorldY(gs.getTile()*20);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*55);
+                    monster.setWorldY(gs.getTile()*16);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*38);
+                    monster.setWorldY(gs.getTile()*32);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*58);
+                    monster.setWorldY(gs.getTile()*32);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*5);
+                    monster.setWorldY(gs.getTile()*19);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*6);
+                    monster.setWorldY(gs.getTile()*47);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 6 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*31);
+                    monster.setWorldY(gs.getTile()*50);
+                    gs.monsters.add(monster);
+                }
+                break;
+            case 7:
+                gs.tileM.loadMap("/maps/map7_1.txt",1);
+                gs.tileM.loadMap("/maps/map7_2.txt",2);
+                for(int i = 0; i < 1 ; i++) {
+                    Entity monster = new Boss(gs);
+                    monster.setWorldX(gs.getTile()*51);
+                    monster.setWorldY(gs.getTile()*14);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1 ; i++) {
+                    Entity monster = new Boss(gs);
+                    monster.setWorldX(gs.getTile()*31);
+                    monster.setWorldY(gs.getTile()*47);
+                    gs.monsters.add(monster);
+                }
+                break;
+            case 8:
+                gs.tileM.loadMap("/maps/map8_1.txt",1);
+                gs.tileM.loadMap("/maps/map8_2.txt",2);
+                for(int i = 0; i < 1 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*52);
+                    monster.setWorldY(gs.getTile()*25);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*4);
+                    monster.setWorldY(gs.getTile()*29);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*19);
+                    monster.setWorldY(gs.getTile()*58);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 3 ; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*44);
+                    monster.setWorldY(gs.getTile()*55);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2 ; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*44);
+                    monster.setWorldY(gs.getTile()*55);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 3; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*45);
+                    monster.setWorldY(gs.getTile()*45);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*59);
+                    monster.setWorldY(gs.getTile()*6);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*59);
+                    monster.setWorldY(gs.getTile()*31);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 1; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*58);
+                    monster.setWorldY(gs.getTile()*23);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*31);
+                    monster.setWorldY(gs.getTile()*36);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 2; i++) {
+                    Entity monster = new Skeleton(gs);
+                    monster.setWorldX(gs.getTile()*39);
+                    monster.setWorldY(gs.getTile()*36);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*24);
+                    monster.setWorldY(gs.getTile()*30);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*42);
+                    monster.setWorldY(gs.getTile()*16);
+                    gs.monsters.add(monster);
+                }
+                for(int i = 0; i < 5; i++) {
+                    Entity monster = new Slime(gs);
+                    monster.setWorldX(gs.getTile()*41);
+                    monster.setWorldY(gs.getTile()*4);
+                    gs.monsters.add(monster);
+                }
+                break;
         }
         loadMapDone = true;
         thisLever = (short) index;
@@ -428,7 +602,7 @@ public class Campaign {
                 // nếu như trong lúc draw == 2 -> hoạt ảnh ra ( có nghĩa là từ màn hình đen -> sáng dần )
                 // thì mới load map
                 if(gs.changeScene.getNumberDraw() == 2) {
-                    loadMap(choose);
+                    loadMap(choose+step);
                     gs.keyHandle.setAccessLoadMap(false);
                     showDialog = false;
                     if(choose+step == 1) {
@@ -446,6 +620,17 @@ public class Campaign {
                     }else if(choose+step == 5) {
                         gs.player.setWorldX(2*gs.getTile());
                         gs.player.setWorldY(2*gs.getTile());
+                    }else if(choose+step == 6) {
+                        gs.player.setWorldX(45*gs.getTile());
+                        gs.player.setWorldY(3*gs.getTile());
+                    }
+                    else if(choose+step == 7) {
+                        gs.player.setWorldX(3*gs.getTile());
+                        gs.player.setWorldY(29*gs.getTile());
+                    }
+                    else if(choose+step == 8) {
+                        gs.player.setWorldX(2*gs.getTile());
+                        gs.player.setWorldY(48*gs.getTile());
                     }
                 }
             }
@@ -458,7 +643,9 @@ public class Campaign {
                 isGameOver = true;
             }
             if(loadMapDone) {
-                if(choose+step == 5) {
+                if(choose+step == 5
+                        || choose+step == 6
+                        || choose+step == 8) {
                     gs.setBackground(Color.black);
                 }
                 gs.updateBattle();

@@ -779,7 +779,9 @@ public class UI {
     }
     //====================================================================================
     private void drawCampaign() {
-        if(gs.campaign.getChoose() == 5) {
+        if(gs.campaign.getChoose() + gs.campaign.getStep() == 5
+                || gs.campaign.getChoose() + gs.campaign.getStep() == 6
+                || gs.campaign.getChoose() + gs.campaign.getStep() == 8) {
             gs.enviromentManager.draw(g2,"dark");
         }
         String numberOfEnemy = "Enemy : ";
