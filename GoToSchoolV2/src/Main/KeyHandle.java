@@ -84,10 +84,12 @@ public class KeyHandle implements KeyListener{
 							accessLoadMap = true;
 							gs.changeScene.setAlive(true);
 						}
+						resetAllKeyMoving();
 					}
 					if(code == KeyEvent.VK_ESCAPE) {
 						accessReturnLoopy = true;
 						gs.changeScene.setAlive(true);
+						resetAllKeyMoving();
 					}
 				}else{ // battle
 
@@ -346,6 +348,7 @@ public class KeyHandle implements KeyListener{
 			supportSkill2 = false;
 		}
 	}
+
 	public boolean isSpacePress() {
 		return spacePress;
 	}
@@ -410,6 +413,12 @@ public class KeyHandle implements KeyListener{
 		exitMap = false;
 		accessReturnLoopy = false;
 		accessLoadMap = false;
+	}
+	public void resetAllKeyMoving() {
+		downPress = false;
+		upPress = false;
+		leftPress = false;
+		rightPress = false;
 	}
 	public boolean isSupportSkill1() {
 		return supportSkill1;
