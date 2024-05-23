@@ -438,14 +438,16 @@ public class CollisionChecker {
             }
         }
     }
-    public void checkAllEntity(Entity player, List<Entity> monsters, List<Entity> skills, List<Entity> coins, List<Entity> skeletonAttacks, Entity lazerBoss) {
+    public void checkAllEntity(Entity player, List<Entity> monsters, List<Entity> skills, List<Entity> coins, List<Entity> skeletonAttacks,List<Entity> lazerBoss) {
         checkPlayerAndMonsters(player,monsters);
         checkMonsterWithMonster(monsters);
         checkSkillWithMonster(skills,monsters);
         checkPlayerWithCoins(player,coins);
         checkSkeletonWeaponWithPlayer(player,skeletonAttacks);
-        if(lazerBoss != null) {
-            checkPlayerWithLazeboss(player,lazerBoss);
+        for(int i = 0; i< lazerBoss.size(); i++) {
+            if(lazerBoss.get(i) != null) {
+                checkPlayerWithLazeboss(player,lazerBoss.get(i));
+            }
         }
     }
 }

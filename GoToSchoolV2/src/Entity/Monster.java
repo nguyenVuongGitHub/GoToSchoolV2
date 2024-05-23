@@ -6,9 +6,9 @@ import java.util.Random;
 public abstract class Monster extends Entity{
     protected int sight = 0;
     TypeMonster typeMonster;
-    protected final int defaultCountdown = 10;
+    protected final int defaultCountdown = 5;
     protected int countdown = defaultCountdown;
-    protected final int defaultTimeMoving = 100;
+    protected final int defaultTimeMoving = 50;
     protected int timeMoving = defaultTimeMoving;
     protected boolean canMoving = true;
 

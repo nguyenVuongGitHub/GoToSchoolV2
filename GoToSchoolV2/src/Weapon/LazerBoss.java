@@ -22,7 +22,6 @@ public class LazerBoss extends BaseSkill{
     public LazerBoss(GameState gs) {
         super(gs);
         init();
-        getImage();
     }
 
     @Override
@@ -47,9 +46,7 @@ public class LazerBoss extends BaseSkill{
     @Override
     public void init() {
         type = TYPE.WEAPON;
-        distance = 50;
         damage = BaseBoss.damage[BaseBoss.LEVER];
-        speed = 10;
         solidArea = new Rectangle(24*scale,24*scale,275*scale,20*scale);
         getImage();
         setPolygonVertices();
@@ -109,7 +106,6 @@ public class LazerBoss extends BaseSkill{
                     spriteNum = 14;
                 }else if(spriteNum == 14) {
                     alive = false;
-                    spriteNum = 1;
                 }
             }
         }

@@ -16,6 +16,8 @@ import java.util.Map;
 public class AttackController {
     GameState gs;
     State state;
+    long elapsedTime = 0;
+
     public AttackController(GameState gs) {
         this.gs = gs;
     }
@@ -192,7 +194,10 @@ public class AttackController {
         }
     }
     private void coolDownTimeAttack() {
-        if(ThreadTiming.isOneSecondElapse()) {
+        elapsedTime += 1_000_000_000L / GameState.FPS; // 1s/30fps
+
+        if(elapsedTime >= 1_000_000_000L) {
+            elapsedTime -=  1_000_000_000L;
             NormalAttack.TIME_COUNT_DOWN_ATTACK--;
             if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
                 NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;

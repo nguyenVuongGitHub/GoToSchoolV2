@@ -36,10 +36,8 @@ public class GameState extends JPanel implements Runnable{
 	public final RectangleQ boundsQuadTree = new RectangleQ(0,0,maxWorldCol*tile,maxWorldRow*tile);
 
 	// VARIABLE SYSTEM
-	private final static int FPS = 30;
+	public final static int FPS = 30;
 	Thread gameThread;
-	ThreadTiming timing = new ThreadTiming();
-	Thread timingThread;
 	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
@@ -67,7 +65,8 @@ public class GameState extends JPanel implements Runnable{
 	public Map<String,Integer> Map_chooseSkillAttack = new HashMap<>();
 
 	public List<Entity> skeletonAttacks = new ArrayList<>();
-	public Entity lazeBoss = null;
+	public List<Entity> bossAttacks = new ArrayList<>();
+//	public Entity lazeBoss = null;
 	public List<Entity> coins = new ArrayList<>();
 	public Color baseColor = new Color(77,138,179,255);
     // OTHER VARIABLE
@@ -92,8 +91,6 @@ public class GameState extends JPanel implements Runnable{
 	public void runGame() {
 		gameThread = new Thread(this);
 		gameThread.start();
-		timingThread = new Thread(timing);
-		timingThread.start();
 	}
 	@Override
 	public void run() {
@@ -193,10 +190,11 @@ public class GameState extends JPanel implements Runnable{
 				skill.draw(g2);
 			}
 		}
-		if(lazeBoss != null) {
-			lazeBoss.draw(g2);
+		for(Entity bossAttack : bossAttacks) {
+			if(bossAttack != null) {
+				bossAttack.draw(g2);
+			}
 		}
-
 		for(Entity skeletonAttack : skeletonAttacks) {
 			if(skeletonAttack != null) {
 				skeletonAttack.draw(g2);
@@ -226,10 +224,23 @@ public class GameState extends JPanel implements Runnable{
             aController.update();
         }
 
+		//
 		// MONSTER
-		for(Entity monster : monsters) {
+//		for(Entity monster : monsters) {
+//			if(monster != null) {
+//				monster.update();
+//			}
+//		}
+		for(int i = 0 ;i < monsters.size(); i ++) {
+			Entity monster = monsters.get(i);
+
 			if(monster != null) {
 				monster.update();
+
+				if(!monster.getAlive()) {
+					monsters.remove(i);
+					i--;
+				}
 			}
 		}
 		// PLAYER
@@ -253,8 +264,10 @@ public class GameState extends JPanel implements Runnable{
 			}
 		});
 
-		if(lazeBoss != null) {
-			lazeBoss.update();
+		for(Entity lazeBoss : bossAttacks) {
+			if(lazeBoss != null) {
+				lazeBoss.update();
+			}
 		}
 
 		for(Entity skeletonAttack : skeletonAttacks) {
@@ -263,7 +276,7 @@ public class GameState extends JPanel implements Runnable{
 			}
 		}
 		// COLLISION
-		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, lazeBoss);
+		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, bossAttacks);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
 		skillAttacks.removeIf(attack ->
@@ -271,13 +284,9 @@ public class GameState extends JPanel implements Runnable{
 			!attack.getAlive()
 		);
 		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
-		if(lazeBoss != null) {
-			if (!lazeBoss.getAlive()) {
-				lazeBoss = null;
-			}
-		}
+		bossAttacks.removeIf(lazeBoss -> !lazeBoss.getAlive());
 		// Loại bỏ quái vật đã chết
-		monsters.removeIf(monster -> !monster.getAlive());
+//		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive
 		coins.removeIf(coin -> !coin.getAlive());
 	}

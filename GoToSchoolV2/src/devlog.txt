@@ -142,3 +142,18 @@
 ----------------- 22-5-2024 : Vương -----------------
 * Thêm file :
     + các map 5, 6 ,7, 8
+
+----------------- 23-5-2024 : Vương -----------------
+* Sửa file
+    + AttackController.java {
+        thời gian được cập nhập theo biến elapsedTime.
+    }
+    + Boss.java {
+         . thêm chức năng spawn mỗi 7s
+         . bắn laze mỗi 5s
+    }
+    + CollisionChecker.java {
+        sửa từ 1 laze vs player thành n laze
+    }
+* Xóa file
+    + ThreadTiming.java ( ko làm thêm luồng nữa )
