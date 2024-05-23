@@ -2,6 +2,7 @@ package Entity;
 
 import Main.CollisionChecker;
 import Main.GameState;
+import baseAttributeMonsters.BaseSlime;
 import objects.Coin;
 
 import javax.imageio.ImageIO;
@@ -35,13 +36,13 @@ public class Slime extends Monster{
 
     @Override
     public void init() {
-        hp = 5;
         speed = 5;
-        damage = 3;
         sight = 500;
         type = TYPE.MONSTER;
         typeMonster = TypeMonster.SLIME;
         solidArea = new Rectangle(8,10,64- 16,64-10);
+        hp = BaseSlime.hp[BaseSlime.LEVER];
+        damage = BaseSlime.damage[BaseSlime.LEVER];
         getImage();
         clearVertices();
         setPolygonVertices();

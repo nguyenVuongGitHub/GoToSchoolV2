@@ -4,6 +4,7 @@ import CollisionSystem.PointX;
 import Entity.TYPE;
 import Main.GameState;
 import Main.UtilityTool;
+import baseAttributeMonsters.BaseBoss;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,7 +22,6 @@ public class LazerBoss extends BaseSkill{
     public LazerBoss(GameState gs) {
         super(gs);
         init();
-        getImage();
     }
 
     @Override
@@ -46,9 +46,7 @@ public class LazerBoss extends BaseSkill{
     @Override
     public void init() {
         type = TYPE.WEAPON;
-        distance = 50;
-        damage = 20;
-        speed = 10;
+        damage = BaseBoss.damage[BaseBoss.LEVER];
         solidArea = new Rectangle(24*scale,24*scale,275*scale,20*scale);
         getImage();
         setPolygonVertices();
@@ -61,17 +59,10 @@ public class LazerBoss extends BaseSkill{
             setPolygonVertices();
             // point need transform
             center = new PointX(vertices.getFirst().getX() + 28 * scale ,vertices.getFirst().getY() + (8 * scale));
-            double newAngle;
-            if (direction.equals("left")) {
-                newAngle = angleTarget + Math.toRadians(180);
-            }
-            else {
-                newAngle = angleTarget;
-            }
-            getVertices().set(0, getVertices().get(0).clockwiseTransform(center, newAngle));
-            getVertices().set(1, getVertices().get(1).clockwiseTransform(center, newAngle));
-            getVertices().set(2, getVertices().get(2).clockwiseTransform(center, newAngle));
-            getVertices().set(3, getVertices().get(3).clockwiseTransform(center, newAngle));
+            getVertices().set(0, getVertices().get(0).clockwiseTransform(center, angleTarget));
+            getVertices().set(1, getVertices().get(1).clockwiseTransform(center, angleTarget));
+            getVertices().set(2, getVertices().get(2).clockwiseTransform(center, angleTarget));
+            getVertices().set(3, getVertices().get(3).clockwiseTransform(center, angleTarget));
             spriteCounter++;
             if(spriteCounter > 4) {
                 spriteCounter = 0;
@@ -115,7 +106,6 @@ public class LazerBoss extends BaseSkill{
                     spriteNum = 14;
                 }else if(spriteNum == 14) {
                     alive = false;
-                    spriteNum = 1;
                 }
             }
         }
@@ -131,16 +121,8 @@ public class LazerBoss extends BaseSkill{
             int currentScreenY = screenY;
             AffineTransform oldTransform = g2.getTransform();
             AffineTransform at = new AffineTransform();
-            if (direction.equals("left")) {
-                at.scale(-1,1);
-                currentScreenX = -currentScreenX - currentImage.getWidth()/3;
-                at.translate(currentScreenX,currentScreenY);
-                at.rotate(-angleTarget,centerX,centerY);
-            } else {
-                at.translate(currentScreenX,currentScreenY);
-                at.rotate(angleTarget,centerX,centerY);
-            }
-            drawVertices(g2);
+            at.translate(currentScreenX,currentScreenY);
+            at.rotate(angleTarget,centerX,centerY);
             g2.drawImage(currentImage,at,null);
             g2.setTransform(oldTransform);
         }

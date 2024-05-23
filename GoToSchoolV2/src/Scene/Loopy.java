@@ -42,7 +42,8 @@ public class Loopy {
     }
 
     public void update() {
-
+        // nếu ở loopy sẽ có background tương tự như màu biển
+        gs.setBackground(gs.baseColor);
         gs.player.update();
 
         gs.ui.setDrawExitGame(showDialogExit);
@@ -50,15 +51,12 @@ public class Loopy {
         gs.ui.setDrawChooseSkillsAttack(showDialogChooseSkillsAttack);
         gs.ui.setDrawUpgradeSkill(showDialogUpgradeSkill);
         if(gs.keyHandle.isAddSkillSupport()) {
-
-            Entity newSupport = null;
-            if(gs.keyHandle.getYourAddSkillSupport().equals("flash")) {
-                newSupport = new Flicker(gs);
-            } else if (gs.keyHandle.getYourAddSkillSupport().equals("speed")) {
-                newSupport = new Sprint(gs);
-            } else if (gs.keyHandle.getYourAddSkillSupport().equals("healing")) {
-                newSupport = new Restore(gs);
-            }
+            Entity newSupport = switch (gs.keyHandle.getYourAddSkillSupport()) {
+                case "Flicker" -> new Flicker(gs);
+                case "Sprint" -> new Sprint(gs);
+                case "Restore" -> new Restore(gs);
+                default -> null;
+            };
             gs.skillSupports.add(newSupport);
             gs.keyHandle.setAddSkillSupport(false);
         }

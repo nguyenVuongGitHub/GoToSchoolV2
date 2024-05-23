@@ -5,6 +5,7 @@ import Main.GameState;
 import Main.UtilityTool;
 import Weapon.LazerBoss;
 import Weapon.SkeletonWeapon;
+import baseAttributeMonsters.BaseBoss;
 import objects.Coin;
 
 import javax.imageio.ImageIO;
@@ -17,14 +18,17 @@ import java.util.Random;
 
 public class Boss extends Monster{
 
-    public int TIME_COUNT_DOWN_ATTACK = 30;
-    public final int TIME_ATTACK = 30;
     int HadCoins = 50;
     BufferedImage[] imageMove;
     BufferedImage[] imageAttack;
     BufferedImage[] imageDie;
     String state = "move";
-    boolean changeState = false;
+    final int spawnInterval = 8;
+    long spawnElapsedTime;
+    long countSpawn = 0;
+    long attackInterval = 5;
+    long attackElapsedTime;
+    long countAttack = 0;
     public Boss(GameState gs) {
         super(gs);
         init();
@@ -44,14 +48,15 @@ public class Boss extends Monster{
 
     @Override
     public void init() {
-        hp = 5;
         speed = 5;
-        damage = 20;
-        sight = 6000;
+        sight = 1000;
         type = TYPE.MONSTER;
         typeMonster = TypeMonster.BOSS;
         scale = 6;
+        spawnElapsedTime = 0;
         solidArea = new Rectangle(30*scale,30*scale,45*scale,40*scale);
+        hp = BaseBoss.hp[BaseBoss.LEVER];
+        damage = BaseBoss.damage[BaseBoss.LEVER];
         getImage();
         clearVertices();
         setPolygonVertices();
@@ -87,6 +92,13 @@ public class Boss extends Monster{
         }
     }
 
+    private void spawnSkeleton() {
+        Entity skeleton = new Skeleton(gs);
+        skeleton.setWorldX(this.worldX + (double)this.getBounds().width/2);
+        skeleton.setWorldY(this.worldY + (double)this.getBounds().height/2);
+        gs.monsters.addLast(skeleton);
+    }
+
     public void setAI() {
         // nhin thay nguoi choi
         if(seePlayer()) {
@@ -110,26 +122,59 @@ public class Boss extends Monster{
             }
         }
     }
-
+    private void setSpawnSkeleton() {
+        spawnElapsedTime += 1_000_000_000L / GameState.FPS; // 1s / 30fps
+        if(spawnElapsedTime >= 1_000_000_000L)  {// one second
+            countSpawn ++;
+            spawnElapsedTime -=  1_000_000_000L;
+        }
+        if(countSpawn >= spawnInterval) {
+            Random random = new Random();
+            int number = random.nextInt(3) + 1;
+            if(number == 1) {
+                spawnSkeleton();
+            }else if(number == 2) {
+                spawnSkeleton();
+                spawnSkeleton();
+            }
+            else {
+                spawnSkeleton();
+                spawnSkeleton();
+                spawnSkeleton();
+            }
+            countSpawn = 0;
+        }
+    }
+    private void setAttack() {
+        if(gs.player.worldX <= this.worldX + (double) this.getBounds().width / 2) {
+            direction = "left";
+        }else {
+            direction = "right";
+        }
+        if(seePlayer()) {
+            attackElapsedTime += 1_000_000_000L / GameState.FPS; // 1s / 30fps
+            if(attackElapsedTime >= 1_000_000_000L) {
+                attackElapsedTime -= 1_000_000_000L;
+                countAttack++;
+            }
+            if(countAttack >= attackInterval) {
+                attacking();
+                countAttack = 0;
+            }
+        }
+    }
     @Override
     public void update() {
         if(hp <= 0) {
             state = "die";
+            clearVertices();
         }else {
             setAI();
-            if(gs.player.worldX <= this.worldX + (double) this.getBounds().width / 2) {
-                direction = "left";
-            }else {
-                direction = "right";
-            }
-            if(seePlayer()) {
-                if(TIME_COUNT_DOWN_ATTACK <= 0) {
-                    attacking();
-                    TIME_COUNT_DOWN_ATTACK = TIME_ATTACK;
-                }else {
-                    TIME_COUNT_DOWN_ATTACK--;
-                }
-            }
+
+            setSpawnSkeleton();
+
+            setAttack();
+
             collisionOn = false;
             gs.CC.checkEntityWithTile(this);
             int collisionWith;
@@ -190,6 +235,7 @@ public class Boss extends Monster{
                 // Giảm thời gian di chuyển của đối tượng
                 timeMoving--;
             }
+
             // trong trường hợp có va chạm và thời gian còn di chuyển được ( đang trong trạng thái AI)
             if(collisionOn && timeMoving > 0) {
                 // đổi các hướng của đối tượng
@@ -204,6 +250,7 @@ public class Boss extends Monster{
                 timeMoving--;
             }
         }
+
         spriteCounter++;
         if(spriteCounter > 5) {
             spriteCounter = 0;
@@ -256,16 +303,31 @@ public class Boss extends Monster{
     }
 
     public void attacking() {
-        if(gs.lazeBoss == null) {
-            gs.lazeBoss = new LazerBoss(gs);
-            gs.lazeBoss.worldX = this.worldX;
-            gs.lazeBoss.worldY = this.worldY;
-            gs.lazeBoss.direction = this.direction;
-            Random random = new Random();
-            int angle  = random.nextInt(181) - 90;
-//            int angle = 10;
-            gs.lazeBoss.setAngleTarget(Math.toRadians(angle));
+        Entity lazeBoss = new LazerBoss(gs);
+        lazeBoss.worldX = this.worldX;
+        lazeBoss.worldY = this.worldY;
+        lazeBoss.direction = this.direction;
+        Random random = new Random();
+        int angle;
+        Point centerBoss = new Point((int) (vertices.getFirst().getX() + getBounds().getWidth()/2), (int) (vertices.getFirst().getY() + getBounds().getHeight()/2));
+        if(centerBoss.getY() < gs.player.getWorldY()) {
+            if(centerBoss.getX() < gs.player.getWorldX()) {
+                angle  = random.nextInt(90); // 0 ~ 90
+            }else {
+                angle  = random.nextInt(90) + 90; // 90 ~ 180
+            }
+        }else {
+            if(centerBoss.getX() > gs.player.getWorldX()) {
+                angle  = random.nextInt(90) + 180; // 180 ~ 270
+
+            }else {
+                angle  = random.nextInt(90) + 270; // 270 ~ 360
+            }
         }
+        lazeBoss.setAngleTarget(Math.toRadians(angle));
+        gs.bossAttacks.add(lazeBoss);
+        System.out.println(gs.bossAttacks.size());
+
     }
     public void getImage() {
         try {

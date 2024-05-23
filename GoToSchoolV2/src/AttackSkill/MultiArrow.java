@@ -4,7 +4,7 @@ import CollisionSystem.PointX;
 import Entity.TYPE;
 import Main.GameState;
 import Weapon.BaseSkill;
-import baseAttribute.BaseMultiArrow;
+import baseAttributeSkills.BaseMultiArrow;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -11,7 +11,6 @@ import java.util.List;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-;
 public abstract class Entity {
 	protected GameState gs;
 	// CHARACTER ATTIBUTES
@@ -26,6 +25,7 @@ public abstract class Entity {
 	protected double radius = 80;
 	protected boolean collision = false;
 	protected boolean collisionOn = false;
+	protected String stateEntity = "nan";
 
 	public double getAngleTarget() {
 		return angleTarget;
@@ -54,6 +54,8 @@ public abstract class Entity {
 
 	protected int spriteCounter = 0;
 	protected int spriteNum = 1;
+
+
 
 	public int getSpriteNum() {
 		return spriteNum;
@@ -184,5 +186,15 @@ public abstract class Entity {
 
 	public void setDamage(int damage) {
 		this.damage = damage;
+	}
+	public String getStateEntity() {
+		return stateEntity;
+	}
+
+	public void setStateEntity(String stateEntity) {
+		this.stateEntity = stateEntity;
+	}
+	public void setSpriteNum(int spriteNum) {
+		this.spriteNum = spriteNum;
 	}
 }

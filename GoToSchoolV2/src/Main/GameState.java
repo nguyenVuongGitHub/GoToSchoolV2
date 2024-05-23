@@ -18,6 +18,7 @@ import Scene.Survival;
 import User.UserManager;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
+import environment.EnviromentManager;
 import tile.TileManager;
 
 public class GameState extends JPanel implements Runnable{
@@ -36,7 +37,7 @@ public class GameState extends JPanel implements Runnable{
 	public final RectangleQ boundsQuadTree = new RectangleQ(0,0,maxWorldCol*tile,maxWorldRow*tile);
 
 	// VARIABLE SYSTEM
-	private final static int FPS = 30;
+	public final static int FPS = 30;
 	Thread gameThread;
 	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();
@@ -51,6 +52,8 @@ public class GameState extends JPanel implements Runnable{
 	public Loopy loopy = new Loopy(this);
 	public TileManager tileM = new TileManager(this);
 	public ChangeScene changeScene = new ChangeScene(this);
+    public EnviromentManager enviromentManager = new EnviromentManager(this);
+    public AttackController aController = new AttackController(this);
 	// ENTITY
 	public 	Entity player = new Player(this);
 	public List<Entity> monsters = new ArrayList<>();
@@ -64,13 +67,14 @@ public class GameState extends JPanel implements Runnable{
 	public Map<String,Integer> Map_chooseSkillAttack = new HashMap<>();
 
 	public List<Entity> skeletonAttacks = new ArrayList<>();
-	public Entity lazeBoss = new LazerBoss(this);
+	public List<Entity> bossAttacks = new ArrayList<>();
+//	public Entity lazeBoss = null;
 	public List<Entity> coins = new ArrayList<>();
-
+	public Color baseColor = new Color(77,138,179,255);
     // OTHER VARIABLE
 	public GameState() {
 		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-		this.setBackground(new Color(77,138,179,255));
+		this.setBackground(baseColor);
 		this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.emptySet());
 		this.addKeyListener(keyHandle);
 		this.addMouseListener(mouseHandle);
@@ -79,8 +83,10 @@ public class GameState extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 	public void initGame() {
-		user.readFile();
-		user.readAttributeClasses();
+		user.readFileUser();
+		user.readAttributeClassesSkill();
+		user.readAttributeClassesMonster();
+        enviromentManager.init();
 		// something here
 		survival.loadMap();
 	}
@@ -119,39 +125,6 @@ public class GameState extends JPanel implements Runnable{
 			}
 			// mỗi giây
 			if(timer >= 1000000000) {
-				NormalAttack.TIME_COUNT_DOWN_ATTACK--;
-				if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
-					NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				MoonLight.TIME_COUNT_DOWN_ATTACK--;
-				if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-					MoonLight.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-//				System.out.println(ArrowLight.TIME_REDUCE);
-				ArrowLight.TIME_COUNT_DOWN_ATTACK--;
-				if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-					ArrowLight.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				MultiArrow.TIME_COUNT_DOWN_ATTACK--;
-				if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-					MultiArrow.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				CircleFire.TIME_COUNT_DOWN_ATTACK--;
-				if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-					CircleFire.TIME_COUNT_DOWN_ATTACK = -1;
-				}
-				Flicker.TIME_COUNT_DOWN--;
-				if(Flicker.TIME_COUNT_DOWN <= 0) {
-					Flicker.TIME_COUNT_DOWN = -1;
-				}
-				Restore.TIME_COUNT_DOWN--;
-				if(Restore.TIME_COUNT_DOWN <= 0) {
-					Restore.TIME_COUNT_DOWN = -1;
-				}
-				Sprint.TIME_COUNT_DOWN--;
-				if(Sprint.TIME_COUNT_DOWN <= 0) {
-					Sprint.TIME_COUNT_DOWN = -1;
-				}
 //				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
@@ -159,7 +132,7 @@ public class GameState extends JPanel implements Runnable{
 		}
 		System.exit(0);
 	}
-
+	
 	public int exitGame() {
 		gameThread = null;
 		return 1;
@@ -177,8 +150,10 @@ public class GameState extends JPanel implements Runnable{
 		}else if(state == State.LOOPY) {
 			// trường hợp từ CAMPAIGN hoặc SURVIVAL trở về LOOPY thì cần load map lại
 			if(changeState) {
-				loopy.loadMap();
-				changeState = false;
+				if(changeScene.getNumberDraw() == 2) {
+					loopy.loadMap();
+					changeState = false;
+				}
 			}
 			loopy.update();
 		}
@@ -187,6 +162,8 @@ public class GameState extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		// Khử răng cưa
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if(state == State.LOOPY) {
 			loopy.draw(g2);
@@ -215,10 +192,11 @@ public class GameState extends JPanel implements Runnable{
 				skill.draw(g2);
 			}
 		}
-		if(lazeBoss != null) {
-			lazeBoss.draw(g2);
+		for(Entity bossAttack : bossAttacks) {
+			if(bossAttack != null) {
+				bossAttack.draw(g2);
+			}
 		}
-
 		for(Entity skeletonAttack : skeletonAttacks) {
 			if(skeletonAttack != null) {
 				skeletonAttack.draw(g2);
@@ -237,122 +215,34 @@ public class GameState extends JPanel implements Runnable{
 	}
 
 	public void updateBattle() {
+        if(monsters.isEmpty()) {
+			// nếu trong màn chơi mà tiêu diệt hết quái vật thì
+            campaign.setNextLever(true); // set có thể next lever
+            campaign.setLoadMapDone(false); // reset load map
+			campaign.setShowDialog(true); // hiển thị bảng chọn map
+        }
 
-		// ATTACK
-		if(keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
-			Entity normalAttack = new NormalAttack(this);
-			skillAttacks.add(normalAttack);
-			NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
-		}
-		if(keyHandle.isSkill1Press() && loopy.getSkillAttackHave() >= 1) {
-			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
-				if(entry.getValue() == 1) {
-					Entity e;
-					if(entry.getKey().equals("ArrowLight")) {
-						if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new ArrowLight(this);
-							ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MultiArrowLight")) {
-						if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MultiArrow(this);
-							MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MoonLight")) {
-						if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MoonLight(this);
-							MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("CircleFire")) {
-						if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new CircleFire(this);
-							CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}
-				}
-			}
-		}
-		if(keyHandle.isSkill2Press() && loopy.getSkillAttackHave() == 2) {
-			for(Map.Entry<String,Integer> entry : Map_chooseSkillAttack.entrySet()) {
-				if(entry.getValue() == 2) {
-					Entity e;
-					if(entry.getKey().equals("ArrowLight")) {
-						if(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new ArrowLight(this);
-							ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MultiArrowLight")) {
-						if(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MultiArrow(this);
-							MultiArrow.TIME_COUNT_DOWN_ATTACK = MultiArrow.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("MoonLight")) {
-						if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new MoonLight(this);
-							MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}else if(entry.getKey().equals("CircleFire")) {
-						if(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-							e = new CircleFire(this);
-							CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
-							skillAttacks.add(e);
-						}
-					}
-				}
-			}
-		}
+        if(aController != null) {
+            aController.update();
+        }
 
-		if(keyHandle.isSupportSkill1() && loopy.getSkillSuportHave() >= 1) {
-			Entity e = skillSupports.get(indexSkillSupport1);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
-				if(Flicker.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
-				if(Sprint.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
-				if(Restore.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
-				}
-			}
-			skillSupports.set(indexSkillSupport1,e);
-		}
-		if(keyHandle.isSupportSkill2() && loopy.getSkillSuportHave() == 2) {
-			Entity e = skillSupports.get(indexSkillSupport2);
-			if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
-				if(Flicker.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
-				if(Sprint.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
-				}
-			}else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
-				if(Restore.TIME_COUNT_DOWN <= 0) {
-					e.setAlive(true);
-					Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
-				}
-			}
-			skillSupports.set(indexSkillSupport2,e);
-		}
+		//
 		// MONSTER
-		for(Entity monster : monsters) {
+//		for(Entity monster : monsters) {
+//			if(monster != null) {
+//				monster.update();
+//			}
+//		}
+		for(int i = 0 ;i < monsters.size(); i ++) {
+			Entity monster = monsters.get(i);
+
 			if(monster != null) {
 				monster.update();
+
+				if(!monster.getAlive()) {
+					monsters.remove(i);
+					i--;
+				}
 			}
 		}
 		// PLAYER
@@ -377,8 +267,10 @@ public class GameState extends JPanel implements Runnable{
 			}
 		});
 
-		if(lazeBoss != null) {
-			lazeBoss.update();
+		for(Entity lazeBoss : bossAttacks) {
+			if(lazeBoss != null) {
+				lazeBoss.update();
+			}
 		}
 
 		for(Entity skeletonAttack : skeletonAttacks) {
@@ -387,7 +279,7 @@ public class GameState extends JPanel implements Runnable{
 			}
 		}
 		// COLLISION
-		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, lazeBoss);
+		CC.checkAllEntity(player,monsters,skillAttacks,coins,skeletonAttacks, bossAttacks);
 		// AFTER COLLISION
 		// Loại bỏ skill đã chết
 		skillAttacks.removeIf(attack ->
@@ -395,13 +287,9 @@ public class GameState extends JPanel implements Runnable{
 			!attack.getAlive()
 		);
 		skeletonAttacks.removeIf(skeletonAttack -> !skeletonAttack.getAlive());
-		if(lazeBoss != null) {
-			if (!lazeBoss.getAlive()) {
-				lazeBoss = null;
-			}
-		}
+		bossAttacks.removeIf(lazeBoss -> !lazeBoss.getAlive());
 		// Loại bỏ quái vật đã chết
-		monsters.removeIf(monster -> !monster.getAlive());
+//		monsters.removeIf(monster -> !monster.getAlive());
 		// remove if coins not alive
 		coins.removeIf(coin -> !coin.getAlive());
 	}
@@ -423,8 +311,7 @@ public class GameState extends JPanel implements Runnable{
 	}
 
 	public void saveGame() {
-		if(gameThread != null) {
 			user.saveFile();
-		}
+			loopy.setShowDialogExit(false);
 	}
 }

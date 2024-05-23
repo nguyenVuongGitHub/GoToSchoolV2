@@ -24,7 +24,9 @@ public class CollisionChecker {
         Rectangle eventRect = new Rectangle(x*gs.getTile(),y*gs.getTile(),64,64);
         return entity.getBounds().intersects(eventRect);
     }
-
+    private boolean checkOutOfIndex(int index, int value) {
+        return value < 0 || value >= index;
+    }
     /**
      *
      * @param entity
@@ -99,14 +101,24 @@ public class CollisionChecker {
         {
             case "up":
                 topTileRow = (entityTopWorldY - entity.getSpeed()) / gs.getTile();
+
+                if(checkOutOfIndex(64,topTileRow) || checkOutOfIndex(64, leftTileCol) || checkOutOfIndex(64, rightTileCol)) {
+                    entity.setAlive(false);
+                    break;
+                }
                 adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
+
                 if(gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
                     entity.setCollisionOn(true);
                 }
                 break;
             case "down":
                 bottomTileRow = (entityBottomWorldY + entity.getSpeed()) / gs.getTile();
+                if(checkOutOfIndex(64,bottomTileRow) || checkOutOfIndex(64, leftTileCol) || checkOutOfIndex(64, rightTileCol)) {
+                    entity.setAlive(false);
+                    break;
+                }
                 adjacentTile1 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
                 if(gs.tileM.getTile(adjacentTile1).collision || gs.tileM.getTile(adjacentTile2).collision) {
@@ -114,6 +126,10 @@ public class CollisionChecker {
                 }
                 break;
             case "left":
+                if(checkOutOfIndex(64,topTileRow) || checkOutOfIndex(64, leftTileCol) || checkOutOfIndex(64, bottomTileRow)) {
+                    entity.setAlive(false);
+                    break;
+                }
                 leftTileCol = (entityLeftWorldX - entity.getSpeed()) / gs.getTile();
                 adjacentTile1 = gs.tileM.getLayer(leftTileCol, topTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(leftTileCol, bottomTileRow, TileManager.highestLayer);
@@ -122,6 +138,10 @@ public class CollisionChecker {
                 }
                 break;
             case "right":
+                if(checkOutOfIndex(64,topTileRow) || checkOutOfIndex(64, bottomTileRow) || checkOutOfIndex(64, rightTileCol)) {
+                    entity.setAlive(false);
+                    break;
+                }
                 rightTileCol = (entityRightWorldX + entity.getSpeed()) / gs.getTile();
                 adjacentTile1 = gs.tileM.getLayer(rightTileCol, topTileRow, TileManager.highestLayer);
                 adjacentTile2 = gs.tileM.getLayer(rightTileCol, bottomTileRow, TileManager.highestLayer);
@@ -261,6 +281,8 @@ public class CollisionChecker {
             if(player != other) {
                 if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, false)) {
                     long currentCoin = gs.user.getCoin();
+                    long currentExperience = gs.user.getExperience();
+                    gs.user.setExperience(currentExperience + 1);
                     gs.user.setCoin( currentCoin + 1);
                     other.setAlive(false);
                 }
@@ -291,23 +313,24 @@ public class CollisionChecker {
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.ARROW_LIGHT
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MULTI_ARROW
                 ) {
-                    if(SeparatingAxis.polygonCollisionDetectFirstStatic(skill,other,false,false)) {
-                        skill.setAlive(false);
-                        int newHP = other.getHP();
-                        newHP -= skill.getDamage() + gs.player.getDamage();
-                        other.setHP(newHP);
+                    if(skill.getAlive()) {
+                        if(SeparatingAxis.polygonCollisionDetectFirstStatic(skill,other,false,false)) {
+                            skill.setAlive(false);
+                            int newHP = other.getHP();
+                            newHP -= skill.getDamage();
+                            other.setHP(newHP);
+                        }
                     }
                 }
                 else if(skill.getTypeSkill().typeAttack == ATTACK_SKILL.CIRCLE_FIRE
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MOON_LIGHT
                 ) {
-                    if(SeparatingAxis.CirclePolygonCollisionDectect(skill,other,false,false)) {
-                        if(skill.getTypeSkill().typeAttack != ATTACK_SKILL.CIRCLE_FIRE) {
-                            skill.setAlive(false);
+                    if(skill.getAlive()) {
+                        if(SeparatingAxis.CirclePolygonCollisionDectect(skill,other,false,false)) {
+                            int newHP = other.getHP();
+                            newHP -= skill.getDamage();
+                            other.setHP(newHP);
                         }
-                        int newHP = other.getHP();
-                        newHP -= skill.getDamage() + gs.player.getDamage();
-                        other.setHP(newHP);
                     }
                 }
             }
@@ -405,25 +428,26 @@ public class CollisionChecker {
     }
     private void checkPlayerWithLazeboss(Entity player, Entity lazerBoss) {
         if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, lazerBoss, false, false) && lazerBoss.getSpriteNum() >= 9) {
-            System.out.println("check");
             if (player.isCanTouch()) {
                 int newHP = player.getHP() - lazerBoss.getDamage();
                 player.setHP(newHP);
                 player.setCanTouch(false);
             }
             if (player.getHP() <= 0) {
-//                player.setAlive(false);
+                player.setAlive(false);
             }
         }
     }
-    public void checkAllEntity(Entity player, List<Entity> monsters, List<Entity> skills, List<Entity> coins, List<Entity> skeletonAttacks, Entity lazerBoss) {
+    public void checkAllEntity(Entity player, List<Entity> monsters, List<Entity> skills, List<Entity> coins, List<Entity> skeletonAttacks,List<Entity> lazerBoss) {
         checkPlayerAndMonsters(player,monsters);
         checkMonsterWithMonster(monsters);
         checkSkillWithMonster(skills,monsters);
         checkPlayerWithCoins(player,coins);
         checkSkeletonWeaponWithPlayer(player,skeletonAttacks);
-        if(lazerBoss != null) {
-            checkPlayerWithLazeboss(player,lazerBoss);
+        for(int i = 0; i< lazerBoss.size(); i++) {
+            if(lazerBoss.get(i) != null) {
+                checkPlayerWithLazeboss(player,lazerBoss.get(i));
+            }
         }
     }
 }

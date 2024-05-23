@@ -15,7 +15,6 @@ import java.util.Objects;
 public class NormalAttack extends BaseSkill{
     public static int TIME_COUNT_DOWN_ATTACK = 1;
     public static final int TIME_REDUCE = 1;
-    PointX center = PointX.getCenterPointFromList(vertices);
 
     public NormalAttack(GameState gs) {
         super(gs);
@@ -72,11 +71,10 @@ public class NormalAttack extends BaseSkill{
         speed = 25;
         worldX = gs.player.getWorldX();
         worldY = gs.player.getWorldY();
-        solidArea = new Rectangle(0,0,gs.getTile()/2,gs.getTile()/2);
+        solidArea = new Rectangle(32,32,gs.getTile(),gs.getTile());
         angleTarget = anglePlayerAndMouse();
         getImage();
         setPolygonVertices();
-        center = PointX.getCenterPointFromList(vertices);
     }
 
     @Override
