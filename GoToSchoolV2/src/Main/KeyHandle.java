@@ -54,15 +54,14 @@ public class KeyHandle implements KeyListener{
 				if(gs.campaign.isShowDialog()) {
 
 					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.campaign.setChoose(gs.campaign.getChoose()-1);
-						if(gs.campaign.getChoose() < 1) {
-							gs.campaign.setChoose(gs.user.getNumberLeversUnlocked());
+						if(gs.campaign.getChoose() > 1) {
+							gs.campaign.setChoose(gs.campaign.getChoose()-1);
 						}
 					}
 					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.campaign.setChoose(gs.campaign.getChoose()+1);
-						if(gs.campaign.getChoose() > gs.user.getNumberLeversUnlocked()) {
-							gs.campaign.setChoose(1);
+						if(gs.campaign.getChoose() < (gs.user.getNumberLeversUnlocked() - gs.campaign.getStep())
+						&& gs.campaign.getChoose() < gs.user.getMaxNumberLevers()) {
+							gs.campaign.setChoose(gs.campaign.getChoose()+1);
 						}
 					}
 					if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {

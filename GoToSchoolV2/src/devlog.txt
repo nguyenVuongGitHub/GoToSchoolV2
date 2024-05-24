@@ -157,3 +157,11 @@
     }
 * Xóa file
     + ThreadTiming.java ( ko làm thêm luồng nữa )
+----------------- 24-5-2024 : Vương -----------------
+* Sửa file
+    + UI.java {
+        thêm ô hiển thị thời gian đếm ngược chiêu đánh thường.
+    }
+    + KeyHandle.java {
+         sửa dialog chọn map.
+    }
