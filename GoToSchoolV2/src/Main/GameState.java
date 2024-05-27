@@ -43,7 +43,7 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.SURVIVAL;
+	public State state = State.LOOPY;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
@@ -88,7 +88,7 @@ public class GameState extends JPanel implements Runnable{
 		user.readAttributeClassesMonster();
         enviromentManager.init();
 		// something here
-		survival.loadMap();
+		loopy.loadMap();
 	}
 	public void runGame() {
 		gameThread = new Thread(this);
@@ -215,12 +215,12 @@ public class GameState extends JPanel implements Runnable{
 	}
 
 	public void updateBattle() {
-        if(monsters.isEmpty()) {
+		if (monsters.isEmpty()) {
 			// nếu trong màn chơi mà tiêu diệt hết quái vật thì
-            campaign.setNextLever(true); // set có thể next lever
-            campaign.setLoadMapDone(false); // reset load map
+			campaign.setNextLever(true); // set có thể next lever
+			campaign.setLoadMapDone(false); // reset load map
 			campaign.setShowDialog(true); // hiển thị bảng chọn map
-        }
+		}
 
         if(aController != null) {
             aController.update();

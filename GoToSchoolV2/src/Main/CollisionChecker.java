@@ -280,10 +280,17 @@ public class CollisionChecker {
             Entity other = point.getUserData();
             if(player != other) {
                 if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, false)) {
-                    long currentCoin = gs.user.getCoin();
-                    long currentExperience = gs.user.getExperience();
-                    gs.user.setExperience(currentExperience + 1);
-                    gs.user.setCoin( currentCoin + 1);
+                    if(gs.state == State.CAMPAIGN)
+                    {
+                        long currentCoin = gs.user.getCoin();
+                        long currentExperience = gs.user.getExperience();
+                        gs.user.setExperience(currentExperience + 1);
+                        gs.user.setCoin( currentCoin + 1);
+                    }
+                    else
+                    {
+                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() + 1);
+                    }
                     other.setAlive(false);
                 }
             }

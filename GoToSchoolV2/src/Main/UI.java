@@ -4,10 +4,8 @@ import AttackSkill.ArrowLight;
 import AttackSkill.CircleFire;
 import AttackSkill.MoonLight;
 import AttackSkill.MultiArrow;
-import Entity.Entity;
 import SPSkill.Flicker;
 import SPSkill.Restore;
-import SPSkill.SUPPORT_SKILL;
 import SPSkill.Sprint;
 import baseAttributeSkills.BaseArrowLight;
 import baseAttributeSkills.BaseCircleFire;
@@ -16,7 +14,6 @@ import baseAttributeSkills.BaseMultiArrow;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,7 +59,7 @@ public class UI {
             drawLoopy();
         }
         else if(gs.state == State.SURVIVAL) {
-
+            drawSurvival();
         }
     }
 
@@ -969,6 +966,161 @@ public class UI {
         g2.setColor(Color.red);
         g2.drawRect(x,y,125,30);
         g2.fillRect(x,y,(int)currentHp,30);
+    }
+
+    private void drawSurvival()
+    {
+        drawHpPlayer();
+        drawFrameHpPlayer();
+        int x,y,w,h;
+        int xString, yString;
+
+        y = 12 * gs.getTile();
+        yString = y + gs.getTile()/2;
+        w = gs.getTile();
+        h = gs.getTile();
+        //Skill 1
+        x = 9 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,20F));
+        switch (gs.survival.getAbilities().getFirst())
+        {
+            case 2-> {
+                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 3 -> {
+                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 4 -> {
+                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 5 -> {
+                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+        }
+        //Skill 2
+        x = 10 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        switch (gs.survival.getAbilities().get(1))
+        {
+            case 2-> {
+                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 3 -> {
+                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 4 -> {
+                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 5 -> {
+                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+        }
+        //Skill 3
+        x = 11 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,20F));
+        switch (gs.survival.getAbilities().get(2))
+        {
+            case 2-> {
+                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 3 -> {
+                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 4 -> {
+                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 5 -> {
+                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+        }
+        //Skill 4
+        x = 12 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        switch (gs.survival.getAbilities().get(3))
+        {
+            case 2-> {
+                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 3 -> {
+                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 4 -> {
+                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+            case 5 -> {
+                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                    g2.drawString("Done", xString, yString);
+                } else {
+                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                }
+            }
+        }
     }
 
     //====================================================================================
