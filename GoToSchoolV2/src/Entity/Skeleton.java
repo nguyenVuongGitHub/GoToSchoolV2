@@ -83,7 +83,6 @@ public class Skeleton extends Monster{
             angleTarget = anglePlayerAndMonster();
             canMoving = false;
         }else {
-            // con thoi gian dung im
             if(countdown >= 0) {
                 canMoving = false;
                 countdown--;
@@ -102,6 +101,7 @@ public class Skeleton extends Monster{
     @Override
     public void update() {
 
+        // kiểm tra để sản sinh ra coin
         if(hp <= 0) {
             generateCoin();
             alive = false;

@@ -170,9 +170,11 @@ public class Player extends Entity{
 
     @Override
     public void update() {
+
             // CHECK COLLISION
             collisionOn = false;
 
+            // khi hoạt ảnh chuyển động kết thúc mới cho di chuyển nhân vật
             if(!gs.changeScene.isAlive()) {
                 if(gs.keyHandle.isUpPress() && gs.keyHandle.isLeftPress()) {
                     direction = "up-left";
@@ -204,10 +206,12 @@ public class Player extends Entity{
                 }
             }
 
-
+            // kiểm tra va chạm giữa người chơi và tile set
             gs.CC.checkPlayerWithTile(this);
 
+            // nếu không có va chạm
             if(!collisionOn) {
+                // kiểm tra giá trị của direction để dịch chuyển người chơi
                 switch (direction) {
                     case "up" -> worldY -= speed;
                     case "down" -> worldY += speed;
@@ -230,26 +234,33 @@ public class Player extends Entity{
                         worldX += speed;
                     }
                 }
-            }else {
+            }else { // khi có va chạm với tile set
+
+                // kiểm tra va chạm với hướng nào
                 int collisionWith;
                 switch (direction) {
+                    // trường hợp đi chéo
                     case "up-left", "up-right" -> {
+
+                        // kiểm tra xem có va chạm ở hướng đi lên không
                         collisionWith = gs.CC.checkEntityWithTile(this, "up");
+                        // nếu không phải va chạm hướng đi lên và có bấm di chuyển lên thì cập nhật direction và vị trí
                         if (collisionWith != CollisionChecker.UP && gs.keyHandle.isUpPress()) {
                             direction = "up";
                             beforeDirection = direction;
                             worldY -= speed;
                         }
-
+                        // kiểm tra xem có va chạm với hướng đi sang trái không
                         collisionWith = gs.CC.checkEntityWithTile(this, "left");
+                        // nếu không phải va chạm hướng đi sang trái và có bấm di chuyển sang trái thì cập nhật direction và vị trí
                         if (collisionWith != CollisionChecker.LEFT && gs.keyHandle.isLeftPress()) {
                             direction = "left";
                             beforeDirection = direction;
                             worldX -= speed;
                         }
-
+                        // kiểm tra xem có va chạm với hướng đi sang phải không
                         collisionWith = gs.CC.checkEntityWithTile(this, "right");
-
+                        // nếu không phải va chạm hướng đi sang phải và có bấm di chuyển sang phải thì cập nhật direction và vị trí
                         if (collisionWith != CollisionChecker.RIGHT && gs.keyHandle.isRightPress()) {
 
                             direction = "right";
@@ -257,6 +268,7 @@ public class Player extends Entity{
                             worldX += speed;
                         }
                     }
+                    // các trường hợp tương tự
                     case "down-left", "down-right" -> {
                         collisionWith = gs.CC.checkEntityWithTile(this, "down");
                         if (collisionWith != CollisionChecker.DOWN && gs.keyHandle.isDownPress()) {
@@ -313,15 +325,18 @@ public class Player extends Entity{
                 }
             }
 
+            // cập nhật khoảng thời gian có thể xử lý va chạm
             if(!canTouch) {
                 timeCount++;
                 if(timeCount >= timeCanTouch) {
                     timeCount = 0;
                     canTouch = true;
                 }
-
             }
 
+            // kiểm tra xem thực thể đang ở hướng nào
+
+            // di chuyển
             if(stateEntity.equals("move")) {
                 spriteCounter++;
                 if(spriteCounter > 3) {
@@ -345,7 +360,7 @@ public class Player extends Entity{
                         spriteNum = 1;
                     }
                 }
-            }else if(stateEntity.equals("attack")) {
+            }else if(stateEntity.equals("attack")) { // tấn công
                 spriteCounter++;
                 if(spriteCounter > 3) {
                     spriteCounter = 0;
@@ -364,6 +379,7 @@ public class Player extends Entity{
                 }
             }
 
+            // cập nhật lại các đỉnh va chạm
             clearVertices();
             setPolygonVertices();
     }
