@@ -132,15 +132,103 @@ public class KeyHandle implements KeyListener{
 						supportSkill2 = true;
 					}
 				}
-			}
-			else if(gs.state == State.SURVIVAL) {
-
-			}else if(gs.state == State.LOOPY) {
-
-				if(gs.loopy.isShowDialogExit()) {
-					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit()-1);
-						if(gs.loopy.getChooseDialogExit() < 1) {
+			} else if (gs.state == State.SURVIVAL) {
+				if (gs.survival.getEndOfDay()) {
+					resetAllKeyMoving();
+					if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
+						if (gs.survival.getSelected() - 1 <= 0) {
+							gs.survival.setSelected(gs.survival.getMaxBlessingSlot());
+						} else {
+							gs.survival.setSelected(gs.survival.getSelected() - 1);
+						}
+					}
+					if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S) {
+						gs.survival.setSelected(gs.survival.getSelected() % gs.survival.getMaxBlessingSlot() + 1);
+					}
+					if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+						gs.survival.setEndOfDay(false);
+						//Give effect of blessing
+						gs.survival.applyBlessing(gs.survival.getListBlessing().get(gs.survival.getSelected() - 1));
+					}
+				} else if (gs.survival.getMeeting()) {
+					resetAllKeyMoving();
+					if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+						if (gs.survival.getSelected() - 1 <= 0) {
+							gs.survival.setSelected(gs.survival.getMaxShopSlot() -1);
+						} else {
+							gs.survival.setSelected(gs.survival.getSelected() - 1);
+						}
+					}
+					if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+						gs.survival.setSelected(gs.survival.getSelected() % gs.survival.getMaxShopSlot() + 1);
+					}
+					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+						if(gs.survival.getSelected() - (gs.survival.getMaxShopSlot() / 2) > 0)
+						{
+							gs.survival.setSelected(gs.survival.getSelected() - (gs.survival.getMaxShopSlot() / 2));
+						}
+					}
+					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+						if(gs.survival.getSelected() <= 3)
+						{
+							gs.survival.setSelected(gs.survival.getSelected() + gs.survival.getMaxShopSlot() / 2);
+						}
+					}
+					if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+						//Give item
+						gs.survival.giveItem(gs.survival.getListItem().get(gs.survival.getSelected()-1));
+					}
+					if (code == KeyEvent.VK_ESCAPE) {
+						gs.survival.setMeeting(false);
+						resetAllKeyMoving();
+					}
+				} else { // In game
+					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+						upPress = true;
+					}
+					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+						downPress = true;
+					}
+					if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+						leftPress = true;
+					}
+					if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+						rightPress = true;
+					}
+					if (code == KeyEvent.VK_SPACE) {
+						spacePress = true;
+					}
+					if (code == KeyEvent.VK_ESCAPE) {
+						escPress = true;
+					}
+					if (code == KeyEvent.VK_ENTER) {
+						enterPress = true;
+					}
+					if (code == KeyEvent.VK_TAB) {
+						tabPress = true;
+					}
+					if (code == KeyEvent.VK_Q) {
+						supportSkill1 = true;
+					}
+					if (code == KeyEvent.VK_E) {
+						supportSkill2 = true;
+					}
+					if (code == KeyEvent.VK_R) {
+						skill1Press = true;
+					}
+					if (code == KeyEvent.VK_F) {
+						skill2Press = true;
+					}
+					if (code == KeyEvent.VK_ESCAPE) {
+						resetAllKeyMoving();
+						accessReturnLoopy = true;
+					}
+				}
+			} else if (gs.state == State.LOOPY) {
+				if (gs.loopy.isShowDialogExit()) {
+					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+						gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit() - 1);
+						if (gs.loopy.getChooseDialogExit() < 1) {
 							gs.loopy.setChooseDialogExit(2);
 						}
 					}
@@ -334,10 +422,10 @@ public class KeyHandle implements KeyListener{
 		if(code == KeyEvent.VK_TAB) {
 			tabPress = false;
 		}
-		if(code == KeyEvent.VK_1) {
+		if(code == KeyEvent.VK_1 || code == KeyEvent.VK_R) {
 			skill1Press = false;
 		}
-		if(code == KeyEvent.VK_2) {
+		if(code == KeyEvent.VK_2 || code == KeyEvent.VK_F) {
 			skill2Press = false;
 		}
 		if(code == KeyEvent.VK_Q) {

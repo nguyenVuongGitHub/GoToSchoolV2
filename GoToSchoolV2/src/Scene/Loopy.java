@@ -100,12 +100,15 @@ public class Loopy {
                 gs.ui.setDrawNotice(true);
             }
         }
-        // save game
+        // survival mode
         else if(checkChange(gs.player,21,44)) {
             if(gs.keyHandle.isEnterPress()) {
-                showDialogExit = true;
+                gs.state = State.SURVIVAL;
+                gs.changeState = true;
+                gs.ui.setDrawNotice(false);
+                gs.changeScene.setAlive(true);
             }else {
-                gs.ui.setDrawNotice(!gs.ui.isDrawExitGame());
+                gs.ui.setDrawNotice(true);
             }
         }
         else if(checkChange(gs.player,15,30)

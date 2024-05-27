@@ -165,3 +165,41 @@
     + KeyHandle.java {
          sửa dialog chọn map.
     }
+----------------- 27-5-2024 : Powking -----------------
+* Update survival mode
+* Modified Keyhandle for survival mode
+* Add cast feature for enum ATTACK_SKILL
+* Modified UI for survival mode
+    + drawSurvival();
+* Modified Loopy
+    + //survival mode
+     if(checkChange(gs.player,21,44)) {
+                 if(gs.keyHandle.isEnterPress()) {
+                     gs.state = State.SURVIVAL;
+                     gs.changeState = true;
+                     gs.ui.setDrawNotice(false);
+                     gs.changeScene.setAlive(true);
+                 }else {
+                     gs.ui.setDrawNotice(true);
+                 }
+* Modified UserManager
+    + survivalCoin = 0
+* Modified CollisionChecker
+    + checkPlayerWithCoins
+    if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, false)) {
+                    if(gs.state == State.CAMPAIGN)
+                    {
+                        long currentCoin = gs.user.getCoin();
+                        long currentExperience = gs.user.getExperience();
+                        gs.user.setExperience(currentExperience + 1);
+                        gs.user.setCoin( currentCoin + 1);
+                    }
+                    else
+                    {
+                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() + 1);
+                    }
+                    other.setAlive(false);
+                }
+* Modified AttackController
+    + update()
+    if(state == State.SURVIVAL){...}

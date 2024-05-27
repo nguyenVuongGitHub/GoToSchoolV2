@@ -14,6 +14,7 @@ import Quadtree.RectangleQ;
 import SPSkill.*;
 import Scene.Campaign;
 import Scene.Loopy;
+import Scene.Survival;
 import User.UserManager;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
@@ -42,10 +43,11 @@ public class GameState extends JPanel implements Runnable{
 	public MouseHandle mouseHandle = new MouseHandle();
 	public CollisionChecker CC = new CollisionChecker(this);
 	public UI ui = new UI(this);
-	public State state = State.CAMPAIGN;
+	public State state = State.LOOPY;
 	public boolean changeState = false;
 	public UserManager user = new UserManager();
     public Campaign campaign = new Campaign(user,this,ui);
+	public Survival survival = new Survival(user, this, ui);
 	public SeparatingAxis SAT = new SeparatingAxis(this);
 	public Loopy loopy = new Loopy(this);
 	public TileManager tileM = new TileManager(this);
@@ -144,7 +146,7 @@ public class GameState extends JPanel implements Runnable{
 			campaign.update();
 
 		}else if(state == State.SURVIVAL){
-
+			survival.update();
 		}else if(state == State.LOOPY) {
 			// trường hợp từ CAMPAIGN hoặc SURVIVAL trở về LOOPY thì cần load map lại
 			if(changeState) {
@@ -168,7 +170,7 @@ public class GameState extends JPanel implements Runnable{
 		}else if(state == State.CAMPAIGN) {
 			campaign.draw(g2);
 		}else if(state == State.SURVIVAL) {
-
+			survival.draw(g2);
 		}
 		ui.draw(g2);
 		changeScene.draw(g2);
@@ -213,12 +215,12 @@ public class GameState extends JPanel implements Runnable{
 	}
 
 	public void updateBattle() {
-        if(monsters.isEmpty()) {
+		if (monsters.isEmpty()) {
 			// nếu trong màn chơi mà tiêu diệt hết quái vật thì
-            campaign.setNextLever(true); // set có thể next lever
-            campaign.setLoadMapDone(false); // reset load map
+			campaign.setNextLever(true); // set có thể next lever
+			campaign.setLoadMapDone(false); // reset load map
 			campaign.setShowDialog(true); // hiển thị bảng chọn map
-        }
+		}
 
         if(aController != null) {
             aController.update();
@@ -258,6 +260,7 @@ public class GameState extends JPanel implements Runnable{
 				e.update();
 			}
 		}
+
 		coins.forEach(coin -> {
 			if(coin != null) {
 				coin.update();
