@@ -48,89 +48,87 @@ public class KeyHandle implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-		if (!gs.changeScene.isAlive()) {
-			if (gs.state == State.CAMPAIGN) {
+		if(!gs.changeScene.isAlive()) {
+			if(gs.state == State.CAMPAIGN) {
 				// dialog
-				if (gs.campaign.isShowDialog()) {
+				if(gs.campaign.isShowDialog()) {
 
-					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.campaign.setChoose(gs.campaign.getChoose() - 1);
-						if (gs.campaign.getChoose() < 1) {
-							gs.campaign.setChoose(gs.user.getNumberLeversUnlocked());
+					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+						if(gs.campaign.getChoose() > 1) {
+							gs.campaign.setChoose(gs.campaign.getChoose()-1);
 						}
 					}
-					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.campaign.setChoose(gs.campaign.getChoose() + 1);
-						if (gs.campaign.getChoose() > gs.user.getNumberLeversUnlocked()) {
-							gs.campaign.setChoose(1);
+					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+						if(gs.campaign.getChoose() < (gs.user.getNumberLeversUnlocked() - gs.campaign.getStep())
+						&& gs.campaign.getChoose() < gs.user.getMaxNumberLevers()) {
+							gs.campaign.setChoose(gs.campaign.getChoose()+1);
 						}
 					}
-					if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+					if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
 						gs.campaign.setCurrentStateCampaign((short) (gs.campaign.getCurrentStateCampaign() - 1));
 						gs.campaign.setChoose(1);
-						if (gs.campaign.getCurrentStateCampaign() < 1) {
-							gs.campaign.setCurrentStateCampaign((short) 1);
+						if(gs.campaign.getCurrentStateCampaign() < 1) {
+							gs.campaign.setCurrentStateCampaign((short)1);
 						}
 					}
-					if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+					if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
 						gs.campaign.setCurrentStateCampaign((short) (gs.campaign.getCurrentStateCampaign() + 1));
 						gs.campaign.setChoose(1);
-						if (gs.campaign.getCurrentStateCampaign() > gs.user.getMaxStateCampaign()) {
+						if(gs.campaign.getCurrentStateCampaign() > gs.user.getMaxStateCampaign()) {
 							gs.campaign.setCurrentStateCampaign(gs.user.getMaxStateCampaign());
 						}
 					}
-					if (code == KeyEvent.VK_SPACE) {
-						if (gs.campaign.getChoose() + gs.campaign.getStep() <= gs.user.getNumberLeversUnlocked()) {
+					if(code == KeyEvent.VK_SPACE) {
+						if(gs.campaign.getChoose() + gs.campaign.getStep() <= gs.user.getNumberLeversUnlocked()) {
 							accessLoadMap = true;
 							gs.changeScene.setAlive(true);
 						}
 						resetAllKeyMoving();
 					}
-					if (code == KeyEvent.VK_ESCAPE) {
+					if(code == KeyEvent.VK_ESCAPE) {
 						accessReturnLoopy = true;
 						gs.changeScene.setAlive(true);
 						resetAllKeyMoving();
 					}
-				} else {
+				}else{ // battle
+
 					// exit Game
-					if (code == KeyEvent.VK_ESCAPE) {
+					if(code == KeyEvent.VK_ESCAPE) {
 						exitMap = true;
-					} else {
+					}else {
 						exitMap = false;
 					}
-
-					// battle
-					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 						upPress = true;
 					}
-					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
 						downPress = true;
 					}
-					if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+					if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
 						leftPress = true;
 					}
-					if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+					if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
 						rightPress = true;
 					}
-					if (code == KeyEvent.VK_SPACE) {
+					if(code == KeyEvent.VK_SPACE) {
 						spacePress = true;
 					}
-					if (code == KeyEvent.VK_ESCAPE) {
+					if(code == KeyEvent.VK_ESCAPE) {
 						escPress = true;
 					}
-					if (code == KeyEvent.VK_TAB) {
+					if(code == KeyEvent.VK_TAB) {
 						tabPress = true;
 					}
-					if (code == KeyEvent.VK_1) {
+					if(code == KeyEvent.VK_1) {
 						skill1Press = true;
 					}
-					if (code == KeyEvent.VK_2) {
+					if(code == KeyEvent.VK_2) {
 						skill2Press = true;
 					}
-					if (code == KeyEvent.VK_Q) {
+					if(code == KeyEvent.VK_Q) {
 						supportSkill1 = true;
 					}
-					if (code == KeyEvent.VK_E) {
+					if(code == KeyEvent.VK_E) {
 						supportSkill2 = true;
 					}
 				}
@@ -234,59 +232,61 @@ public class KeyHandle implements KeyListener{
 							gs.loopy.setChooseDialogExit(2);
 						}
 					}
-					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit() + 1);
-						if (gs.loopy.getChooseDialogExit() > 2) {
+					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+						gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit()+1);
+						if(gs.loopy.getChooseDialogExit() > 2) {
 							gs.loopy.setChooseDialogExit(1);
 						}
 					}
-					if (code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 1) {
+					if(code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 1) {
 						accessSaveGame = true;
 						gs.loopy.setShowDialogExit(false);
 					}
-					if (code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 2) {
+					if(code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 2) {
 						accessExitGame = true;
 						gs.loopy.setShowDialogExit(false);
 					}
-					if (code == KeyEvent.VK_ESCAPE) {
+					if(code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogExit(false);
 					}
-				} else if (gs.loopy.isShowDialogChooseSkillsSupport()) {
-					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
-						if (gs.loopy.getChooseSkill() < 1) {
+				}
+				else if(gs.loopy.isShowDialogChooseSkillsSupport()) {
+					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()-1);
+						if(gs.loopy.getChooseSkill() < 1) {
 							gs.loopy.setChooseSkill(gs.user.getMaxNumberSkillsSupportUnlocked());
 						}
 					}
-					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() + 1);
-						if (gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsSupportUnlocked()) {
+					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()+1);
+						if(gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsSupportUnlocked()) {
 							gs.loopy.setChooseSkill(1);
 						}
 					}
-					if (code == KeyEvent.VK_SPACE) {
-						gs.loopy.setSkillSuportHave(gs.loopy.getSkillSuportHave() + 1);
-						if (gs.loopy.getSkillSuportHave() <= 2) {
-							if (gs.loopy.getChooseSkill() == 1) {
-								gs.Map_chooseSkillSupport.put("Flicker", gs.loopy.getSkillSuportHave());
+					if(code == KeyEvent.VK_SPACE) {
+						gs.loopy.setSkillSuportHave(gs.loopy.getSkillSuportHave()+1);
+						if(gs.loopy.getSkillSuportHave() <= 2) {
+							if(gs.loopy.getChooseSkill() == 1) {
+								gs.Map_chooseSkillSupport.put("Flicker",gs.loopy.getSkillSuportHave());
 								yourAddSkillSupport = "Flicker";
-							} else if (gs.loopy.getChooseSkill() == 2) {
-								gs.Map_chooseSkillSupport.put("Sprint", gs.loopy.getSkillSuportHave());
+							}else if(gs.loopy.getChooseSkill() == 2) {
+								gs.Map_chooseSkillSupport.put("Sprint",gs.loopy.getSkillSuportHave());
 								yourAddSkillSupport = "Sprint";
-							} else if (gs.loopy.getChooseSkill() == 3) {
-								gs.Map_chooseSkillSupport.put("Restore", gs.loopy.getSkillSuportHave());
+							}else if(gs.loopy.getChooseSkill() == 3) {
+								gs.Map_chooseSkillSupport.put("Restore",gs.loopy.getSkillSuportHave());
 								yourAddSkillSupport = "Restore";
 							}
 							isAddSkillSupport = true;
 						}
 					}
-					if (code == KeyEvent.VK_Q) {
+					if(code == KeyEvent.VK_Q) {
 						isResetSkillSupport = true;
 					}
-					if (code == KeyEvent.VK_ESCAPE) {
+					if(code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogChooseSkillsSupport(false);
 					}
-				} else if (gs.loopy.isShowDialogChooseSkillsAttack()) {
+				}
+				else if(gs.loopy.isShowDialogChooseSkillsAttack()) {
 					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
 						if (gs.loopy.getChooseSkill() < 1) {
@@ -319,7 +319,8 @@ public class KeyHandle implements KeyListener{
 					if (code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogChooseSkillsAttack(false);
 					}
-				} else if (gs.loopy.isShowDialogUpgradeSkill()) {
+				}
+				else if (gs.loopy.isShowDialogUpgradeSkill()) {
 					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
 						if (gs.loopy.getChooseSkill() < 1) {
@@ -333,18 +334,18 @@ public class KeyHandle implements KeyListener{
 						}
 					}
 					if (code == KeyEvent.VK_SPACE) {
-						if (gs.user.getCoin() >= gs.user.getCoinNeedUpgrade()) {
-							if (gs.loopy.getChooseSkill() == 1) {
-								if (BaseArrowLight.LEVER < 50)
+						if(gs.user.getCoin() >= gs.user.getCoinNeedUpgrade()) {
+							if(gs.loopy.getChooseSkill() == 1) {
+								if(BaseArrowLight.LEVER < 50)
 									BaseArrowLight.LEVER++;
-							} else if (gs.loopy.getChooseSkill() == 2) {
-								if (BaseMultiArrow.LEVER < 50)
+							}else if(gs.loopy.getChooseSkill() == 2) {
+								if(BaseMultiArrow.LEVER < 50)
 									BaseMultiArrow.LEVER++;
-							} else if (gs.loopy.getChooseSkill() == 3) {
-								if (BaseMoonLight.LEVER < 50)
+							}else if(gs.loopy.getChooseSkill() == 3) {
+								if(BaseMoonLight.LEVER < 50)
 									BaseMoonLight.LEVER++;
-							} else if (gs.loopy.getChooseSkill() == 4) {
-								if (BaseCircleFire.LEVER < 50)
+							}else if(gs.loopy.getChooseSkill() == 4) {
+								if(BaseCircleFire.LEVER < 50)
 									BaseCircleFire.LEVER++;
 							}
 							gs.user.setCoin(gs.user.getCoin() - gs.user.getCoinNeedUpgrade());
@@ -354,40 +355,43 @@ public class KeyHandle implements KeyListener{
 					if (code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogUpgradeSkill(false);
 					}
-				} else {
+				}
+				else {
 					accessSaveGame = false;
 					accessExitGame = false;
 					gs.ui.setPlayerSay(false);
-					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 						upPress = true;
 					}
-					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
 						downPress = true;
 					}
-					if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+					if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
 						leftPress = true;
 					}
-					if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+					if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
 						rightPress = true;
 					}
-					if (code == KeyEvent.VK_SPACE) {
+					if(code == KeyEvent.VK_SPACE) {
 						spacePress = true;
 					}
-					if (code == KeyEvent.VK_ESCAPE) {
+					if(code == KeyEvent.VK_ESCAPE) {
 						escPress = true;
 					}
-					if (code == KeyEvent.VK_E) {
+					if(code == KeyEvent.VK_E) {
 						enterPress = true;
 					}
-					if (code == KeyEvent.VK_TAB) {
+					if(code == KeyEvent.VK_TAB) {
 						tabPress = true;
 					}
-					if (code == KeyEvent.VK_ESCAPE) {
+					if(code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogExit(true);
 					}
 				}
+
 			}
 		}
+
 	}
 
 	@Override

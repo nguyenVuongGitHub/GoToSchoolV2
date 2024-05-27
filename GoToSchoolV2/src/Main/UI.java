@@ -7,6 +7,7 @@ import AttackSkill.MultiArrow;
 import SPSkill.Flicker;
 import SPSkill.Restore;
 import SPSkill.Sprint;
+import Weapon.NormalAttack;
 import baseAttributeSkills.BaseArrowLight;
 import baseAttributeSkills.BaseCircleFire;
 import baseAttributeSkills.BaseMoonLight;
@@ -774,6 +775,7 @@ public class UI {
         }
 
     }
+
     //====================================================================================
     private void drawCampaign() {
         if(gs.campaign.getChoose() + gs.campaign.getStep() == 5
@@ -885,8 +887,17 @@ public class UI {
                 }
             }
         }
-        // skill support 1
+        // nomal attack
         x = 11 * gs.getTile();
+        xString = x + gs.getTile()/4;
+        drawSubWindow(x,y,w,h,g2);
+        if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
+            g2.drawString("Done",xString,yString);
+        }else {
+            g2.drawString(String.valueOf(NormalAttack.TIME_COUNT_DOWN_ATTACK), xString, yString);
+        }
+        // skill support 1
+        x = 12 * gs.getTile();
         xString = x + gs.getTile()/4;
         drawSubWindow(x,y,w,h,g2);
         if(gs.loopy.getSkillSuportHave() > 1) {
@@ -919,7 +930,7 @@ public class UI {
             }
         }
         // skill support 2
-        x = 12 * gs.getTile();
+        x = 13 * gs.getTile();
         xString = x + gs.getTile()/4;
         drawSubWindow(x,y,w,h,g2);
         if(gs.loopy.getSkillSuportHave() == 2) {
