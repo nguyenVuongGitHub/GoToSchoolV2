@@ -27,7 +27,7 @@ public class Survival {
     Font maruMonica, purisaB;
     private boolean mapExist = false;
     final int BASE_NUMBER_MOBS = 4;
-    private int numberDay = 0;
+    private int numberDay = 10;
     private boolean endOfDay = false, meeting = false;
     private int selected = 1;
     private int maxShopSlot = 6;
@@ -123,6 +123,7 @@ public class Survival {
         gs.tileM.loadMap("/maps/survival_2.txt", 2);
         gs.player.setWorldX(30 * gs.getTile());
         gs.player.setWorldY(22 * gs.getTile());
+        gs.player.setHP(100);
     }
 
     private void spawnMobs(int amount, int kind) {
@@ -336,20 +337,37 @@ public class Survival {
         g2.setFont(ui.getMaruMonica().deriveFont(Font.BOLD, 15F));
         Color hoverColor = new Color(220, 210, 100);
         Color defaultC = new Color(255, 255, 255);
+        if (gs.mouseHandle.getWorldX() > widthShop && gs.mouseHandle.getWorldX() < widthShop + squareSize * 3 / 4) {
+            if (gs.mouseHandle.getWorldY() > yShop + gap / 2 && gs.mouseHandle.getWorldY() < yShop + gap / 2 + squareSize/4) {
+                if (gs.mouseHandle.isMouseLeftPress()) {
+                    meeting = false;
+                }
+            }
+        }
         for (int row = 0; row < maxShopSlot / 3; row++) {
             for (int col = 0; col < maxShopSlot / 2; col++) {
                 int x = xShop + gap * 4 + col * (squareSize + gap);
                 int y = yShop + gap * 2 + row * (squareSize + gap);
                 ui.drawSubWindow(x, y, squareSize, squareSize, g2);
+                if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
+                    if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
+                        selected = col + (row * 3) + 1;
+                        if (gs.mouseHandle.isMouseLeftPress()) {
+                            //Give effect
+                            giveItem(listItem.get(selected - 1));
+                        }
+                    }
+                }
                 switch (listItem.get(col + (row * 3))) {
                     case 1:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(BaseArrowLight.LEVER * 30 + 10), x + gap / 4, y + squareSize /2 + gap / 2);
                         } else {
                             g2.setColor(defaultC);
                         }
                         if (abilities.get(0) == 2 || abilities.get(1) == 2 || abilities.get(2) == 2 || abilities.get(3) == 2) {
-                            g2.drawString("Update ArrowLight :" + (BaseArrowLight.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
+                            g2.drawString("Update ArrowLight: " + (BaseArrowLight.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
                         } else {
                             g2.drawString("Buy ArrowLight", x + gap / 4, y + squareSize + gap / 2);
                         }
@@ -357,11 +375,12 @@ public class Survival {
                     case 2:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(BaseCircleFire.LEVER * 30 + 10), x + gap / 4, y + squareSize /2 + gap / 2);
                         } else {
                             g2.setColor(defaultC);
                         }
                         if (abilities.get(0) == 3 || abilities.get(1) == 3 || abilities.get(2) == 3 || abilities.get(3) == 3) {
-                            g2.drawString("Update CircleFire :" + (BaseCircleFire.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
+                            g2.drawString("Update CircleFire: " + (BaseCircleFire.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
                         } else {
                             g2.drawString("Buy CircleFire", x + gap / 4, y + squareSize + gap / 2);
                         }
@@ -369,11 +388,12 @@ public class Survival {
                     case 3:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(BaseMoonLight.LEVER * 30 + 10), x + gap / 4, y + squareSize /2 + gap / 2);
                         } else {
                             g2.setColor(defaultC);
                         }
                         if (abilities.get(0) == 4 || abilities.get(1) == 4 || abilities.get(2) == 4 || abilities.get(3) == 4) {
-                            g2.drawString("Update MoonLight :" + (BaseMoonLight.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
+                            g2.drawString("Update MoonLight: " + (BaseMoonLight.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
                         } else {
                             g2.drawString("Buy MoonLight", x + gap / 4, y + squareSize + gap / 2);
                         }
@@ -381,11 +401,12 @@ public class Survival {
                     case 4:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(BaseMultiArrow.LEVER * 30 + 10), x + gap / 4, y + squareSize /2 + gap / 2);
                         } else {
                             g2.setColor(defaultC);
                         }
                         if (abilities.get(0) == 5 || abilities.get(1) == 5 || abilities.get(2) == 5 || abilities.get(3) == 5) {
-                            g2.drawString("Update MultiArrow :" + (BaseMultiArrow.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
+                            g2.drawString("Update MultiArrow: " + (BaseMultiArrow.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
                         } else {
                             g2.drawString("Buy MultiArrow", x + gap / 4, y + squareSize + gap / 2);
                         }
@@ -393,6 +414,7 @@ public class Survival {
                     case 5:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(numberDay * 100), x + gap / 4, y + squareSize /2 + gap / 2);
                         } else {
                             g2.setColor(defaultC);
                         }
@@ -405,6 +427,7 @@ public class Survival {
                     case 6:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(numberDay * 250), x + gap / 4, y + squareSize /2 + gap / 2);
                         } else {
                             g2.setColor(defaultC);
                         }
@@ -428,28 +451,28 @@ public class Survival {
         int squareSize = Math.min(((widthShop - xShop) - 4 * gap) / 3, ((heightShop - yShop) - 3 * gap) / 2);
         switch (choose) {
             case 1:
-                if (gs.user.getSurvivalCoin() >= BaseArrowLight.LEVER * 30) {
+                if (gs.user.getSurvivalCoin() >= BaseArrowLight.LEVER * 30 + 10) {
                     //Update ArrowLight
                     BaseArrowLight.LEVER++;
                     gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseArrowLight.LEVER * 30);
                 }
                 break;
             case 2:
-                if (gs.user.getSurvivalCoin() >= BaseCircleFire.LEVER * 30) {
+                if (gs.user.getSurvivalCoin() >= BaseCircleFire.LEVER * 30 + 10) {
                     //Update CircleFIre
                     gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseCircleFire.LEVER * 30);
                     BaseCircleFire.LEVER++;
                 }
                 break;
             case 3:
-                if (gs.user.getSurvivalCoin() >= BaseMoonLight.LEVER * 30) {
+                if (gs.user.getSurvivalCoin() >= BaseMoonLight.LEVER * 30 + 10) {
                     //Update MoonLight
                     gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMoonLight.LEVER * 30);
                     BaseMoonLight.LEVER++;
                 }
                 break;
             case 4:
-                if (gs.user.getSurvivalCoin() >= BaseMultiArrow.LEVER * 30) {
+                if (gs.user.getSurvivalCoin() >= BaseMultiArrow.LEVER * 30 + 10) {
                     //Update MultiArrow
                     gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMultiArrow.LEVER * 30);
                     BaseMultiArrow.LEVER++;
