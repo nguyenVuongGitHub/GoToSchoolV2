@@ -9,7 +9,8 @@ public enum ATTACK_SKILL {
     ARROW_LIGHT(2),
     CIRCLE_FIRE(3),
     MULTI_ARROW(4),
-    MOON_LIGHT(5);
+    MOON_LIGHT(5),
+    PURPLE(6);
     private int value;
     private static Map map = new HashMap<>();
     private ATTACK_SKILL(int value) {

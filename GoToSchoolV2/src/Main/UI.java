@@ -964,19 +964,21 @@ public class UI {
         }
     }
     private void drawFrameHpPlayer() {
-        int x = gs.getTile();
-        int y = gs.getTile();
+        int x = gs.getTile()/2;
+        int y = gs.getTile()/2;
         int w = 128;
         int h = 64;
         g2.drawImage(HP,x,y,w,h,null);
     }
     private void drawHpPlayer() {
-        int x = gs.getTile();
-        int y = gs.getTile();
-        double currentHp = ((double)gs.player.getHP()/100) * 125;
+        int x = gs.getTile()/2 + 5;
+        int y = gs.getTile()/2 + 5;
+        int w = 115;
+        int h = 20;
+        double currentHp = ((double)gs.player.getHP()/100) * w;
         g2.setColor(Color.red);
-        g2.drawRect(x,y,125,30);
-        g2.fillRect(x,y,(int)currentHp,30);
+        g2.drawRect(x,y,w,h);
+        g2.fillRect(x,y,(int)currentHp,h);
     }
 
     private void drawSurvival()

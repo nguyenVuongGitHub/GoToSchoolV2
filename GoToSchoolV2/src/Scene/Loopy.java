@@ -103,6 +103,7 @@ public class Loopy {
         // survival mode
         else if(checkChange(gs.player,21,44)) {
             if(gs.keyHandle.isEnterPress()) {
+                gs.player.setHP(100);
                 gs.state = State.SURVIVAL;
                 gs.changeState = true;
                 gs.ui.setDrawNotice(false);

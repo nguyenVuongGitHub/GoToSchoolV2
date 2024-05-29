@@ -7,6 +7,7 @@ import SPSkill.Restore;
 import SPSkill.SUPPORT_SKILL;
 import SPSkill.Sprint;
 import Weapon.NormalAttack;
+import Weapon.NormalAttack2;
 
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class AttackController {
     State state;
     long elapsedTime = 0;
 
-    private int bonusTime_Normal = 100;
+    private int bonusTime_Normal = 0;
     private int bonusTime_Skill = 0;
 
     public AttackController(GameState gs) {
@@ -190,10 +191,17 @@ public class AttackController {
                 gs.skillSupports.set(gs.indexSkillSupport2,e);
             }
         }else if(state == State.SURVIVAL) {
-            if(gs.keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0) {
+            if((gs.mouseHandle.isMouseLeftPress() || gs.keyHandle.isSpacePress()) && NormalAttack.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0) {
                 Entity normalAttack = new NormalAttack(gs);
                 gs.skillAttacks.add(normalAttack);
                 NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
+                gs.player.setStateEntity("attack");
+                gs.player.setSpriteNum(1);
+            }
+            if(gs.mouseHandle.isMouseRightPress() && NormalAttack2.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0) {
+                Entity normalAttack2 = new NormalAttack2(gs);
+                gs.skillAttacks.add(normalAttack2);
+                NormalAttack2.TIME_COUNT_DOWN_ATTACK = NormalAttack2.TIME_REDUCE;
                 gs.player.setStateEntity("attack");
                 gs.player.setSpriteNum(1);
             }
@@ -399,6 +407,10 @@ public class AttackController {
             NormalAttack.TIME_COUNT_DOWN_ATTACK--;
             if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
                 NormalAttack.TIME_COUNT_DOWN_ATTACK = -1;
+            }
+            NormalAttack2.TIME_COUNT_DOWN_ATTACK--;
+            if(NormalAttack2.TIME_COUNT_DOWN_ATTACK <= 0) {
+                NormalAttack2.TIME_COUNT_DOWN_ATTACK = -1;
             }
             MoonLight.TIME_COUNT_DOWN_ATTACK--;
             if(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
