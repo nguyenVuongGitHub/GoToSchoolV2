@@ -36,6 +36,10 @@ public abstract class Entity {
 	}
 
 	protected double angleTarget;
+
+	/*
+	* biến kiểm tra có thể kiểm tra va chạm được hay không.
+	* */
 	protected boolean canTouch = true;
 	protected int timeCanTouch = 10;
 
@@ -69,7 +73,15 @@ public abstract class Entity {
 		this.speed = speed;
 	}
 
-	//
+	/***
+	 * các giá trị x và y là khoảng đệm,
+	 * w và h là độ dài và độ rộng.
+	 *
+	 * ví dụ :
+	 * tấm hình có thông số là 64x64, khoảng đệm x và y = 10
+	 * thì vị trí bắt đầu va chạm sẽ được tính là bên trái cộng thêm 10, bên trên cộng thêm 10
+	 * và có chiều dài chiều rộng là 64 64
+	 */
 	protected Rectangle solidArea = new Rectangle(0,0,64,64);
 
 	// các phương thức
@@ -169,7 +181,7 @@ public abstract class Entity {
 				(int) (screenY + vertices.get(0).getY() - worldY));
 	}
 	public void drawCircle(Graphics2D g2) {
-		g2.drawOval(screenX,screenY, (int) radius, (int) radius);
+		g2.drawOval((int) (screenX + vertices.getFirst().getX() - worldX), (int) (screenY + vertices.getFirst().getY() - worldY), (int) radius, (int) radius);
 	}
 
 	public String getBeforeDirection() {

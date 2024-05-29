@@ -203,3 +203,8 @@
 * Modified AttackController
     + update()
     if(state == State.SURVIVAL){...}
+
+
+----------------- 29-5-2024 : Vuong -----------------
+* thêm hình ảnh của các kỹ năng.
+* chỉnh sửa file infCircle.txt

@@ -1,5 +1,8 @@
 package baseAttributeSkills;
 
+/**
+ * Class này sẽ lưu trữ giá trị của tất cả các giá trị các lever của MoonLight
+ * */
 public final class BaseMoonLight {
     public static int LEVER;
     public static final int MAX_LEVER = 50;
