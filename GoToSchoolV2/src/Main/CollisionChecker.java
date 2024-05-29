@@ -319,10 +319,13 @@ public class CollisionChecker {
                 if(skill.getTypeSkill().typeAttack == ATTACK_SKILL.NORMAL
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.ARROW_LIGHT
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MULTI_ARROW
+                        || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MOON_LIGHT
                 ) {
                     if(skill.getAlive()) {
                         if(SeparatingAxis.polygonCollisionDetectFirstStatic(skill,other,false,false)) {
-                            skill.setAlive(false);
+                            if(skill.getTypeSkill().typeAttack != ATTACK_SKILL.MOON_LIGHT) {
+                                skill.setAlive(false);
+                            }
                             int newHP = other.getHP();
                             newHP -= skill.getDamage();
                             other.setHP(newHP);
@@ -330,7 +333,6 @@ public class CollisionChecker {
                     }
                 }
                 else if(skill.getTypeSkill().typeAttack == ATTACK_SKILL.CIRCLE_FIRE
-                        || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MOON_LIGHT
                 ) {
                     if(skill.getAlive()) {
                         if(SeparatingAxis.CirclePolygonCollisionDectect(skill,other,false,false)) {

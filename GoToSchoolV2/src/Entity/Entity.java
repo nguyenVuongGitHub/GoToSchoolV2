@@ -181,7 +181,7 @@ public abstract class Entity {
 				(int) (screenY + vertices.get(0).getY() - worldY));
 	}
 	public void drawCircle(Graphics2D g2) {
-		g2.drawOval(screenX,screenY, (int) radius, (int) radius);
+		g2.drawOval((int) (screenX + vertices.getFirst().getX() - worldX), (int) (screenY + vertices.getFirst().getY() - worldY), (int) radius, (int) radius);
 	}
 
 	public String getBeforeDirection() {
