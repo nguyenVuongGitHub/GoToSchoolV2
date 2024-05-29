@@ -42,7 +42,7 @@ public class Survival {
     private int maxBlessingSlot = 3;
     private int maxBlessing = 6;
     private int dayToGetToShop = 5;
-    private List<Integer> abilities = Stream.of(2, 3, 4, 5, 0, 1, 6).collect(Collectors.toCollection(ArrayList::new)); // Q, E, R, F, Huge Fund(Passive), Final Reserves(Passive), right click
+    private List<Integer> abilities = Stream.of(2, 3, 4, 5, 0, 1, 0).collect(Collectors.toCollection(ArrayList::new)); // Q, E, R, F, Huge Fund(Passive), Final Reserves(Passive), right click
     private List<Integer> listBlessing = new ArrayList<Integer>();
     private List<Integer> listItem = new ArrayList<Integer>();
     private List<BufferedImage> item_img = new ArrayList<BufferedImage>();
@@ -54,10 +54,10 @@ public class Survival {
             is = getClass().getResourceAsStream("/font/Purisa Bold.ttf");
             purisaB = Font.createFont(Font.TRUETYPE_FONT, is);
 
-            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/purpleBall.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
-            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/purpleBall.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
-            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/purpleBall.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
-            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/purpleBall.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/ice.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/fire.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/moon.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/ice.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
             item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/huge-fund.png"))));
             item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/final-reserves.png"))));
             item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/purpleBall.png"))).getSubimage(0, 0, gs.getTile(), gs.getTile()));
@@ -470,6 +470,7 @@ public class Survival {
                     case 7:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(1000), x + gap / 4, y + squareSize /2 + gap / 2);
                             g2.drawString("Unlock right click ability", xShop + widthShop+ gap/2, yShop+ gap/2);
                             g2.drawString("Name: Purple Ball", xShop + widthShop + gap/2, yShop+ gap/2 + gs.getFont().getSize()*3/2);
                             g2.drawString("Damage: " + ((IntSupplier)() -> {Entity n = new NormalAttack2(gs); return n.getDamage();}).getAsInt(), xShop + widthShop + gap/2, yShop+ gap/2 + gs.getFont().getSize()*6/2);
@@ -497,29 +498,41 @@ public class Survival {
             case 1:
                 if (gs.user.getSurvivalCoin() >= BaseArrowLight.LEVER * 30 + 10) {
                     //Update ArrowLight
-                    BaseArrowLight.LEVER++;
-                    gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseArrowLight.LEVER * 30);
+                    if(BaseArrowLight.LEVER + 1 < 50)
+                    {
+                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseArrowLight.LEVER * 30);
+                        BaseArrowLight.LEVER++;
+                    }
                 }
                 break;
             case 2:
                 if (gs.user.getSurvivalCoin() >= BaseCircleFire.LEVER * 30 + 10) {
                     //Update CircleFIre
-                    gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseCircleFire.LEVER * 30);
-                    BaseCircleFire.LEVER++;
+                    if(BaseCircleFire.LEVER + 1 < 50)
+                    {
+                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseCircleFire.LEVER * 30);
+                        BaseCircleFire.LEVER++;
+                    }
                 }
                 break;
             case 3:
                 if (gs.user.getSurvivalCoin() >= BaseMoonLight.LEVER * 30 + 10) {
                     //Update MoonLight
-                    gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMoonLight.LEVER * 30);
-                    BaseMoonLight.LEVER++;
+                    if(BaseMoonLight.LEVER + 1 < 50)
+                    {
+                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMoonLight.LEVER * 30);
+                        BaseMoonLight.LEVER++;
+                    }
                 }
                 break;
             case 4:
                 if (gs.user.getSurvivalCoin() >= BaseMultiArrow.LEVER * 30 + 10) {
                     //Update MultiArrow
-                    gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMultiArrow.LEVER * 30);
-                    BaseMultiArrow.LEVER++;
+                    if(BaseMultiArrow.LEVER + 1 < 50)
+                    {
+                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMultiArrow.LEVER * 30);
+                        BaseMultiArrow.LEVER++;
+                    }
                 }
                 break;
             case 5:
@@ -537,9 +550,10 @@ public class Survival {
                 }
                 break;
             case 7:
-                if (gs.user.getSurvivalCoin() >=  1000) {
+                if (gs.user.getSurvivalCoin() >=  1000 && !abilities.contains(6)) {
                     //Unlock Water ball
                     abilities.set(6, 6);
+                    gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - 1000);
                 }
                 break;
         }

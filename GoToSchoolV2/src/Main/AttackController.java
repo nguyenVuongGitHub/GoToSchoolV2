@@ -198,7 +198,7 @@ public class AttackController {
                 gs.player.setStateEntity("attack");
                 gs.player.setSpriteNum(1);
             }
-            if(gs.mouseHandle.isMouseRightPress() && NormalAttack2.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0) {
+            if(gs.mouseHandle.isMouseRightPress() && NormalAttack2.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0 && gs.survival.getAbilities().get(6) == 6) {
                 Entity normalAttack2 = new NormalAttack2(gs);
                 gs.skillAttacks.add(normalAttack2);
                 NormalAttack2.TIME_COUNT_DOWN_ATTACK = NormalAttack2.TIME_REDUCE;

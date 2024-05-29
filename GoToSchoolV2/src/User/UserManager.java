@@ -17,7 +17,7 @@ import baseAttributeSkills.BaseMultiArrow;
 public class UserManager {
 
     private long coin;
-    private long survivalCoin = 0;
+    private long survivalCoin = 100000;
     private long experience;
     private long coinNeedUpgrade;
     private short numberLeversUnlocked;
