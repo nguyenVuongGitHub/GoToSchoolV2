@@ -367,7 +367,7 @@ public class Survival {
                 int x = xShop + gap * 4 + col * (squareSize + gap);
                 int y = yShop + gap * 2 + row * (squareSize + gap);
                 ui.drawSubWindow(x, y, squareSize, squareSize, g2);
-                g2.drawImage(item_img.get(listItem.get(col + (row) * 3)-1), x + gap /2, y + gap / 2, gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
+                g2.drawImage(item_img.get(listItem.get(col + (row * 3))-1), x + gap /2, y + gap / 2, gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
                 if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
                     if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
                         selected = col + (row * 3) + 1;
@@ -441,21 +441,6 @@ public class Survival {
                     case 5:
                         if (selected == col + (row * 3) + 1) {
                             g2.setColor(hoverColor);
-                            g2.drawString(String.valueOf(BaseMoonLight.LEVER * 30 + 10), x + gap / 4, y + squareSize /2 + gap / 2);
-                            g2.drawString("Current Damage: " + BaseMoonLight.damage[BaseMoonLight.LEVER], xShop + widthShop+ gap/2, yShop+ gap/2);
-                            g2.drawString("Current Level:" + BaseMoonLight.LEVER, xShop + widthShop + gap/2, yShop+ gap/2 + gs.getFont().getSize() *3/2);
-                        } else {
-                            g2.setColor(defaultC);
-                        }
-                        if (abilities.contains(4)) {
-                            g2.drawString("Update MoonLight: " + (BaseMoonLight.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
-                        } else {
-                            g2.drawString("Buy MoonLight", x + gap / 4, y + squareSize + gap / 2);
-                        }
-                        break;
-                    case 6:
-                        if (selected == col + (row * 3) + 1) {
-                            g2.setColor(hoverColor);
                             g2.drawString(String.valueOf(BaseMultiArrow.LEVER * 30 + 10), x + gap / 4, y + squareSize /2 + gap / 2);
                             g2.drawString("Current Damage: " + BaseMultiArrow.damage[BaseMultiArrow.LEVER], xShop + widthShop+ gap/2, yShop+ gap/2);
                             g2.drawString("Current Level:" + BaseMultiArrow.LEVER, xShop + widthShop + gap/2, yShop+ gap/2 + gs.getFont().getSize() *3/2);
@@ -466,6 +451,21 @@ public class Survival {
                             g2.drawString("Update MultiArrow: " + (BaseMultiArrow.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
                         } else {
                             g2.drawString("Buy MultiArrow", x + gap / 4, y + squareSize + gap / 2);
+                        }
+                        break;
+                    case 6:
+                        if (selected == col + (row * 3) + 1) {
+                            g2.setColor(hoverColor);
+                            g2.drawString(String.valueOf(BaseMoonLight.LEVER * 30 + 10), x + gap / 4, y + squareSize /2 + gap / 2);
+                            g2.drawString("Current Damage: " + BaseMoonLight.damage[BaseMoonLight.LEVER], xShop + widthShop+ gap/2, yShop+ gap/2);
+                            g2.drawString("Current Level:" + BaseMoonLight.LEVER, xShop + widthShop + gap/2, yShop+ gap/2 + gs.getFont().getSize() *3/2);
+                        } else {
+                            g2.setColor(defaultC);
+                        }
+                        if (abilities.contains(4)) {
+                            g2.drawString("Update MoonLight: " + (BaseMoonLight.LEVER + 1), x + gap / 4, y + squareSize + gap / 2);
+                        } else {
+                            g2.drawString("Buy MoonLight", x + gap / 4, y + squareSize + gap / 2);
                         }
                         break;
                     case 7:
@@ -531,22 +531,22 @@ public class Survival {
                 }
                 break;
             case 5:
-                if (gs.user.getSurvivalCoin() >= BaseMoonLight.LEVER * 30 + 10) {
-                    //Update MoonLight
-                    if(BaseMoonLight.LEVER + 1 < 50)
-                    {
-                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMoonLight.LEVER * 30);
-                        BaseMoonLight.LEVER++;
-                    }
-                }
-                break;
-            case 6:
                 if (gs.user.getSurvivalCoin() >= BaseMultiArrow.LEVER * 30 + 10) {
                     //Update MultiArrow
                     if(BaseMultiArrow.LEVER + 1 < 50)
                     {
                         gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMultiArrow.LEVER * 30);
                         BaseMultiArrow.LEVER++;
+                    }
+                }
+                break;
+            case 6:
+                if (gs.user.getSurvivalCoin() >= BaseMoonLight.LEVER * 30 + 10) {
+                    //Update MoonLight
+                    if(BaseMoonLight.LEVER + 1 < 50)
+                    {
+                        gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() - BaseMoonLight.LEVER * 30);
+                        BaseMoonLight.LEVER++;
                     }
                 }
                 break;

@@ -1008,7 +1008,6 @@ public class UI {
         {
             x = (9 + i) * gs.getTile();
             xString = x + gs.getTile() / 2;
-            drawSubWindow(x,y,w,h,g2);
             g2.drawImage(gs.survival.getItem_img().get(gs.survival.getAbilities().get(i)), x, y, w, h, null);
             switch (gs.survival.getAbilities().get(i)){
                 case 2-> {
