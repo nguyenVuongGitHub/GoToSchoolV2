@@ -320,6 +320,7 @@ public class CollisionChecker {
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.ARROW_LIGHT
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MULTI_ARROW
                         || skill.getTypeSkill().typeAttack == ATTACK_SKILL.MOON_LIGHT
+                        || skill.getTypeSkill().typeAttack == ATTACK_SKILL.PURPLE
                 ) {
                     if(skill.getAlive()) {
                         if(SeparatingAxis.polygonCollisionDetectFirstStatic(skill,other,false,false)) {

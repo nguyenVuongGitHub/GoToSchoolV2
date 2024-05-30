@@ -6,6 +6,7 @@ import Main.GameState;
 import Main.UtilityTool;
 import Weapon.BaseSkill;
 import baseAttributeSkills.BaseCircleFire;
+import baseAttributeSkills.BaseMultiArrow;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -74,7 +75,7 @@ public class CircleFire extends BaseSkill {
         alive = true;
         damage = BaseCircleFire.damage[BaseCircleFire.LEVER];
         radius = BaseCircleFire.radius[BaseCircleFire.LEVER];
-        TIME_REDUCE = 1;
+        TIME_REDUCE = BaseCircleFire.timeReduce[BaseCircleFire.LEVER];
         NUMBER_BURNING = BaseCircleFire.numberBurning[BaseCircleFire.LEVER];
         worldX = PointX.getCenterPointFromList(gs.player.getVertices()).getX() - radius/2;
         worldY = PointX.getCenterPointFromList(gs.player.getVertices()).getY() - radius/2;

@@ -18,7 +18,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UI {
     GameState gs;
@@ -33,6 +36,7 @@ public class UI {
     boolean isDrawUpgradeSkill = false;
 
     boolean isDrawChooseSkillsAttack = false;
+    private List<BufferedImage> key_img = new ArrayList<BufferedImage>();
 
     public UI(GameState gs) {
         this.gs = gs;
@@ -42,7 +46,10 @@ public class UI {
             is = getClass().getResourceAsStream("/font/Purisa Bold.ttf");
             purisaB = Font.createFont(Font.TRUETYPE_FONT, is);
             HP = ImageIO.read(getClass().getResourceAsStream("/user/hp.png"));
-
+            key_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/Q.png"))));
+            key_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/E.png"))));
+            key_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/R.png"))));
+            key_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/object/F.png"))));
         } catch (FontFormatException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -964,19 +971,21 @@ public class UI {
         }
     }
     private void drawFrameHpPlayer() {
-        int x = gs.getTile();
-        int y = gs.getTile();
+        int x = gs.getTile()/2;
+        int y = gs.getTile()/2;
         int w = 128;
         int h = 64;
         g2.drawImage(HP,x,y,w,h,null);
     }
     private void drawHpPlayer() {
-        int x = gs.getTile();
-        int y = gs.getTile();
-        double currentHp = ((double)gs.player.getHP()/100) * 125;
+        int x = gs.getTile()/2 + 5;
+        int y = gs.getTile()/2 + 5;
+        int w = 115;
+        int h = 20;
+        double currentHp = ((double)gs.player.getHP()/100) * w;
         g2.setColor(Color.red);
-        g2.drawRect(x,y,125,30);
-        g2.fillRect(x,y,(int)currentHp,30);
+        g2.drawRect(x,y,w,h);
+        g2.fillRect(x,y,(int)currentHp,h);
     }
 
     private void drawSurvival()
@@ -987,150 +996,54 @@ public class UI {
         int xString, yString;
 
         y = 12 * gs.getTile();
-        yString = y + gs.getTile()/2;
+        yString = y + gs.getTile()*3/4;
         w = gs.getTile();
         h = gs.getTile();
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,25F));
+        Color black = new Color(0, 0, 0);
+        Color black_bg = new Color(0, 0, 0, 180);
+        Color normalC = new Color(255,255,255);
         //Skill 1
-        x = 9 * gs.getTile();
-        xString = x + gs.getTile()/4;
-        drawSubWindow(x,y,w,h,g2);
-        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,20F));
-        switch (gs.survival.getAbilities().getFirst())
+        for(int i=0; i<4; i++) //Four square skill
         {
-            case 2-> {
-                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+            x = (9 + i) * gs.getTile();
+            xString = x + gs.getTile() / 2;
+            g2.drawImage(gs.survival.getItem_img().get(gs.survival.getAbilities().get(i)), x, y, w, h, null);
+            switch (gs.survival.getAbilities().get(i)){
+                case 2-> {
+                    if (!(ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0)) {
+                        g2.setColor(black_bg);
+                        g2.fillRoundRect(x,y,w,h,25,25);
+                        g2.setColor(normalC);
+                        g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                    }
+                }
+                case 3 -> {
+                    if (!(CircleFire.TIME_COUNT_DOWN_ATTACK <= 0)) {
+                        g2.setColor(black_bg);
+                        g2.fillRoundRect(x,y,w,h,25,25);
+                        g2.setColor(normalC);
+                        g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                    }
+                }
+                case 4 -> {
+                    if (!(MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0)) {
+                        g2.setColor(black_bg);
+                        g2.fillRoundRect(x,y,w,h,25,25);
+                        g2.setColor(normalC);
+                        g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                    }
+                }
+                case 5 -> {
+                    if (!(MoonLight.TIME_COUNT_DOWN_ATTACK <= 0)) {
+                        g2.setColor(black_bg);
+                        g2.fillRoundRect(x,y,w,h,25,25);
+                        g2.setColor(normalC);
+                        g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
+                    }
                 }
             }
-            case 3 -> {
-                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 4 -> {
-                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 5 -> {
-                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-        }
-        //Skill 2
-        x = 10 * gs.getTile();
-        xString = x + gs.getTile()/4;
-        drawSubWindow(x,y,w,h,g2);
-        switch (gs.survival.getAbilities().get(1))
-        {
-            case 2-> {
-                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 3 -> {
-                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 4 -> {
-                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 5 -> {
-                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-        }
-        //Skill 3
-        x = 11 * gs.getTile();
-        xString = x + gs.getTile()/4;
-        drawSubWindow(x,y,w,h,g2);
-        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,20F));
-        switch (gs.survival.getAbilities().get(2))
-        {
-            case 2-> {
-                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 3 -> {
-                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 4 -> {
-                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 5 -> {
-                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-        }
-        //Skill 4
-        x = 12 * gs.getTile();
-        xString = x + gs.getTile()/4;
-        drawSubWindow(x,y,w,h,g2);
-        switch (gs.survival.getAbilities().get(3))
-        {
-            case 2-> {
-                if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(ArrowLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 3 -> {
-                if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(CircleFire.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 4 -> {
-                if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MultiArrow.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
-            case 5 -> {
-                if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                    g2.drawString("Done", xString, yString);
-                } else {
-                    g2.drawString(String.valueOf(MoonLight.TIME_COUNT_DOWN_ATTACK), xString, yString);
-                }
-            }
+            g2.drawImage(key_img.get(i), x,y - gs.getTile() /2,gs.getTile(), gs.getTile(), null);
         }
     }
 

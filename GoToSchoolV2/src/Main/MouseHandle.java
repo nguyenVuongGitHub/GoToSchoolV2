@@ -87,7 +87,7 @@ public class MouseHandle implements MouseListener, MouseWheelListener, MouseMoti
 
 	}
 	public boolean isMouseRightPress() {
-		return mouseLeftPress;
+		return mouseRightPress;
 	}
 	public boolean isMouseLeftPress() {
 		return mouseLeftPress;
