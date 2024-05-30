@@ -166,9 +166,9 @@ public class UI {
             g2.drawString("lever " + (BaseArrowLight.LEVER+1),xString,yString);
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing " + BaseArrowLight.damage[BaseArrowLight.LEVER+1] + " damage. ",xString,yString);
+            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing " ,xString,yString);
             yString += gs.getTile();
-            g2.drawString("Upon impact, the arrow disappears.",xString,yString);
+            g2.drawString(  BaseArrowLight.damage[BaseArrowLight.LEVER+1] + " damage. "+"Upon impact, the arrow disappears.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseArrowLight.timeReduce[BaseArrowLight.LEVER+1] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MultiArrowLight")) {
@@ -176,9 +176,9 @@ public class UI {
             g2.drawString("lever " + (BaseMultiArrow.LEVER+1),xString,yString);
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing " + BaseMultiArrow.damage[BaseMultiArrow.LEVER+1] +" damage.",xString,yString);
+            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing " ,xString,yString);
             yString += gs.getTile();
-            g2.drawString("Upon impact, the arrows vanish.",xString,yString);
+            g2.drawString(BaseMultiArrow.damage[BaseMultiArrow.LEVER+1] +" damage."+" Upon impact, the arrows vanish.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseMultiArrow.timeReduce[BaseMultiArrow.LEVER+1] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MoonLight")) {
@@ -186,9 +186,9 @@ public class UI {
             g2.drawString("lever " + (BaseMoonLight.LEVER+1),xString,yString);
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing " + BaseMoonLight.damage[BaseMoonLight.LEVER+1]+" damage",xString,yString);
+            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing " ,xString,yString);
             yString += gs.getTile();
-            g2.drawString("and passing through objects until it exits the map.",xString,yString);
+            g2.drawString(BaseMoonLight.damage[BaseMoonLight.LEVER+1]+" damage" + "and passing through objects until it exits the map.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseMoonLight.timeReduce[BaseMoonLight.LEVER+1] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("CircleFire")) {
@@ -196,9 +196,9 @@ public class UI {
             g2.drawString("lever " + (BaseCircleFire.LEVER+1),xString,yString);
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius[BaseCircleFire.LEVER+1] + ", igniting enemies for " + BaseCircleFire.damage[BaseCircleFire.LEVER+1] + " damage each time they ",xString,yString);
+            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius[BaseCircleFire.LEVER+1] + ", igniting enemies for " + BaseCircleFire.damage[BaseCircleFire.LEVER+1] + " damage each time ",xString,yString);
             yString += gs.getTile();
-            g2.drawString("enter the area.",xString,yString);
+            g2.drawString("they enter the area.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseCircleFire.timeReduce[BaseCircleFire.LEVER+1] + "s Cooldown.",xString,yString);
         }
@@ -224,9 +224,9 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing " + BaseArrowLight.damage[BaseArrowLight.LEVER] + " damage. ",xString,yString);
+            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing ",xString,yString);
             yString += gs.getTile();
-            g2.drawString("Upon impact, the arrow disappears.",xString,yString);
+            g2.drawString( BaseArrowLight.damage[BaseArrowLight.LEVER] + " damage." + " Upon impact, the arrow disappears.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseArrowLight.timeReduce[BaseArrowLight.LEVER] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MultiArrowLight")) {
@@ -238,9 +238,9 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing " + BaseMultiArrow.damage[BaseMultiArrow.LEVER] +" damage.",xString,yString);
+            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing ",xString,yString);
             yString += gs.getTile();
-            g2.drawString("Upon impact, the arrows vanish.",xString,yString);
+            g2.drawString(BaseMultiArrow.damage[BaseMultiArrow.LEVER] +" damage." + " Upon impact, the arrows disappears.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseMultiArrow.timeReduce[BaseMultiArrow.LEVER] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MoonLight")) {
@@ -252,9 +252,9 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing " + BaseMoonLight.damage[BaseMoonLight.LEVER]+" damage",xString,yString);
+            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing ",xString,yString);
             yString += gs.getTile();
-            g2.drawString("and passing through objects until it exits the map.",xString,yString);
+            g2.drawString(BaseMoonLight.damage[BaseMoonLight.LEVER]+ " damage" + " and passing through objects until it exits the map.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseMoonLight.timeReduce[BaseMoonLight.LEVER] + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("CircleFire")) {
@@ -266,9 +266,9 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius[BaseCircleFire.LEVER] + ", igniting enemies for " + BaseCircleFire.damage[BaseCircleFire.LEVER] + " damage each time they ",xString,yString);
+            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius[BaseCircleFire.LEVER] + ", igniting enemies for " + BaseCircleFire.damage[BaseCircleFire.LEVER] + " damage each time",xString,yString);
             yString += gs.getTile();
-            g2.drawString("enter the area.",xString,yString);
+            g2.drawString("they enter the area.",xString,yString);
             yString += gs.getTile();
             g2.drawString(BaseCircleFire.timeReduce[BaseCircleFire.LEVER] + "s Cooldown.",xString,yString);
         }
