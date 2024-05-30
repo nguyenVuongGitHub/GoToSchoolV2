@@ -61,7 +61,21 @@ public class Survival {
             item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/iconMultiAr.png"))));
             item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/iconMoon.png"))));
             item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/iconPurple.png"))));
-
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/iconFlash.png"))));
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/iconGhost.png"))));
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/iconRegen.png"))));
+            item_img.add(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/iconFireBall.png"))));
+//            Icon              i
+//            huge fund         0
+//            final reserves    1
+//            arrow	            2
+//            circle	        3
+//            multiArr	        4
+//            moon	            5
+//            flash            	7
+//            ghost	            8
+//            regen	            9
+//            fireBall          10
         } catch (FontFormatException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -245,6 +259,7 @@ public class Survival {
         //draw choices table
         for (int i = 0; i < listBlessing.size(); i++) {
             ui.drawSubWindow(x + (width + gap) * i, y, width, height, g2);
+            //Mouse Hover item
             if (gs.mouseHandle.getWorldX() > x + (width + gap) * i && gs.mouseHandle.getWorldX() < x + (width + gap) * i + width) {
                 if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + height) {
                     selected = i + 1;
@@ -264,7 +279,7 @@ public class Survival {
         g2.setFont(maruMonica.deriveFont(Font.BOLD, 20F));
         x += gs.getTile() / 2;
         y += gs.getTile() / 2;
-
+        //Draw item inside case if true == hover
         for (int i = 0; i < listBlessing.size(); i++) {
             switch (listBlessing.get(i)) {
                 case 1:
@@ -355,6 +370,7 @@ public class Survival {
         g2.setFont(ui.getMaruMonica().deriveFont(Font.BOLD, 20F));
         Color hoverColor = new Color(220, 210, 100);
         Color defaultC = new Color(255, 255, 255);
+        //Mouse Click esc
         if (gs.mouseHandle.getWorldX() > xShop + widthShop - gs.getTile() * 5/2 && gs.mouseHandle.getWorldX() < xShop + widthShop - gs.getTile() * 5/2 + squareSize * 3 / 4) {
             if (gs.mouseHandle.getWorldY() > yShop + gap / 2 && gs.mouseHandle.getWorldY() < yShop + gap / 2 + squareSize/4) {
                 if (gs.mouseHandle.isMouseLeftPress()) {
@@ -368,6 +384,7 @@ public class Survival {
                 int y = yShop + gap * 2 + row * (squareSize + gap);
                 ui.drawSubWindow(x, y, squareSize, squareSize, g2);
                 g2.drawImage(item_img.get(listItem.get(col + (row * 3))-1), x + gap /2, y + gap / 2, gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
+                //Mouse Hover item
                 if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
                     if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
                         selected = col + (row * 3) + 1;
@@ -377,6 +394,7 @@ public class Survival {
                         }
                     }
                 }
+                //Draw item inside case if true == hover
                 switch (listItem.get(col + (row * 3))) {
                     case 1:
                         if (selected == col + (row * 3) + 1) {
