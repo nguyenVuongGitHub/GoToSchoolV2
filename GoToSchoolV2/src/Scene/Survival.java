@@ -34,7 +34,7 @@ public class Survival {
     Font maruMonica, purisaB;
     private boolean mapExist = false;
     final int BASE_NUMBER_MOBS = 4;
-    private int numberDay = 10;
+    private int numberDay = 16;
     private boolean endOfDay = false, meeting = false;
     private int selected = 1;
     private int maxShopSlot = 6;
@@ -579,9 +579,11 @@ public class Survival {
     }
 
     public void update() {
-        if (!isMapExist()) {
-            loadMap();
-            setMapExist(true);
+        if(gs.changeScene.getNumberDraw() == 2) {
+            if (!isMapExist()) {
+                loadMap();
+                setMapExist(true);
+            }
         }
         if(abilities.get(5) == 1 && gs.player.getHP() <=0)
         {
