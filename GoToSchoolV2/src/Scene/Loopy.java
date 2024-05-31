@@ -31,6 +31,7 @@ public class Loopy {
     boolean[] selectedAttack = new boolean[4];
     boolean[] selectedSupport = new boolean[3];
     boolean[] selectedUpgrade = new boolean[4];
+    boolean[] selectedExitOrSave = new boolean[2];
     public boolean[] getSelectedSupport() {
         return selectedSupport;
     }
@@ -95,9 +96,16 @@ public class Loopy {
             gs.saveGame();
             gs.ui.setPlayerSay(true);
         }
-        if(gs.keyHandle.isAccessExitGame()) {
-            gs.closeMusic();
-            gs.exitGame();
+        if(gs.ui.isShowSubSaveGame()) {
+
+            if(gs.keyHandle.isSaveGame().equals("yes")){
+                gs.saveGame();
+                gs.closeMusic();
+                gs.exitGame();
+            }else if(gs.keyHandle.isSaveGame().equals("no")) {
+                gs.closeMusic();
+                gs.exitGame();
+            }
         }
 
 
@@ -231,5 +239,13 @@ public class Loopy {
 
     public void setShowDialogUpgradeSkill(boolean showDialogUpgradeSkill) {
         this.showDialogUpgradeSkill = showDialogUpgradeSkill;
+    }
+
+    public boolean[] getSelectedExitOrSave() {
+        return selectedExitOrSave;
+    }
+
+    public void setSelectedExitOrSave(boolean value, int index) {
+        this.selectedExitOrSave[index] = value;
     }
 }

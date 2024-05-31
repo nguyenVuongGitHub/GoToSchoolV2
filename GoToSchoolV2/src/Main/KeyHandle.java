@@ -12,6 +12,7 @@ import baseAttributeSkills.BaseMultiArrow;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 public class KeyHandle implements KeyListener{
 
@@ -27,6 +28,7 @@ public class KeyHandle implements KeyListener{
 	private boolean accessReturnLoopy = false;
     private boolean accessSaveGame = false;
     private boolean accessExitGame = false;
+	private String isSaveGame = "nan";
 
 	private boolean isResetSkillSupport = false;
 	private boolean isResetSkillAttack = false;
@@ -234,26 +236,22 @@ public class KeyHandle implements KeyListener{
 				}
 			}
 			else if (gs.state == State.LOOPY) {
+
 				if (gs.loopy.isShowDialogExit()) {
-					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit() - 1);
-						if (gs.loopy.getChooseDialogExit() < 1) {
-							gs.loopy.setChooseDialogExit(2);
+					if(gs.ui.isShowSubSaveGame()) {
+						if(code == KeyEvent.VK_Y) {
+							isSaveGame = "yes";
+							System.out.println("y");
 						}
-					}
-					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit()+1);
-						if(gs.loopy.getChooseDialogExit() > 2) {
-							gs.loopy.setChooseDialogExit(1);
+						if(code == KeyEvent.VK_N) {
+							isSaveGame = "no";
+							System.out.println("n");
 						}
-					}
-					if(code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 1) {
-						accessSaveGame = true;
-						gs.loopy.setShowDialogExit(false);
-					}
-					if(code == KeyEvent.VK_SPACE && gs.loopy.getChooseDialogExit() == 2) {
-						accessExitGame = true;
-						gs.loopy.setShowDialogExit(false);
+						if(code == KeyEvent.VK_ESCAPE) {
+							isSaveGame = "nan";
+							gs.ui.setShowSubSaveGame(false);
+							gs.loopy.setSelectedExitOrSave(false,1);
+						}
 					}
 					if(code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogExit(false);
@@ -505,5 +503,13 @@ public class KeyHandle implements KeyListener{
 
 	public void setUpgradeSkill(boolean upgradeSkill) {
 		isUpgradeSkill = upgradeSkill;
+	}
+
+	public String isSaveGame() {
+		return isSaveGame;
+	}
+
+	public void setSaveGame(String saveGame) {
+		isSaveGame = saveGame;
 	}
 }

@@ -15,6 +15,7 @@ import baseAttributeSkills.BaseMoonLight;
 import baseAttributeSkills.BaseMultiArrow;
 
 public class UserManager {
+    private boolean isSaveGame = true;
 
     private long coin;
     private long survivalCoin = 100000;
@@ -336,6 +337,7 @@ public class UserManager {
         saveFileMultiArrowLight();
         saveFileCircleFire();
         saveFileMoonLight();
+        isSaveGame = true;
     }
     public long getCoin() {
         return coin;
@@ -387,5 +389,13 @@ public class UserManager {
 
     public void setMaxStateCampaign(short maxStateCampaign) {
         this.maxStateCampaign = maxStateCampaign;
+    }
+
+    public boolean isSaveGame() {
+        return isSaveGame;
+    }
+
+    public void setSaveGame(boolean saveGame) {
+        isSaveGame = saveGame;
     }
 }

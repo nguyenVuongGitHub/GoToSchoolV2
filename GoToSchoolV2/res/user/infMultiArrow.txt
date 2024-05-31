@@ -1,4 +1,4 @@
-lever :0
+lever :6
 time reduce; damage; speed; distance
 10;0;30;400
 10;1;30;400

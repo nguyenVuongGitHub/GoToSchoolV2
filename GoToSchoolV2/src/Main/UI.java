@@ -29,6 +29,7 @@ public class UI {
     boolean isDrawExitGame = false;
     boolean isPlayerSay = false;
     boolean isDrawChooseSkillsSupport = false;
+    boolean isShowSubSaveGame = false;
 
     boolean isSoundPlayed = false;
 
@@ -660,6 +661,7 @@ public class UI {
                                 gs.loopy.setSelectedUpgrade(true,row);
                                 gs.user.setCoin(gs.user.getCoin() - gs.user.getCoinNeedUpgrade());
                                 gs.user.setCoinNeedUpgrade(gs.user.getCoinNeedUpgrade() + 10);
+                                gs.user.setSaveGame(false);
                             }
                         }
                     }
@@ -699,31 +701,107 @@ public class UI {
         String subTitle4 = "Esc to exit.";
         g2.drawString(subTitle4,xString,yString+gap*8 + 10);
     }
+    private void drawChooseSubSaveGame() {
+        Color backgroundC = new Color(0, 0, 0, 180);
+        g2.setColor(backgroundC);
+        //draw dark mark
+        g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
+
+        int wTable = gs.getWindowWidth() * 2 / 5;
+        int hTable = gs.getTile() * 3;
+        int xTable = gs.getWindowWidth() / 2 - wTable/2 ;
+        int yTable = gs.getWindowHeight() / 2 - hTable/2 - gs.getTile();
+        int gap = gs.getTile();
+        int xString;
+        int yString;
+        drawSubWindow(xTable,yTable,wTable,hTable, g2); //draw table
+        String title = "Do you wanna save game?";
+        xString = getXforCenterdText(title);
+        yString = yTable + gap;
+        g2.drawString(title,xString,yString);
+        String ans =   "[Y]es              [N]o";
+        xString = getXforCenterdText(ans);
+        yString = yTable + gap*2;
+        g2.drawString(ans,xString,yString);
+    }
     private void drawDialogExitGame() {
-        int x = gs.getWindowWidth()/2 - 3*gs.getTile();
-        int y = gs.getWindowHeight()/2 - ( 3 * gs.getTile())/2;
-        int w = 6 * gs.getTile();
-        int h = 3 * gs.getTile();
-        drawSubWindow(x,y,w,h,g2);
+        //Draw background
+        Color backgroundC = new Color(0, 0, 0, 180);
+        g2.setColor(backgroundC);
+        //draw dark mark
+        g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
+
+        int wTable = gs.getWindowWidth() * 2 / 5;
+        int hTable = gs.getTile() * 5;
+        int xTable = gs.getWindowWidth() / 2 - wTable/2;
+        int yTable = gs.getWindowHeight() / 2 - hTable/2;
+        int gap = gs.getTile();
+        int xString ;
+        int yString;
+
+        drawSubWindow(xTable,yTable,wTable,hTable,g2); // draw table
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
-        y += gs.getTile();
-        x += gs.getTile()*2;
+        int wBox = wTable - gap*2;
+        int hBox = gap*2;
+        Color hoverColor = new Color(220, 210, 100);
+        Color defaultC = new Color(255, 255, 255);
 
-        if(gs.loopy.getChooseDialogExit() == 1) {
-            g2.setColor(Color.RED);
-            g2.drawString("SAVE GAME",x,y);
-            g2.setColor(Color.white);
-            y+=gs.getTile();
-            g2.drawString(" EXIT GAME",x,y);
-        }
-        else if(gs.loopy.getChooseDialogExit() == 2) {
-            g2.setColor(Color.white);
-            g2.drawString("SAVE GAME",x,y);
-            y+=gs.getTile();
-            g2.setColor(Color.RED);
-            g2.drawString(" EXIT GAME",x,y);
-        }
+        for(int col = 0; col < 2; col ++) {
+            int x = xTable/2 + gap + wBox/2 ;
+            int y = yTable + ((gap*2) * col) + gap/2;
 
+            if(!gs.loopy.getSelectedExitOrSave()[col]) {
+                drawSubWindow(x, y, wBox, hBox, g2);
+                g2.setColor(defaultC);
+            }else {
+                drawSubWindow(x, y, wBox, hBox, g2, 5, Color.black, hoverColor, 5, 5, 10, 10, 25, 25);
+                g2.setColor(hoverColor);
+            }
+            xString = getXforCenterdText("SAVE GAME");
+            yString = yTable + gap / 2 + hBox / 2;
+            g2.drawString("SAVE GAME",xString, yString);
+
+            xString = getXforCenterdText("EXIT GAME");
+            yString = yTable + (gap * 2) + gap/2 + hBox/2;
+            g2.drawString("EXIT GAME",xString, yString);
+
+            if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + wBox) {
+                if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + hBox) {
+                    // change the effect
+                    drawSubWindow(x, y, wBox, hBox, g2, 5, Color.black, hoverColor, 5, 5, 10, 10, 25, 25);
+                    g2.setColor(defaultC);
+                    xString = getXforCenterdText("SAVE GAME");
+                    yString = yTable + gap / 2 + hBox / 2;
+                    g2.drawString("SAVE GAME",xString, yString);
+
+                    xString = getXforCenterdText("EXIT GAME");
+                    yString = yTable + (gap * 2) + gap/2 + hBox/2;
+                    g2.drawString("EXIT GAME",xString, yString);
+
+                    // click to item
+                    if (gs.mouseHandle.isMouseLeftClick() && ! isShowSubSaveGame) {
+                        gs.mouseHandle.setMouseLeftClick(false);
+                        gs.loopy.setSelectedExitOrSave(true, col);
+                    }
+                }
+            }
+            if(gs.loopy.getSelectedExitOrSave()[0]) {
+//                System.out.println("save");
+                gs.saveGame();
+                gs.loopy.setSelectedExitOrSave(false,0);
+            }
+            else if(gs.loopy.getSelectedExitOrSave()[1]){
+//                System.out.println("exit");
+                if(gs.user.isSaveGame()) {
+                    gs.closeMusic();
+                    gs.exitGame();
+                    gs.loopy.setSelectedExitOrSave(false,1);
+                }else {
+                    drawChooseSubSaveGame();
+                    isShowSubSaveGame = true;
+                }
+            }
+        }
     }
 
     //====================================================================================
@@ -1076,4 +1154,11 @@ public class UI {
         isDrawUpgradeSkill = drawUpgradeSkill;
     }
 
+    public boolean isShowSubSaveGame() {
+        return isShowSubSaveGame;
+    }
+
+    public void setShowSubSaveGame(boolean showSubSaveGame) {
+        isShowSubSaveGame = showSubSaveGame;
+    }
 }

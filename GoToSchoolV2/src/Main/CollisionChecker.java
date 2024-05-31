@@ -286,6 +286,7 @@ public class CollisionChecker {
                         long currentExperience = gs.user.getExperience();
                         gs.user.setExperience(currentExperience + 1);
                         gs.user.setCoin( currentCoin + 1);
+                        gs.user.setSaveGame(false);
                     }
                     else
                     {
