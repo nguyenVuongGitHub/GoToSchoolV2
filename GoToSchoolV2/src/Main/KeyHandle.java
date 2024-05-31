@@ -265,99 +265,11 @@ public class KeyHandle implements KeyListener{
 					}
 				}
 				else if(gs.loopy.isShowDialogChooseSkillsAttack()) {
-					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
-						if (gs.loopy.getChooseSkill() < 1) {
-							gs.loopy.setChooseSkill(gs.user.getMaxNumberSkillsAttackUnlocked());
-						}
-					}
-					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() + 1);
-						if (gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsAttackUnlocked()) {
-							gs.loopy.setChooseSkill(1);
-						}
-					}
-					if (code == KeyEvent.VK_SPACE) {
-						gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
-						if (gs.loopy.getSkillAttackHave() == 1) {
-							if (gs.loopy.getChooseSkill() == 1) {
-								gs.Map_chooseSkillAttack.put("ArrowLight", gs.loopy.getSkillAttackHave());
-							} else if (gs.loopy.getChooseSkill() == 2) {
-								gs.Map_chooseSkillAttack.put("MultiArrowLight", gs.loopy.getSkillAttackHave());
-							} else if (gs.loopy.getChooseSkill() == 3) {
-								gs.Map_chooseSkillAttack.put("MoonLight", gs.loopy.getSkillAttackHave());
-							} else if (gs.loopy.getChooseSkill() == 4) {
-								gs.Map_chooseSkillAttack.put("CircleFire", gs.loopy.getSkillAttackHave());
-							}
-						}else if(gs.loopy.getSkillAttackHave() == 2) {
-							if (gs.loopy.getChooseSkill() == 1) {
-								if(!gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-									gs.Map_chooseSkillAttack.put("ArrowLight", gs.loopy.getSkillAttackHave());
-								}else {
-									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
-								}
-							} else if (gs.loopy.getChooseSkill() == 2) {
-								if(!gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-									gs.Map_chooseSkillAttack.put("MultiArrowLight", gs.loopy.getSkillAttackHave());
-								}else {
-									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
-								}
-							} else if (gs.loopy.getChooseSkill() == 3) {
-								if(!gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-									gs.Map_chooseSkillAttack.put("MoonLight", gs.loopy.getSkillAttackHave());
-								}else {
-									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
-								}
-							} else if (gs.loopy.getChooseSkill() == 4) {
-								if(!gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-									gs.Map_chooseSkillAttack.put("CircleFire", gs.loopy.getSkillAttackHave());
-								}else {
-									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
-								}
-							}
-						}else {
-							gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
-						}
-					}
-					if (code == KeyEvent.VK_Q) {
-						isResetSkillAttack = true;
-					}
 					if (code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogChooseSkillsAttack(false);
 					}
 				}
 				else if (gs.loopy.isShowDialogUpgradeSkill()) {
-					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() - 1);
-						if (gs.loopy.getChooseSkill() < 1) {
-							gs.loopy.setChooseSkill(gs.user.getMaxNumberSkillsAttackUnlocked());
-						}
-					}
-					if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill() + 1);
-						if (gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsAttackUnlocked()) {
-							gs.loopy.setChooseSkill(1);
-						}
-					}
-					if (code == KeyEvent.VK_SPACE) {
-						if(gs.user.getCoin() >= gs.user.getCoinNeedUpgrade()) {
-							if(gs.loopy.getChooseSkill() == 1) {
-								if(BaseArrowLight.LEVER < 50)
-									BaseArrowLight.LEVER++;
-							}else if(gs.loopy.getChooseSkill() == 2) {
-								if(BaseMultiArrow.LEVER < 50)
-									BaseMultiArrow.LEVER++;
-							}else if(gs.loopy.getChooseSkill() == 3) {
-								if(BaseMoonLight.LEVER < 50)
-									BaseMoonLight.LEVER++;
-							}else if(gs.loopy.getChooseSkill() == 4) {
-								if(BaseCircleFire.LEVER < 50)
-									BaseCircleFire.LEVER++;
-							}
-							gs.user.setCoin(gs.user.getCoin() - gs.user.getCoinNeedUpgrade());
-							gs.user.setCoinNeedUpgrade(gs.user.getCoinNeedUpgrade() + 10);
-						}
-					}
 					if (code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogUpgradeSkill(false);
 					}
