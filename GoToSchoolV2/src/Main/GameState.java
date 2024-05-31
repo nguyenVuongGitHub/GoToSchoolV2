@@ -141,13 +141,6 @@ public class GameState extends JPanel implements Runnable{
 //			System.exit(0);
 	}
 	public void update() {
-		// restart mouse click
-		if(mouseHandle.isMouseLeftClick()) {
-			mouseHandle.setMouseLeftClick(false);
-		}
-		if(mouseHandle.isMouseRightClick()) {
-			mouseHandle.setMouseRightClick(false);
-		}
 		if(state == State.CAMPAIGN) {
 			if(campaign.isGameOver()) {
 				campaign.setShowDialog(true);
