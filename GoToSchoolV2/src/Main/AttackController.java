@@ -16,7 +16,7 @@ public class AttackController {
     State state;
     long elapsedTime = 0;
 
-    private int bonusTime_Normal = 0;
+    private int bonusTime_Normal = 100;
     private int bonusTime_Skill = 0;
 
     public AttackController(GameState gs) {
@@ -238,7 +238,8 @@ public class AttackController {
                 }
             }
         }else if(state == State.SURVIVAL) {
-            if((gs.mouseHandle.isMouseLeftPress() || gs.keyHandle.isSpacePress()) && NormalAttack.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0) {
+            if((gs.mouseHandle.isMouseLeftClick() || gs.keyHandle.isSpacePress()) && NormalAttack.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0) {
+                gs.mouseHandle.setMouseLeftClick(false);
                 gs.playSE(8);
                 Entity normalAttack = new NormalAttack(gs);
                 gs.skillAttacks.add(normalAttack);
@@ -246,7 +247,8 @@ public class AttackController {
                 gs.player.setStateEntity("attack");
                 gs.player.setSpriteNum(1);
             }
-            if(gs.mouseHandle.isMouseRightPress() && NormalAttack2.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0 && gs.survival.getAbilities().get(6) == 6) {
+            if(gs.mouseHandle.isMouseRightClick() && NormalAttack2.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0 && gs.survival.getAbilities().get(6) == 6) {
+                gs.mouseHandle.setMouseRightClick(false);
                 gs.playSE(15);
                 Entity normalAttack2 = new NormalAttack2(gs);
                 gs.skillAttacks.add(normalAttack2);
