@@ -25,9 +25,9 @@ public class Flicker extends BaseSkill {
                 case "up-left", "up-right" -> direction = "up";
                 case "down-left", "down-right" -> direction = "down";
             }
+            collisionOn = false;
             gs.CC.checkEntityWithTile(this);
 //            System.out.println(direction);
-            collisionOn = false;
             if(!collisionOn) {
                 switch (direction) {
                     case "up" -> gs.player.setWorldY(gs.player.getWorldY() - speed);
