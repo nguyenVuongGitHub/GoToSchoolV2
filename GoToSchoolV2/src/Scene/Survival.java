@@ -34,7 +34,7 @@ public class Survival {
     Font maruMonica, purisaB;
     private boolean mapExist = false;
     final int BASE_NUMBER_MOBS = 4;
-    private int numberDay = 16;
+    private int numberDay = 5;
     private boolean endOfDay = false, meeting = false;
     private int selected = 1;
     private int maxShopSlot = 6;
@@ -597,7 +597,9 @@ public class Survival {
             gs.changeState = true;
             if(gs.changeScene.getNumberDraw() == 2)
             {
+                numberDay--;
                 gs.state = State.LOOPY;
+                gs.monsters.clear();
                 gs.player.setWorldX(20 * gs.getTile());
                 gs.player.setWorldY((42 * gs.getTile()));
                 gs.keyHandle.setAccessReturnLoopy(false);
