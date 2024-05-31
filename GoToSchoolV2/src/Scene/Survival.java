@@ -151,6 +151,8 @@ public class Survival {
     public List<BufferedImage> getItem_img(){return item_img;}
 
     public void loadMap() {
+        gs.stopMusic();
+        gs.playMusic(11);
         gs.tileM.loadMap("/maps/survival_1.txt", 1);
         gs.tileM.loadMap("/maps/survival_2.txt", 2);
         gs.player.setWorldX(30 * gs.getTile());

@@ -29,6 +29,7 @@ public class AttackController {
         if(state == State.CAMPAIGN) {
             // ATTACK
             if(gs.keyHandle.isSpacePress() && NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
+                gs.playSE(8);
                 Entity normalAttack = new NormalAttack(gs);
                 gs.skillAttacks.add(normalAttack);
                 NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
@@ -42,6 +43,7 @@ public class AttackController {
                         switch (entry.getKey()) {
                             case "ArrowLight" -> {
                                 if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(12);
                                     e = new ArrowLight(gs);
                                     ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
                                     gs.skillAttacks.add(e);
@@ -51,6 +53,7 @@ public class AttackController {
                             }
                             case "MultiArrowLight" -> {
                                 if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(13);
                                     Entity e2 = new MultiArrow(gs);
                                     e = new MultiArrow(gs);
                                     e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
@@ -66,6 +69,7 @@ public class AttackController {
                             }
                             case "MoonLight" -> {
                                 if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(9);
                                     e = new MoonLight(gs);
                                     MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
                                     gs.skillAttacks.add(e);
@@ -75,6 +79,7 @@ public class AttackController {
                             }
                             case "CircleFire" -> {
                                 if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(10);
                                     e = new CircleFire(gs);
                                     CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
                                     gs.skillAttacks.add(e);
@@ -93,6 +98,7 @@ public class AttackController {
                         switch (entry.getKey()) {
                             case "ArrowLight" -> {
                                 if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(12);
                                     e = new ArrowLight(gs);
                                     ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
                                     gs.skillAttacks.add(e);
@@ -102,6 +108,7 @@ public class AttackController {
                             }
                             case "MultiArrowLight" -> {
                                 if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(13);
                                     Entity e2 = new MultiArrow(gs);
                                     e = new MultiArrow(gs);
                                     e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
@@ -117,6 +124,7 @@ public class AttackController {
                             }
                             case "MoonLight" -> {
                                 if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(9);
                                     e = new MoonLight(gs);
                                     MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
                                     gs.skillAttacks.add(e);
@@ -124,8 +132,9 @@ public class AttackController {
                                     gs.player.setSpriteNum(1);
                                 }
                             }
-                            case "CircleFire" -> {
+                            case "CircleFire" -> {                                    gs.playSE(9);
                                 if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                                    gs.playSE(10);
                                     e = new CircleFire(gs);
                                     CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
                                     gs.skillAttacks.add(e);
@@ -192,6 +201,7 @@ public class AttackController {
             }
         }else if(state == State.SURVIVAL) {
             if((gs.mouseHandle.isMouseLeftPress() || gs.keyHandle.isSpacePress()) && NormalAttack.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0) {
+                gs.playSE(8);
                 Entity normalAttack = new NormalAttack(gs);
                 gs.skillAttacks.add(normalAttack);
                 NormalAttack.TIME_COUNT_DOWN_ATTACK = NormalAttack.TIME_REDUCE;
@@ -199,6 +209,7 @@ public class AttackController {
                 gs.player.setSpriteNum(1);
             }
             if(gs.mouseHandle.isMouseRightPress() && NormalAttack2.TIME_COUNT_DOWN_ATTACK - bonusTime_Normal/100 <= 0 && gs.survival.getAbilities().get(6) == 6) {
+                gs.playSE(15);
                 Entity normalAttack2 = new NormalAttack2(gs);
                 gs.skillAttacks.add(normalAttack2);
                 NormalAttack2.TIME_COUNT_DOWN_ATTACK = NormalAttack2.TIME_REDUCE;
@@ -211,6 +222,7 @@ public class AttackController {
                 switch(gs.survival.getAbilities().getFirst()){
                     case 2:
                         if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(12);
                             e = new ArrowLight(gs);
                             ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -219,7 +231,9 @@ public class AttackController {
                         }
                         break;
                     case 3:
+
                         if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(10);
                             e = new CircleFire(gs);
                             CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -229,6 +243,7 @@ public class AttackController {
                         break;
                     case 4:
                         if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(13);
                             Entity e2 = new MultiArrow(gs);
                             e = new MultiArrow(gs);
                             e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
@@ -244,6 +259,7 @@ public class AttackController {
                         break;
                     case 5:
                         if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(9);
                             e = new MoonLight(gs);
                             MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -259,6 +275,7 @@ public class AttackController {
                 switch(gs.survival.getAbilities().get(1)){
                     case 2:
                         if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(12);
                             e = new ArrowLight(gs);
                             ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -268,6 +285,7 @@ public class AttackController {
                         break;
                     case 3:
                         if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(10);
                             e = new CircleFire(gs);
                             CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -277,6 +295,7 @@ public class AttackController {
                         break;
                     case 4:
                         if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(13);
                             Entity e2 = new MultiArrow(gs);
                             e = new MultiArrow(gs);
                             e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
@@ -292,6 +311,7 @@ public class AttackController {
                         break;
                     case 5:
                         if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(9);
                             e = new MoonLight(gs);
                             MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -307,6 +327,7 @@ public class AttackController {
                 switch(gs.survival.getAbilities().get(2)) {
                     case 2:
                         if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(12);
                             e = new ArrowLight(gs);
                             ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -316,6 +337,7 @@ public class AttackController {
                         break;
                     case 3:
                         if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(10);
                             e = new CircleFire(gs);
                             CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -325,6 +347,7 @@ public class AttackController {
                         break;
                     case 4:
                         if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(13);
                             Entity e2 = new MultiArrow(gs);
                             e = new MultiArrow(gs);
                             e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
@@ -340,6 +363,7 @@ public class AttackController {
                         break;
                     case 5:
                         if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(9);
                             e = new MoonLight(gs);
                             MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -355,6 +379,7 @@ public class AttackController {
                 switch(gs.survival.getAbilities().get(3)){
                     case 2:
                         if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(12);
                             e = new ArrowLight(gs);
                             ArrowLight.TIME_COUNT_DOWN_ATTACK = ArrowLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -364,6 +389,7 @@ public class AttackController {
                         break;
                     case 3:
                         if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(10);
                             e = new CircleFire(gs);
                             CircleFire.TIME_COUNT_DOWN_ATTACK = CircleFire.TIME_REDUCE;
                             gs.skillAttacks.add(e);
@@ -373,6 +399,7 @@ public class AttackController {
                         break;
                     case 4:
                         if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(13);
                             Entity e2 = new MultiArrow(gs);
                             e = new MultiArrow(gs);
                             e.setAngleTarget(e2.getAngleTarget() - Math.toRadians(15));
@@ -388,6 +415,7 @@ public class AttackController {
                         break;
                     case 5:
                         if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
+                            gs.playSE(9);
                             e = new MoonLight(gs);
                             MoonLight.TIME_COUNT_DOWN_ATTACK = MoonLight.TIME_REDUCE;
                             gs.skillAttacks.add(e);

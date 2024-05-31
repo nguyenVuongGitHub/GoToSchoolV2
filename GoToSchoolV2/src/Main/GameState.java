@@ -19,6 +19,7 @@ import User.UserManager;
 import Weapon.LazerBoss;
 import Weapon.NormalAttack;
 import environment.EnviromentManager;
+import src.Main.Sound;
 import tile.TileManager;
 
 public class GameState extends JPanel implements Runnable{
@@ -38,6 +39,7 @@ public class GameState extends JPanel implements Runnable{
 
 	// VARIABLE SYSTEM
 	public final static int FPS = 30;
+	Sound sound = new Sound();
 	Thread gameThread;
 	public KeyHandle keyHandle = new KeyHandle(this);
 	public MouseHandle mouseHandle = new MouseHandle();
@@ -313,5 +315,22 @@ public class GameState extends JPanel implements Runnable{
 	public void saveGame() {
 			user.saveFile();
 			loopy.setShowDialogExit(false);
+	}
+	//SOUND
+	public void playMusic(int i) {
+		sound.setFile(i);
+		sound.play();
+		sound.loop();
+	}
+	public void stopMusic() {
+		sound.stop();
+		sound.stopAll();
+	}
+	public void playSE(int i) {
+		sound.setFile(i);
+		sound.play();
+	}
+	public void closeMusic() {
+		sound.close();
 	}
 }

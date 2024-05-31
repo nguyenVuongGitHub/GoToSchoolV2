@@ -34,6 +34,8 @@ public class Loopy {
     }
 
     public void loadMap() {
+        gs.stopMusic();
+        gs.playMusic(2);
         gs.tileM.loadMap("/maps/loopy_1.txt",1);
         gs.tileM.loadMap("/maps/loopy_2.txt",2);
     }
@@ -79,6 +81,7 @@ public class Loopy {
             gs.ui.setPlayerSay(true);
         }
         if(gs.keyHandle.isAccessExitGame()) {
+            gs.closeMusic();
             gs.exitGame();
         }
 

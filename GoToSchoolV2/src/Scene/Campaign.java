@@ -36,6 +36,7 @@ public class Campaign {
         this.ui = ui;
     }
     private void dialogChooseMap(Graphics2D g2) {
+        gs.stopMusic();
         // position
         int x = gs.getWindowWidth()/2 - (gs.getWindowWidth() - (gs.getTile()*15))/2;
         int y = gs.getTile();
@@ -68,8 +69,11 @@ public class Campaign {
     }
 
     public void loadMap(int index) {
+        gs.stopMusic();
         switch (index) {
             case 1:
+                gs.stopMusic();
+                gs.playMusic(0);
                 gs.tileM.loadMap("/maps/map1_1.txt",1);
                 gs.tileM.loadMap("/maps/map1_2.txt",2);
 //                for(int i = 0; i < 1; i ++) {
@@ -129,6 +133,8 @@ public class Campaign {
                 }
                 break;
             case 2:
+                gs.stopMusic();
+                gs.playMusic(0);
                 gs.tileM.loadMap("/maps/map2_1.txt",1);
                 gs.tileM.loadMap("/maps/map2_2.txt",2);
                 for(int i = 0; i < 5; i++) {
@@ -188,6 +194,8 @@ public class Campaign {
                 // setup MONSTER
                 break;
             case 3:
+                gs.stopMusic();
+                gs.playMusic(6);
                 gs.tileM.loadMap("/maps/map3_1.txt",1);
                 gs.tileM.loadMap("/maps/map3_2.txt",2);
                 for(int i = 0; i < 5; i++) {
@@ -229,6 +237,8 @@ public class Campaign {
                 // setup MONSTER
                 break;
             case 4:
+                gs.stopMusic();
+                gs.playMusic(7);
                 gs.tileM.loadMap("/maps/map4_1.txt",1);
                 gs.tileM.loadMap("/maps/map4_2.txt",2);
                 for(int i = 0; i < 5; i++) {
@@ -305,6 +315,8 @@ public class Campaign {
                 }
                 break;
             case 5:
+                gs.stopMusic();
+                gs.playMusic(1);
                 gs.tileM.loadMap("/maps/map5_1.txt",1);
                 gs.tileM.loadMap("/maps/map5_2.txt",2);
                 for(int i = 0; i < 10; i++) {
@@ -387,6 +399,8 @@ public class Campaign {
                 }
                 break;
             case 6:
+                gs.stopMusic();
+                gs.playMusic(1);
                 gs.tileM.loadMap("/maps/map6_1.txt",1);
                 gs.tileM.loadMap("/maps/map6_2.txt",2);
                 for(int i = 0; i < 1 ; i++) {
@@ -457,6 +471,8 @@ public class Campaign {
                 }
                 break;
             case 7:
+                gs.stopMusic();
+                gs.playMusic(7);
                 gs.tileM.loadMap("/maps/map7_1.txt",1);
                 gs.tileM.loadMap("/maps/map7_2.txt",2);
                 for(int i = 0; i < 1 ; i++) {
@@ -473,6 +489,8 @@ public class Campaign {
                 }
                 break;
             case 8:
+                gs.stopMusic();
+                gs.playMusic(1);
                 gs.tileM.loadMap("/maps/map8_1.txt",1);
                 gs.tileM.loadMap("/maps/map8_2.txt",2);
                 for(int i = 0; i < 1 ; i++) {
