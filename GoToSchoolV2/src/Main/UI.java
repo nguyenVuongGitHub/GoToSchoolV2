@@ -136,11 +136,7 @@ public class UI {
             playerSayAny("SAVE SUCCESSFUL");
         }
     }
-    private void drawSubTitleSkillSupport(String nameSkill) {
-        int x = 9 * gs.getTile() + gs.getTile()/2;
-        int y = gs.getTile()/2;
-        int w = 8 * gs.getTile();
-        int h = 4 * gs.getTile();
+    private void drawSubTitleSkillSupport(String nameSkill, int x, int y, int w, int h) {
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
         int xString = x + gs.getTile()/2;
@@ -149,7 +145,9 @@ public class UI {
         yString += gs.getTile();
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,23F));
         if(nameSkill.equals("Flicker")) {
-            g2.drawString("Teleports a certain distance in the target direction.",xString,yString);
+            g2.drawString("Teleports a certain distance",xString,yString);
+            yString += gs.getTile();
+            g2.drawString("in the target direction.",xString,yString);
             yString += gs.getTile();
             g2.drawString(Flicker.TIME_REDUCE + "s Cooldown.",xString,yString);
         }else if(nameSkill.equals("Restore")) {
@@ -219,11 +217,7 @@ public class UI {
         }
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
     }
-    private void drawSubTitleSkillAttack(String nameSkill) {
-        int x = 10 * gs.getTile() + gs.getTile()/2;
-        int y = gs.getTile()/2;
-        int w = 12 * gs.getTile();
-        int h = 5 * gs.getTile();
+    private void drawSubTitleSkillAttack(String nameSkill, int x, int y, int w, int h) {
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
         int xString = x + gs.getTile()/2;
@@ -239,11 +233,9 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot a single arrow in the direction pointed by the mouse cursor, dealing ",xString,yString);
+            g2.drawString( BaseArrowLight.damage[BaseArrowLight.LEVER] + " damage.",xString,yString);
             yString += gs.getTile();
-            g2.drawString( BaseArrowLight.damage[BaseArrowLight.LEVER] + " damage." + " Upon impact, the arrow disappears.",xString,yString);
-            yString += gs.getTile();
-            g2.drawString(BaseArrowLight.timeReduce[BaseArrowLight.LEVER] + "s Cooldown.",xString,yString);
+            g2.drawString(BaseArrowLight.timeReduce[BaseArrowLight.LEVER] + " s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MultiArrowLight")) {
             xString = 15 * gs.getTile();
             if(BaseMultiArrow.LEVER+1 == BaseMultiArrow.MAX_LEVER) {
@@ -253,11 +245,9 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot 3 arrows in the direction pointed by the mouse cursor, each dealing ",xString,yString);
+            g2.drawString(BaseMultiArrow.damage[BaseMultiArrow.LEVER] +" damage.",xString,yString);
             yString += gs.getTile();
-            g2.drawString(BaseMultiArrow.damage[BaseMultiArrow.LEVER] +" damage." + " Upon impact, the arrows disappears.",xString,yString);
-            yString += gs.getTile();
-            g2.drawString(BaseMultiArrow.timeReduce[BaseMultiArrow.LEVER] + "s Cooldown.",xString,yString);
+            g2.drawString(BaseMultiArrow.timeReduce[BaseMultiArrow.LEVER] + " s Cooldown.",xString,yString);
         }else if(nameSkill.equals("MoonLight")) {
             xString = 15 * gs.getTile();
             if(BaseMoonLight.LEVER+1 == BaseMoonLight.MAX_LEVER) {
@@ -267,11 +257,9 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Shoot a beam of light in the direction pointed by the mouse cursor, dealing ",xString,yString);
+            g2.drawString(BaseMoonLight.damage[BaseMoonLight.LEVER]+ " damage.",xString,yString);
             yString += gs.getTile();
-            g2.drawString(BaseMoonLight.damage[BaseMoonLight.LEVER]+ " damage" + " and passing through objects until it exits the map.",xString,yString);
-            yString += gs.getTile();
-            g2.drawString(BaseMoonLight.timeReduce[BaseMoonLight.LEVER] + "s Cooldown.",xString,yString);
+            g2.drawString(BaseMoonLight.timeReduce[BaseMoonLight.LEVER] + " s Cooldown.",xString,yString);
         }else if(nameSkill.equals("CircleFire")) {
             xString = 15 * gs.getTile();
             if(BaseCircleFire.LEVER+1 == BaseCircleFire.MAX_LEVER) {
@@ -281,218 +269,379 @@ public class UI {
             }
             xString = x + gs.getTile()/2;
             yString += gs.getTile();
-            g2.drawString("Create a zone with a width of " + BaseCircleFire.radius[BaseCircleFire.LEVER] + ", igniting enemies for " + BaseCircleFire.damage[BaseCircleFire.LEVER] + " damage each time",xString,yString);
+            g2.drawString(BaseCircleFire.damage[BaseCircleFire.LEVER]+ " damage.",xString,yString);
             yString += gs.getTile();
-            g2.drawString("they enter the area.",xString,yString);
-            yString += gs.getTile();
-            g2.drawString(BaseCircleFire.timeReduce[BaseCircleFire.LEVER] + "s Cooldown.",xString,yString);
+            g2.drawString(BaseCircleFire.timeReduce[BaseCircleFire.LEVER] + " s Cooldown.",xString,yString);
         }
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
     }
     private void drawChooseSkillAttack() {
-        int x = 2 * gs.getTile();
-        int y = gs.getTile()/2;
-        int w = 8 * gs.getTile();
-        int h = 10 * gs.getTile();
-        drawSubWindow(x,y,w,h,g2);
+        //Draw background
+        Color backgroundC = new Color(0, 0, 0, 180);
+        g2.setColor(backgroundC);
+        //draw dark mark
+        g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
+
+        int xTable = gs.getWindowWidth() / 8 - gs.getTile() * 2;
+        int yTable = gs.getWindowHeight() / 8;
+        int wTable = gs.getWindowWidth() * 3 / 4;
+        int hTable = gs.getWindowHeight() * 3 / 4;
+        int gap = gs.getTile();
+        int xString = xTable + gap*2;
+        int yString = yTable + gap;
+
+        drawSubWindow(xTable,yTable,wTable,hTable,g2); // draw table
+        drawSubWindow(xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable, g2); // draw sub table
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
-        int xString = x+gs.getTile();
-        int yString = y+gs.getTile();
-        xString = 5 * gs.getTile();
-        g2.drawString("SKILLS ATTACK",xString,yString);
-        yString += gs.getTile();
-        xString = 3 * gs.getTile();
-        if(gs.loopy.getSkillAttackHave() <= 0) {
-            if(gs.loopy.getChooseSkill() == 1) {
-                g2.drawString("Arrow Light",xString,yString);
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("ArrowLight");
-                xString = 3 * gs.getTile();
-                yString += gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-            }
-            else if(gs.loopy.getChooseSkill() == 2) {
-                g2.drawString("Arrow Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("MultiArrowLight");
-                xString = 3 * gs.getTile();
-                yString += gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-            }
-            else if(gs.loopy.getChooseSkill() == 3) {
-                g2.drawString("Arrow Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("MoonLight");
-                xString = 3 * gs.getTile();
-                yString += gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-            }else if(gs.loopy.getChooseSkill() == 4) {
-                g2.drawString("Arrow Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("CircleFire");
-            }
-        }else {
-            if(gs.loopy.getChooseSkill() == 1) {
-                xString = 3 * gs.getTile();
-                g2.drawString("Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
-                }
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("ArrowLight");
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
-                }
-            }
-            else if(gs.loopy.getChooseSkill() == 2) {
-                xString = 3 * gs.getTile();
-                g2.drawString("Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
-                }
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("MultiArrowLight");
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
-                }
-            }
-            else if(gs.loopy.getChooseSkill() == 3) {
-                xString = 3 * gs.getTile();
-                g2.drawString("Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
-                }
+        int squareSize = Math.min(((wTable - xTable) - 4 * gap) / 3, ((hTable - yTable) - 3 * gap) / 2);
+        Color hoverColor = new Color(220, 210, 100);
+        Color defaultC = new Color(255, 255, 255);
 
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
-                }
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("MoonLight");
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
-                }
-            }else if(gs.loopy.getChooseSkill() == 4) {
-                xString = 3 * gs.getTile();
-                g2.drawString("Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Multi Arrow Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
-                }
+        for(int row = 0; row < 4; row ++) {
+            int x = xTable + gap * 3 + row * (squareSize + gap) - gap/2;
+            int y = yTable + gap * 2;
 
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Moon Light",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
+            // if not select -> default css
+            if(!gs.loopy.getSelectedAttack()[row]) {
+                drawSubWindow(x, y, squareSize, squareSize, g2);
+                g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                        x + gap /2,
+                        y + gap / 2,
+                        gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
+            }
+            else {
+                y -= gap/3;
+                drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
+                g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                        x + gap /2,
+                        y + gap / 2,
+                        gs.getTile() * 3 / 2,
+                        gs.getTile() * 3 / 2,
+                        null);
+            }
+
+            // Mouse hover item
+            if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
+                if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
+                    switch (row) {
+                        case 0 -> drawSubTitleSkillAttack("ArrowLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 1 -> drawSubTitleSkillAttack("CircleFire",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 2 -> drawSubTitleSkillAttack("MultiArrowLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 3 -> drawSubTitleSkillAttack("MoonLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                    }
+
+                    // change the effect
+                    drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
+                    g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                            x + gap / 2,
+                            y + gap / 2,
+                            gs.getTile() * 3 / 2,
+                            gs.getTile() * 3 / 2,
+                            null);
+
+                    // click to item
+                    if (gs.mouseHandle.isMouseLeftClick()) {
+                        gs.mouseHandle.setMouseLeftClick(false);
+
+                        if(gs.loopy.getSkillAttackHave() < 2) {
+                            // able select
+                            if(!gs.loopy.getSelectedAttack()[row]) {
+                                gs.loopy.setSelectedAttack(true,row);
+                                gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
+                            }
+                        }
+                        // add to Map
+                        if(gs.loopy.getSelectedAttack()[0]) {
+                            if(!gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+                                gs.Map_chooseSkillAttack.put("ArrowLight",gs.loopy.getSkillAttackHave());
+                            }
+                        }else {
+                            gs.Map_chooseSkillAttack.remove("ArrowLight");
+                        }
+                        if(gs.loopy.getSelectedAttack()[1]) {
+                            if(!gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+                                gs.Map_chooseSkillAttack.put("CircleFire",gs.loopy.getSkillAttackHave());
+                            }
+                        }
+                        else {
+                            gs.Map_chooseSkillAttack.remove("CircleFire");
+                        }
+                        if(gs.loopy.getSelectedAttack()[2]) {
+                            if(!gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+                                gs.Map_chooseSkillAttack.put("MultiArrowLight",gs.loopy.getSkillAttackHave());
+                            }
+                        }else {
+                            gs.Map_chooseSkillAttack.remove("MultiArrowLight");
+                        }
+                        if(gs.loopy.getSelectedAttack()[3]) {
+                            if(!gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+                                gs.Map_chooseSkillAttack.put("MoonLight",gs.loopy.getSkillAttackHave());
+                            }
+                        }else {
+                            gs.Map_chooseSkillAttack.remove("MoonLight");
+                        }
+                    }
                 }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Circle Fire",xString,yString);
-                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-                    xString = 7 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
+            }
+            // right click to reset
+            if(gs.mouseHandle.isMouseRightClick()) {
+                gs.mouseHandle.setMouseRightClick(false);
+                for(int i = 0; i < 4; i++) {
+                    gs.loopy.setSelectedAttack(false,i);
                 }
-                xString = 8 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillAttack("CircleFire");
+                gs.Map_chooseSkillAttack.clear();
+                gs.loopy.setSkillAttackHave(0);
             }
         }
-        xString = 3 * gs.getTile();
-        yString += gs.getTile();
-        g2.drawString("***********************",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("SPACE to choose.",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("Q to reset.",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("ESC to exit.",xString,yString);
+        // draw sub icon
+        if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+            int value = gs.Map_chooseSkillAttack.get("ArrowLight") + 3;
+            g2.drawImage(key_img.get(value),
+                    xTable + gap * 4 - gap - 10,
+                    yTable + gap * 2 ,
+                    gs.getTile(),
+                    gs.getTile(), null);
+        }
+        if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+            int value = gs.Map_chooseSkillAttack.get("CircleFire") + 3;
+            g2.drawImage(key_img.get(value),
+                    xTable + gap * 4 + (squareSize + gap) - gap - 10,
+                    yTable + gap * 2 ,
+                    gs.getTile(),
+                    gs.getTile(), null);
+        }
+        if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+            int value = gs.Map_chooseSkillAttack.get("MultiArrowLight") + 3;
+            g2.drawImage(key_img.get(value),
+                    xTable + gap * 4 + 2 * (squareSize + gap) - gap - 10,
+                    yTable + gap * 2 ,
+                    gs.getTile(),
+                    gs.getTile(), null);
+        }
+        if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+            int value = gs.Map_chooseSkillAttack.get("MoonLight") + 3;
+            g2.drawImage(key_img.get(value),
+                    xTable + gap * 4 + 3 * (squareSize + gap) - gap - 10,
+                    yTable + gap * 2 ,
+                    gs.getTile(),
+                    gs.getTile(), null);
+        }
+
+        g2.setColor(defaultC);
+        String title = "Choose Skill Attack";
+        g2.drawString(title,xString,  yString + 10);
+
+        String subTitle1 = "Left click to select. ";
+        g2.drawString(subTitle1,xString,yString+gap*5 + 10);
+        String subTitle2 = "Right click to reset. ";
+        g2.drawString(subTitle2,xString,yString+gap*6 + 10);
+        String subTitle3 = "The maximum skill to choose is 2.";
+        g2.drawString(subTitle3,xString,yString+gap*7 + 10);
+        String subTitle4 = "Esc to exit.";
+        g2.drawString(subTitle4,xString,yString+gap*8 + 10);
+//        int x = 2 * gs.getTile();
+//        int y = gs.getTile()/2;
+//        int w = 8 * gs.getTile();
+//        int h = 10 * gs.getTile();
+//        drawSubWindow(x,y,w,h,g2);
+//        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+//        int xString = x+gs.getTile();
+//        int yString = y+gs.getTile();
+//        xString = 5 * gs.getTile();
+//        g2.drawString("SKILLS ATTACK",xString,yString);
+//        yString += gs.getTile();
+//        xString = 3 * gs.getTile();
+//        if(gs.loopy.getSkillAttackHave() <= 0) {
+//            if(gs.loopy.getChooseSkill() == 1) {
+//                g2.drawString("Arrow Light",xString,yString);
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("ArrowLight");
+//                xString = 3 * gs.getTile();
+//                yString += gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//            }
+//            else if(gs.loopy.getChooseSkill() == 2) {
+//                g2.drawString("Arrow Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("MultiArrowLight");
+//                xString = 3 * gs.getTile();
+//                yString += gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//            }
+//            else if(gs.loopy.getChooseSkill() == 3) {
+//                g2.drawString("Arrow Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("MoonLight");
+//                xString = 3 * gs.getTile();
+//                yString += gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//            }else if(gs.loopy.getChooseSkill() == 4) {
+//                g2.drawString("Arrow Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                yString += gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("CircleFire");
+//            }
+//        }else {
+//            if(gs.loopy.getChooseSkill() == 1) {
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
+//                }
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("ArrowLight");
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
+//                }
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
+//                }
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
+//                }
+//            }
+//            else if(gs.loopy.getChooseSkill() == 2) {
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
+//                }
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
+//                }
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("MultiArrowLight");
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
+//                }
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
+//                }
+//            }
+//            else if(gs.loopy.getChooseSkill() == 3) {
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
+//                }
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
+//                }
+//
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
+//                }
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("MoonLight");
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
+//                }
+//            }else if(gs.loopy.getChooseSkill() == 4) {
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("ArrowLight").toString(),xString,yString);
+//                }
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Multi Arrow Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MultiArrowLight").toString(),xString,yString);
+//                }
+//
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Moon Light",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("MoonLight").toString(),xString,yString);
+//                }
+//                yString += gs.getTile();
+//                xString = 3 * gs.getTile();
+//                g2.drawString("Circle Fire",xString,yString);
+//                if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+//                    xString = 7 * gs.getTile();
+//                    g2.drawString(gs.Map_chooseSkillAttack.get("CircleFire").toString(),xString,yString);
+//                }
+//                xString = 8 * gs.getTile();
+//                g2.drawString("<--",xString,yString);
+//                drawSubTitleSkillAttack("CircleFire");
+//            }
+//        }
+//        xString = 3 * gs.getTile();
+//        yString += gs.getTile();
+//        g2.drawString("***********************",xString,yString);
+//        yString += gs.getTile();
+//        g2.drawString("SPACE to choose.",xString,yString);
+//        yString += gs.getTile();
+//        g2.drawString("Q to reset.",xString,yString);
+//        yString += gs.getTile();
+//        g2.drawString("ESC to exit.",xString,yString);
     }
 
     public void drawInformationPlayer() {
@@ -542,227 +691,347 @@ public class UI {
         g2.drawString("E",x,y);
     }
     private void drawChooseSkillSupport() {
-        int x = 2 * gs.getTile();
-        int y = gs.getTile()/2;
-        int w = 7 * gs.getTile();
-        int h = 9 * gs.getTile();
-        drawSubWindow(x,y,w,h,g2);
-        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
-        int xString = x+gs.getTile();
-        int yString = y+gs.getTile();
-        xString = 4 * gs.getTile();
-        g2.drawString("SKILLS SUPPORT",xString,yString);
-        yString += gs.getTile();
-        xString = 3 * gs.getTile();
-        if(gs.loopy.getSkillSuportHave() <= 0) {
-            if(gs.loopy.getChooseSkill() == 1) {
-                g2.drawString("Flicker",xString,yString);
-                xString = 6 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillSupport("Flicker");
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Sprint",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Restore",xString,yString);
-            }
-            else if(gs.loopy.getChooseSkill() == 2) {
-                g2.drawString("Flicker",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Sprint",xString,yString);
-                xString = 6 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillSupport("Sprint");
-                xString = 3 * gs.getTile();
-                yString += gs.getTile();
-                g2.drawString("Restore",xString,yString);
-            }
-            else if(gs.loopy.getChooseSkill() == 3) {
-                g2.drawString("Flicker",xString,yString);
-                yString += gs.getTile();
-                g2.drawString("Sprint",xString,yString);
-                yString += gs.getTile();
-                xString = 6 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillSupport("Restore");
-                xString = 3 * gs.getTile();
-                g2.drawString("Restore",xString,yString);
-            }
-        }else {
-            if(gs.loopy.getChooseSkill() == 1) {
-                xString = 3 * gs.getTile();
-                g2.drawString("Flicker",xString,yString);
-                if(gs.Map_chooseSkillSupport.containsKey("Flicker")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Flicker").toString(),xString,yString);
-                }
-                xString = 6 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillSupport("Flicker");
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Sprint",xString,yString);
-                if(gs.Map_chooseSkillSupport.containsKey("Sprint")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Sprint").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Restore",xString,yString);
-                if(gs.Map_chooseSkillSupport.containsKey("Restore")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Restore").toString(),xString,yString);
-                }
-            }
-            else if(gs.loopy.getChooseSkill() == 2) {
-                xString = 3 * gs.getTile();
-                g2.drawString("Flicker",xString,yString);
-                if(gs.Map_chooseSkillSupport.containsKey("Flicker")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Flicker").toString(),xString,yString);
-                }
-                xString = 3 * gs.getTile();
-                yString += gs.getTile();
-                g2.drawString("Sprint",xString,yString);
-                xString = 6 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillSupport("Sprint");
-                if(gs.Map_chooseSkillSupport.containsKey("Sprint")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Sprint").toString(),xString,yString);
-                }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Restore",xString,yString);
-                if(gs.Map_chooseSkillSupport.containsKey("Restore")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Restore").toString(),xString,yString);
-                }
+        //Draw background
+        Color backgroundC = new Color(0, 0, 0, 180);
+        g2.setColor(backgroundC);
+        //draw dark mark
+        g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
 
+        int xTable = gs.getWindowWidth() / 8 - gs.getTile() * 2;
+        int yTable = gs.getWindowHeight() / 8;
+        int wTable = gs.getWindowWidth() * 3 / 4;
+        int hTable = gs.getWindowHeight() * 3 / 4;
+        int gap = gs.getTile();
+        int xString = xTable + gap*2;
+        int yString = yTable + gap;
+
+        drawSubWindow(xTable,yTable,wTable,hTable,g2); // draw table
+        drawSubWindow(xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable, g2); // draw sub table
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+        int squareSize = Math.min(((wTable - xTable) - 4 * gap) / 3, ((hTable - yTable) - 3 * gap) / 2);
+        Color hoverColor = new Color(220, 210, 100);
+        Color defaultC = new Color(255, 255, 255);
+
+        for(int row = 0; row < 3; row ++) {
+            int x = xTable + gap * 4 + row * (squareSize + gap);
+            int y = yTable + gap * 2;
+
+            // if not select -> default css
+            if(!gs.loopy.getSelectedSupport()[row]) {
+                drawSubWindow(x, y, squareSize, squareSize, g2);
+                g2.drawImage(gs.survival.getItem_img().get(row + 7),
+                        x + gap /2,
+                        y + gap / 2,
+                        gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
             }
-            else if(gs.loopy.getChooseSkill() == 3) {
-                xString = 3 * gs.getTile();
-                g2.drawString("Flicker",xString,yString);
-                if(gs.Map_chooseSkillSupport.containsKey("Flicker")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Flicker").toString(),xString,yString);
+            else {
+                y -= gap/3;
+                drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
+                g2.drawImage(gs.survival.getItem_img().get(row + 7),
+                        x + gap /2,
+                        y + gap / 2,
+                        gs.getTile() * 3 / 2,
+                        gs.getTile() * 3 / 2,
+                        null);
+            }
+
+            // Mouse hover item
+            if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
+                if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
+                    switch (row) {
+                        case 0 -> drawSubTitleSkillSupport("Flicker",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 1 -> drawSubTitleSkillSupport("Sprint",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 2 -> drawSubTitleSkillSupport("Restore",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                    }
+
+                    // change the effect
+                    drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
+                    g2.drawImage(gs.survival.getItem_img().get(row + 7),
+                            x + gap / 2,
+                            y + gap / 2,
+                            gs.getTile() * 3 / 2,
+                            gs.getTile() * 3 / 2,
+                            null);
+
+                    // click to item
+                    if (gs.mouseHandle.isMouseLeftClick()) {
+                        gs.mouseHandle.setMouseLeftClick(false);
+
+                        if(gs.loopy.getSkillSuportHave() < 2) {
+                            // able select
+                            if(!gs.loopy.getSelectedSupport()[row]) {
+                                gs.loopy.setSelectedSupport(true,row);
+                                gs.loopy.setSkillSuportHave(gs.loopy.getSkillSuportHave() + 1);
+                            }
+                        }
+                        // add to Map
+                        if(gs.loopy.getSelectedSupport()[0]) {
+                            if(!gs.Map_chooseSkillSupport.containsKey("Flicker")) {
+                                gs.Map_chooseSkillSupport.put("Flicker",gs.loopy.getSkillSuportHave());
+                            }
+                        }else {
+                            gs.Map_chooseSkillSupport.remove("Flicker");
+                        }
+                        if(gs.loopy.getSelectedSupport()[1]) {
+                            if(!gs.Map_chooseSkillSupport.containsKey("Sprint")) {
+                                gs.Map_chooseSkillSupport.put("Sprint",gs.loopy.getSkillSuportHave());
+                            }
+                        }
+                        else {
+                            gs.Map_chooseSkillSupport.remove("Sprint");
+                        }
+                        if(gs.loopy.getSelectedSupport()[2]) {
+                            if(!gs.Map_chooseSkillSupport.containsKey("Restore")) {
+                                gs.Map_chooseSkillSupport.put("Restore",gs.loopy.getSkillSuportHave());
+                            }
+                        }else {
+                            gs.Map_chooseSkillSupport.remove("Restore");
+                        }
+                    }
                 }
-                xString = 3 * gs.getTile();
-                yString += gs.getTile();
-                g2.drawString("Sprint",xString,yString);
-                if(gs.Map_chooseSkillSupport.containsKey("Sprint")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Sprint").toString(),xString,yString);
+            }
+            // right click to reset
+            if(gs.mouseHandle.isMouseRightClick()) {
+                gs.mouseHandle.setMouseRightClick(false);
+                for(int i = 0; i < 3; i++) {
+                    gs.loopy.setSelectedSupport(false,i);
                 }
-                yString += gs.getTile();
-                xString = 3 * gs.getTile();
-                g2.drawString("Restore",xString,yString);
-                xString = 6 * gs.getTile();
-                g2.drawString("<--",xString,yString);
-                drawSubTitleSkillSupport("Restore");
-                if(gs.Map_chooseSkillSupport.containsKey("Restore")) {
-                    xString = 5 * gs.getTile();
-                    g2.drawString(gs.Map_chooseSkillSupport.get("Restore").toString(),xString,yString);
-                }
+                gs.Map_chooseSkillSupport.clear();
+                gs.loopy.setSkillSuportHave(0);
             }
         }
-        xString = 3 * gs.getTile();
-        yString += gs.getTile();
-        g2.drawString("***********************",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("SPACE to choose.",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("Q to reset.",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("ESC to exit.",xString,yString);
+        // draw sub icon
+        if(gs.Map_chooseSkillSupport.containsKey("Flicker")) {
+            int value = gs.Map_chooseSkillSupport.get("Flicker") + 3;
+            g2.drawImage(key_img.get(value),
+                    xTable + gap * 4 + gap / 2 - 15,
+                    yTable + gap * 2 + gap /2 - 35,
+                    gs.getTile(),
+                    gs.getTile(), null);
+        }
+        if(gs.Map_chooseSkillSupport.containsKey("Sprint")) {
+            int value = gs.Map_chooseSkillSupport.get("Sprint") + 3;
+            g2.drawImage(key_img.get(value),
+                    xTable + gap * 4 + (squareSize + gap) + gap /2 - 15,
+                    yTable + gap * 2 + gap /2 - 35,
+                    gs.getTile(),
+                    gs.getTile(), null);
+        }
+        if(gs.Map_chooseSkillSupport.containsKey("Restore")) {
+            int value = gs.Map_chooseSkillSupport.get("Restore") + 3;
+            g2.drawImage(key_img.get(value),
+                    xTable + gap * 4 + 2 * (squareSize + gap) + gap /2 - 15,
+                    yTable + gap * 2 + gap /2 - 35,
+                    gs.getTile(),
+                    gs.getTile(), null);
+        }
+
+        g2.setColor(defaultC);
+        String title = "Choose Skill Support";
+        g2.drawString(title,xString,  yString + 10);
+
+        String subTitle1 = "Left click to select. ";
+        g2.drawString(subTitle1,xString,yString+gap*5 + 10);
+        String subTitle2 = "Right click to reset. ";
+        g2.drawString(subTitle2,xString,yString+gap*6 + 10);
+        String subTitle3 = "The maximum skill to choose is 2.";
+        g2.drawString(subTitle3,xString,yString+gap*7 + 10);
+        String subTitle4 = "Esc to exit.";
+        g2.drawString(subTitle4,xString,yString+gap*8 + 10);
     }
     private void drawUpgradeSkill() {
-        int x = 2 * gs.getTile();
-        int y = gs.getTile()/2;
-        int w = 8 * gs.getTile();
-        int h = 12 * gs.getTile();
-        drawSubWindow(x,y,w,h,g2);
-        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
-        int xString = x+gs.getTile();
-        int yString = y+gs.getTile();
-        xString = 3 * gs.getTile();
-        g2.drawString("UPGRADE SKILLS",xString,yString);
-        xString = 7 * gs.getTile();
-        g2.drawString("Coin " + gs.user.getCoin(),xString,yString);
-        yString += gs.getTile();
-        xString = 3 * gs.getTile();
+        //Draw background
+        Color backgroundC = new Color(0, 0, 0, 180);
+        g2.setColor(backgroundC);
+        //draw dark mark
+        g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
 
-        if(gs.loopy.getChooseSkill() == 1) {
-            g2.drawString("Arrow Light",xString,yString);
-            xString = 8 * gs.getTile();
-            g2.drawString("<--",xString,yString);
-            drawSubTitleSkillAttack("ArrowLight");
-            if(BaseArrowLight.LEVER+1 < BaseArrowLight.MAX_LEVER) {
-                drawSubTitleSkillUpgrade("ArrowLight");
+        int xTable = gs.getWindowWidth() / 8 - gs.getTile() * 2;
+        int yTable = gs.getWindowHeight() / 8;
+        int wTable = gs.getWindowWidth() * 3 / 4;
+        int hTable = gs.getWindowHeight() * 3 / 4;
+        int gap = gs.getTile();
+        int xString = xTable + gap*2;
+        int yString = yTable + gap;
+
+        drawSubWindow(xTable,yTable,wTable,hTable,g2); // draw table
+        drawSubWindow(xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable, g2); // draw sub table
+        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+        int squareSize = Math.min(((wTable - xTable) - 4 * gap) / 3, ((hTable - yTable) - 3 * gap) / 2);
+        Color hoverColor = new Color(220, 210, 100);
+        Color defaultC = new Color(255, 255, 255);
+
+        for(int row = 0; row < 4; row ++) {
+            int x = xTable + gap * 3 + row * (squareSize + gap) - gap/2;
+            int y = yTable + gap * 2;
+
+            // if not select -> default css
+            if(!gs.loopy.getSelectedUpgrade()[row]) {
+                drawSubWindow(x, y, squareSize, squareSize, g2);
+                g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                        x + gap /2,
+                        y + gap / 2,
+                        gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
+            }
+            else {
+                drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
+                g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                        x + gap /2,
+                        y + gap / 2,
+                        gs.getTile() * 3 / 2,
+                        gs.getTile() * 3 / 2,
+                        null);
             }
 
-            xString = 3 * gs.getTile();
-            yString += gs.getTile();
-            g2.drawString("Multi Arrow Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Moon Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Circle Fire",xString,yString);
+            // Mouse hover item
+            if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
+                if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
+                    switch (row) {
+                        case 0 -> drawSubTitleSkillAttack("ArrowLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 1 -> drawSubTitleSkillAttack("CircleFire",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 2 -> drawSubTitleSkillAttack("MultiArrowLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                        case 3 -> drawSubTitleSkillAttack("MoonLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
+                    }
+
+                    // change the effect
+                    drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
+                    g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                            x + gap / 2,
+                            y + gap / 2,
+                            gs.getTile() * 3 / 2,
+                            gs.getTile() * 3 / 2,
+                            null);
+
+                    // click to item
+                    if (gs.mouseHandle.isMouseLeftClick()) {
+                        gs.mouseHandle.setMouseLeftClick(false);
+                        if(!gs.loopy.getSelectedUpgrade()[row]) {
+                            gs.loopy.setSelectedUpgrade(true,row);
+                            gs.user.setCoin(gs.user.getCoin() - gs.user.getCoinNeedUpgrade());
+                            gs.user.setCoinNeedUpgrade(gs.user.getCoinNeedUpgrade() + 10);
+                        }
+                    }
+                    if(gs.loopy.getSelectedUpgrade()[0]) {
+                        gs.loopy.setSelectedUpgrade(false,0);
+                        if(BaseArrowLight.LEVER < 50)
+                            BaseArrowLight.LEVER++;
+                    }
+                    else if(gs.loopy.getSelectedUpgrade()[1]) {
+                        gs.loopy.setSelectedUpgrade(false,1);
+                        if(BaseCircleFire.LEVER < 50)
+                            BaseCircleFire.LEVER++;
+                    }
+                    else if(gs.loopy.getSelectedUpgrade()[2]) {
+                        gs.loopy.setSelectedUpgrade(false,2);
+                        if(BaseMultiArrow.LEVER < 50)
+                            BaseMultiArrow.LEVER++;
+                    }
+                    else if(gs.loopy.getSelectedUpgrade()[3]) {
+                        gs.loopy.setSelectedUpgrade(false,3);
+                        if(BaseMoonLight.LEVER < 50)
+                            BaseMoonLight.LEVER++;
+                    }
+                }
+            }
         }
-        else if(gs.loopy.getChooseSkill() == 2) {
-            g2.drawString("Arrow Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Multi Arrow Light",xString,yString);
-            xString = 8 * gs.getTile();
-            g2.drawString("<--",xString,yString);
-            drawSubTitleSkillAttack("MultiArrowLight");
-            if(BaseMultiArrow.LEVER+1 < BaseMultiArrow.MAX_LEVER)
-                drawSubTitleSkillUpgrade("MultiArrowLight");
-            xString = 3 * gs.getTile();
-            yString += gs.getTile();
-            g2.drawString("Moon Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Circle Fire",xString,yString);
-        }
-        else if(gs.loopy.getChooseSkill() == 3) {
-            g2.drawString("Arrow Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Multi Arrow Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Moon Light",xString,yString);
-            xString = 8 * gs.getTile();
-            g2.drawString("<--",xString,yString);
-            drawSubTitleSkillAttack("MoonLight");
-            if(BaseMoonLight.LEVER+1 < BaseMoonLight.MAX_LEVER)
-                drawSubTitleSkillUpgrade("MoonLight");
-            xString = 3 * gs.getTile();
-            yString += gs.getTile();
-            g2.drawString("Circle Fire",xString,yString);
-        }else if(gs.loopy.getChooseSkill() == 4) {
-            g2.drawString("Arrow Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Multi Arrow Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Moon Light",xString,yString);
-            yString += gs.getTile();
-            g2.drawString("Circle Fire",xString,yString);
-            xString = 8 * gs.getTile();
-            g2.drawString("<--",xString,yString);
-            drawSubTitleSkillAttack("CircleFire");
-            if(BaseCircleFire.LEVER+1 < BaseCircleFire.MAX_LEVER)
-                drawSubTitleSkillUpgrade("CircleFire");
-        }
-        xString = 3 * gs.getTile();
-        yString += gs.getTile();
-        g2.drawString("***********************",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("Coin need update : " + gs.user.getCoinNeedUpgrade(), xString, yString);
-        yString += gs.getTile();
-        g2.drawString("SPACE to choose to update.",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("Q to reset.",xString,yString);
-        yString += gs.getTile();
-        g2.drawString("ESC to exit.",xString,yString);
+
+        g2.setColor(defaultC);
+        String title = "Update Skill Attack";
+        g2.drawString(title,xString,  yString + 10);
+        String subTitle1 = "Left click to select. ";
+        g2.drawString(subTitle1,xString,yString+gap*5 + 10);
+        String subTitle2 = "Coin remaining: " + gs.user.getCoin();
+        g2.drawString(subTitle2,xString,yString+gap*6 + 10);
+        String subTitle3 = "Coin need update: " + gs.user.getCoinNeedUpgrade();
+        g2.drawString(subTitle3,xString,yString+gap*7 + 10);
+        String subTitle4 = "Esc to exit.";
+        g2.drawString(subTitle4,xString,yString+gap*8 + 10);
+//        int x = 2 * gs.getTile();
+//        int y = gs.getTile()/2;
+//        int w = 8 * gs.getTile();
+//        int h = 12 * gs.getTile();
+//        drawSubWindow(x,y,w,h,g2);
+//        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
+//        int xString = x+gs.getTile();
+//        int yString = y+gs.getTile();
+//        xString = 3 * gs.getTile();
+//        g2.drawString("UPGRADE SKILLS",xString,yString);
+//        xString = 7 * gs.getTile();
+//        g2.drawString("Coin " + gs.user.getCoin(),xString,yString);
+//        yString += gs.getTile();
+//        xString = 3 * gs.getTile();
+//
+//        if(gs.loopy.getChooseSkill() == 1) {
+//            g2.drawString("Arrow Light",xString,yString);
+//            xString = 8 * gs.getTile();
+//            g2.drawString("<--",xString,yString);
+//            drawSubTitleSkillAttack("ArrowLight");
+//            if(BaseArrowLight.LEVER+1 < BaseArrowLight.MAX_LEVER) {
+//                drawSubTitleSkillUpgrade("ArrowLight");
+//            }
+//
+//            xString = 3 * gs.getTile();
+//            yString += gs.getTile();
+//            g2.drawString("Multi Arrow Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Moon Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Circle Fire",xString,yString);
+//        }
+//        else if(gs.loopy.getChooseSkill() == 2) {
+//            g2.drawString("Arrow Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Multi Arrow Light",xString,yString);
+//            xString = 8 * gs.getTile();
+//            g2.drawString("<--",xString,yString);
+//            drawSubTitleSkillAttack("MultiArrowLight");
+//            if(BaseMultiArrow.LEVER+1 < BaseMultiArrow.MAX_LEVER)
+//                drawSubTitleSkillUpgrade("MultiArrowLight");
+//            xString = 3 * gs.getTile();
+//            yString += gs.getTile();
+//            g2.drawString("Moon Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Circle Fire",xString,yString);
+//        }
+//        else if(gs.loopy.getChooseSkill() == 3) {
+//            g2.drawString("Arrow Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Multi Arrow Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Moon Light",xString,yString);
+//            xString = 8 * gs.getTile();
+//            g2.drawString("<--",xString,yString);
+//            drawSubTitleSkillAttack("MoonLight");
+//            if(BaseMoonLight.LEVER+1 < BaseMoonLight.MAX_LEVER)
+//                drawSubTitleSkillUpgrade("MoonLight");
+//            xString = 3 * gs.getTile();
+//            yString += gs.getTile();
+//            g2.drawString("Circle Fire",xString,yString);
+//        }else if(gs.loopy.getChooseSkill() == 4) {
+//            g2.drawString("Arrow Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Multi Arrow Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Moon Light",xString,yString);
+//            yString += gs.getTile();
+//            g2.drawString("Circle Fire",xString,yString);
+//            xString = 8 * gs.getTile();
+//            g2.drawString("<--",xString,yString);
+//            drawSubTitleSkillAttack("CircleFire");
+//            if(BaseCircleFire.LEVER+1 < BaseCircleFire.MAX_LEVER)
+//                drawSubTitleSkillUpgrade("CircleFire");
+//        }
+//        xString = 3 * gs.getTile();
+//        yString += gs.getTile();
+//        g2.drawString("***********************",xString,yString);
+//        yString += gs.getTile();
+//        g2.drawString("Coin need update : " + gs.user.getCoinNeedUpgrade(), xString, yString);
+//        yString += gs.getTile();
+//        g2.drawString("SPACE to choose to update.",xString,yString);
+//        yString += gs.getTile();
+//        g2.drawString("Q to reset.",xString,yString);
+//        yString += gs.getTile();
+//        g2.drawString("ESC to exit.",xString,yString);
     }
     private void drawDialogExitGame() {
         int x = gs.getWindowWidth()/2 - 3*gs.getTile();
@@ -817,14 +1086,14 @@ public class UI {
         int x,y,w,h;
         int xString, yString;
         y = 12 * gs.getTile();
-        yString = y + gs.getTile()/2;
+        yString = y + gs.getTile()/2 + 10;
         w = gs.getTile();
         h = gs.getTile();
         Color black_bg = new Color(0, 0, 0, 180);
         Color normalC = new Color(255,255,255);
         // skill 1
         x = 9 * gs.getTile();
-        xString = x + gs.getTile()/4;
+        xString = x + gs.getTile()/4 + 7;
         drawSubWindow(x,y,w,h,g2);
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,20F));
         if(gs.loopy.getSkillAttackHave() >= 1) {
@@ -833,9 +1102,7 @@ public class UI {
                     switch (entry.getKey()) {
                         case "ArrowLight" -> {
                             g2.drawImage(gs.survival.getItem_img().get(2), x, y, w, h, null);
-                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -844,9 +1111,7 @@ public class UI {
                         }
                         case "MultiArrowLight" -> {
                             g2.drawImage(gs.survival.getItem_img().get(4), x, y, w, h, null);
-                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -855,9 +1120,7 @@ public class UI {
                         }
                         case "MoonLight" -> {
                             g2.drawImage(gs.survival.getItem_img().get(5), x, y, w, h, null);
-                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (MoonLight.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -866,9 +1129,7 @@ public class UI {
                         }
                         case "CircleFire" -> {
                             g2.drawImage(gs.survival.getItem_img().get(3), x, y, w, h, null);
-                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (CircleFire.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -882,7 +1143,7 @@ public class UI {
         g2.drawImage(key_img.get(4), x,y - gs.getTile() /2,gs.getTile(), gs.getTile(), null);
         // skill 2
         x = 10 * gs.getTile();
-        xString = x + gs.getTile()/4;
+        xString = x + gs.getTile()/4 + 7;
         drawSubWindow(x,y,w,h,g2);
         if(gs.loopy.getSkillAttackHave() == 2) {
             for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillAttack.entrySet()) {
@@ -890,9 +1151,7 @@ public class UI {
                     switch (entry.getKey()) {
                         case "ArrowLight" -> {
                             g2.drawImage(gs.survival.getItem_img().get(2), x, y, w, h, null);
-                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (ArrowLight.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -901,9 +1160,7 @@ public class UI {
                         }
                         case "MultiArrowLight" -> {
                             g2.drawImage(gs.survival.getItem_img().get(4), x, y, w, h, null);
-                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (MultiArrow.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -912,9 +1169,7 @@ public class UI {
                         }
                         case "MoonLight" -> {
                             g2.drawImage(gs.survival.getItem_img().get(5), x, y, w, h, null);
-                            if (MoonLight.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (MoonLight.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -923,9 +1178,7 @@ public class UI {
                         }
                         case "CircleFire" -> {
                             g2.drawImage(gs.survival.getItem_img().get(3), x, y, w, h, null);
-                            if (CircleFire.TIME_COUNT_DOWN_ATTACK <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (CircleFire.TIME_COUNT_DOWN_ATTACK > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -939,12 +1192,10 @@ public class UI {
         g2.drawImage(key_img.get(5), x,y - gs.getTile() /2,gs.getTile(), gs.getTile(), null);
         // nomal attack
         x = 11 * gs.getTile();
-        xString = x + gs.getTile()/4;
+        xString = x + gs.getTile()/4 + 7;
         drawSubWindow(x,y,w,h,g2);
         g2.drawImage(gs.survival.getItem_img().get(10), x, y, w, h, null);
-        if(NormalAttack.TIME_COUNT_DOWN_ATTACK <= 0) {
-            g2.drawString("Done",xString,yString);
-        }else {
+        if(NormalAttack.TIME_COUNT_DOWN_ATTACK > 0) {
             g2.setColor(black_bg);
             g2.fillRect(x,y,w,h);
             g2.setColor(normalC);
@@ -953,17 +1204,15 @@ public class UI {
         g2.drawImage(key_img.get(6), x,y - gs.getTile() /2,gs.getTile(), gs.getTile(), null);
         // skill support 1
         x = 12 * gs.getTile();
-        xString = x + gs.getTile()/4;
+        xString = x + gs.getTile()/4 + 7;
         drawSubWindow(x,y,w,h,g2);
-        if(gs.loopy.getSkillSuportHave() > 1) {
+        if(gs.loopy.getSkillSuportHave() >= 1) {
             for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillSupport.entrySet()) {
                 if(entry.getValue() == 1) {
                     switch (entry.getKey()) {
                         case "Flicker" -> {
                             g2.drawImage(gs.survival.getItem_img().get(7), x, y, w, h, null);
-                            if (Flicker.TIME_COUNT_DOWN <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (Flicker.TIME_COUNT_DOWN > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -972,9 +1221,7 @@ public class UI {
                         }
                         case "Sprint" -> {
                             g2.drawImage(gs.survival.getItem_img().get(8), x, y, w, h, null);
-                            if (Sprint.TIME_COUNT_DOWN <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (Sprint.TIME_COUNT_DOWN > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -983,9 +1230,7 @@ public class UI {
                         }
                         case "Restore" -> {
                             g2.drawImage(gs.survival.getItem_img().get(9), x, y, w, h, null);
-                            if (Restore.TIME_COUNT_DOWN <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (Restore.TIME_COUNT_DOWN > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -999,7 +1244,7 @@ public class UI {
         g2.drawImage(key_img.get(0), x,y - gs.getTile() /2,gs.getTile(), gs.getTile(), null);
         // skill support 2
         x = 13 * gs.getTile();
-        xString = x + gs.getTile()/4;
+        xString = x + gs.getTile()/4 + 7;
         drawSubWindow(x,y,w,h,g2);
         if(gs.loopy.getSkillSuportHave() == 2) {
             for (Map.Entry<String,Integer> entry : gs.Map_chooseSkillSupport.entrySet()) {
@@ -1007,9 +1252,7 @@ public class UI {
                     switch (entry.getKey()) {
                         case "Flicker" -> {
                             g2.drawImage(gs.survival.getItem_img().get(7), x, y, w, h, null);
-                            if (Flicker.TIME_COUNT_DOWN <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (Flicker.TIME_COUNT_DOWN > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -1018,9 +1261,7 @@ public class UI {
                         }
                         case "Sprint" -> {
                             g2.drawImage(gs.survival.getItem_img().get(8), x, y, w, h, null);
-                            if (Sprint.TIME_COUNT_DOWN <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (Sprint.TIME_COUNT_DOWN > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);
@@ -1029,9 +1270,7 @@ public class UI {
                         }
                         case "Restore" -> {
                             g2.drawImage(gs.survival.getItem_img().get(9), x, y, w, h, null);
-                            if (Restore.TIME_COUNT_DOWN <= 0) {
-                                g2.drawString("Done", xString, yString);
-                            } else {
+                            if (Restore.TIME_COUNT_DOWN > 0) {
                                 g2.setColor(black_bg);
                                 g2.fillRect(x,y,w,h);
                                 g2.setColor(normalC);

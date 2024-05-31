@@ -25,10 +25,34 @@ public class Loopy {
     int chooseDialogExit = 1;
 
     int chooseSkill = 1;
-
-
     int skillAttackHave = 0;
     int skillSuportHave = 0;
+
+    boolean[] selectedAttack = new boolean[4];
+    boolean[] selectedSupport = new boolean[3];
+    boolean[] selectedUpgrade = new boolean[4];
+    public boolean[] getSelectedSupport() {
+        return selectedSupport;
+    }
+
+    public void setSelectedSupport(boolean value, int index) {
+        this.selectedSupport[index] = value;
+    }
+    public boolean[] getSelectedAttack() {
+        return selectedAttack;
+    }
+
+    public void setSelectedAttack(boolean value, int index) {
+        this.selectedAttack[index] = value;
+    }
+    public boolean[] getSelectedUpgrade() {
+        return selectedUpgrade;
+    }
+
+    public void setSelectedUpgrade(boolean value, int index) {
+        this.selectedUpgrade[index] = value;
+    }
+
     public Loopy(GameState gs) {
         this.gs = gs;
     }
@@ -50,16 +74,7 @@ public class Loopy {
         gs.ui.setDrawChooseSkillsSupport(showDialogChooseSkillsSupport);
         gs.ui.setDrawChooseSkillsAttack(showDialogChooseSkillsAttack);
         gs.ui.setDrawUpgradeSkill(showDialogUpgradeSkill);
-        if(gs.keyHandle.isAddSkillSupport()) {
-            Entity newSupport = switch (gs.keyHandle.getYourAddSkillSupport()) {
-                case "Flicker" -> new Flicker(gs);
-                case "Sprint" -> new Sprint(gs);
-                case "Restore" -> new Restore(gs);
-                default -> null;
-            };
-            gs.skillSupports.add(newSupport);
-            gs.keyHandle.setAddSkillSupport(false);
-        }
+
 
         if(gs.keyHandle.isResetSkillSupport()) {
             gs.Map_chooseSkillSupport.clear();
@@ -158,7 +173,6 @@ public class Loopy {
         }
 
     }
-
     public boolean isShowDialogExit() {
         return showDialogExit;
     }

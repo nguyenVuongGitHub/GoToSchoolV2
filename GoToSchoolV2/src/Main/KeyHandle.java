@@ -132,7 +132,8 @@ public class KeyHandle implements KeyListener{
 						supportSkill2 = true;
 					}
 				}
-			} else if (gs.state == State.SURVIVAL) {
+			}
+			else if (gs.state == State.SURVIVAL) {
 				if (gs.survival.getEndOfDay()) {
 					resetAllKeyMoving();
 					if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
@@ -224,7 +225,8 @@ public class KeyHandle implements KeyListener{
 						accessReturnLoopy = true;
 					}
 				}
-			} else if (gs.state == State.LOOPY) {
+			}
+			else if (gs.state == State.LOOPY) {
 				if (gs.loopy.isShowDialogExit()) {
 					if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 						gs.loopy.setChooseDialogExit(gs.loopy.getChooseDialogExit() - 1);
@@ -251,37 +253,6 @@ public class KeyHandle implements KeyListener{
 					}
 				}
 				else if(gs.loopy.isShowDialogChooseSkillsSupport()) {
-					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()-1);
-						if(gs.loopy.getChooseSkill() < 1) {
-							gs.loopy.setChooseSkill(gs.user.getMaxNumberSkillsSupportUnlocked());
-						}
-					}
-					if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-						gs.loopy.setChooseSkill(gs.loopy.getChooseSkill()+1);
-						if(gs.loopy.getChooseSkill() > gs.user.getMaxNumberSkillsSupportUnlocked()) {
-							gs.loopy.setChooseSkill(1);
-						}
-					}
-					if(code == KeyEvent.VK_SPACE) {
-						gs.loopy.setSkillSuportHave(gs.loopy.getSkillSuportHave()+1);
-						if(gs.loopy.getSkillSuportHave() <= 2) {
-							if(gs.loopy.getChooseSkill() == 1) {
-								gs.Map_chooseSkillSupport.put("Flicker",gs.loopy.getSkillSuportHave());
-								yourAddSkillSupport = "Flicker";
-							}else if(gs.loopy.getChooseSkill() == 2) {
-								gs.Map_chooseSkillSupport.put("Sprint",gs.loopy.getSkillSuportHave());
-								yourAddSkillSupport = "Sprint";
-							}else if(gs.loopy.getChooseSkill() == 3) {
-								gs.Map_chooseSkillSupport.put("Restore",gs.loopy.getSkillSuportHave());
-								yourAddSkillSupport = "Restore";
-							}
-							isAddSkillSupport = true;
-						}
-					}
-					if(code == KeyEvent.VK_Q) {
-						isResetSkillSupport = true;
-					}
 					if(code == KeyEvent.VK_ESCAPE) {
 						gs.loopy.setShowDialogChooseSkillsSupport(false);
 					}
@@ -301,7 +272,7 @@ public class KeyHandle implements KeyListener{
 					}
 					if (code == KeyEvent.VK_SPACE) {
 						gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
-						if (gs.loopy.getSkillAttackHave() <= 2) {
+						if (gs.loopy.getSkillAttackHave() == 1) {
 							if (gs.loopy.getChooseSkill() == 1) {
 								gs.Map_chooseSkillAttack.put("ArrowLight", gs.loopy.getSkillAttackHave());
 							} else if (gs.loopy.getChooseSkill() == 2) {
@@ -311,6 +282,34 @@ public class KeyHandle implements KeyListener{
 							} else if (gs.loopy.getChooseSkill() == 4) {
 								gs.Map_chooseSkillAttack.put("CircleFire", gs.loopy.getSkillAttackHave());
 							}
+						}else if(gs.loopy.getSkillAttackHave() == 2) {
+							if (gs.loopy.getChooseSkill() == 1) {
+								if(!gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+									gs.Map_chooseSkillAttack.put("ArrowLight", gs.loopy.getSkillAttackHave());
+								}else {
+									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
+								}
+							} else if (gs.loopy.getChooseSkill() == 2) {
+								if(!gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+									gs.Map_chooseSkillAttack.put("MultiArrowLight", gs.loopy.getSkillAttackHave());
+								}else {
+									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
+								}
+							} else if (gs.loopy.getChooseSkill() == 3) {
+								if(!gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+									gs.Map_chooseSkillAttack.put("MoonLight", gs.loopy.getSkillAttackHave());
+								}else {
+									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
+								}
+							} else if (gs.loopy.getChooseSkill() == 4) {
+								if(!gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+									gs.Map_chooseSkillAttack.put("CircleFire", gs.loopy.getSkillAttackHave());
+								}else {
+									gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
+								}
+							}
+						}else {
+							gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() - 1);
 						}
 					}
 					if (code == KeyEvent.VK_Q) {
