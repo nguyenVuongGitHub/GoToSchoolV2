@@ -289,9 +289,9 @@ public class UI {
                             null);
 
                         // click to item
-                        if (gs.mouseHandle.isMouseLeftClick()) {
+                        if (gs.mouseHandle.isMouseLeftPress()) {
                             gs.playSE(17);
-                            gs.mouseHandle.setMouseLeftClick(false);
+//                            gs.mouseHandle.setMouseLeftClick(false);
 
                             if (gs.loopy.getSkillAttackHave() < 2) {
                                 // able select
@@ -503,9 +503,9 @@ public class UI {
                             null);
 
                     // click to item
-                    if (gs.mouseHandle.isMouseLeftClick()) {
+                    if (gs.mouseHandle.isMouseLeftPress()) {
                         gs.playSE(17);
-                        gs.mouseHandle.setMouseLeftClick(false);
+//                        gs.mouseHandle.setMouseLeftClick(false);
 
                         if(gs.loopy.getSkillSuportHave() < 2) {
                             // able select
@@ -799,8 +799,8 @@ public class UI {
                     g2.drawString("EXIT GAME",xString, yString);
 
                     // click to item
-                    if (gs.mouseHandle.isMouseLeftClick() && ! isShowSubExitGame && ! isShowSubSaveGame) {
-                        gs.mouseHandle.setMouseLeftClick(false);
+                    if (gs.mouseHandle.isMouseLeftPress() && ! isShowSubExitGame && ! isShowSubSaveGame) {
+//                        gs.mouseHandle.setMouseLeftClick(false);
                         gs.loopy.setSelectedExitOrSave(true, col);
                     }
                 }
