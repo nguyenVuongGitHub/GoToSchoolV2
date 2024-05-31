@@ -30,6 +30,7 @@ public class UI {
     boolean isPlayerSay = false;
     boolean isDrawChooseSkillsSupport = false;
     boolean isShowSubSaveGame = false;
+    boolean isShowSubExitGame = false;
 
     boolean isSoundPlayed = false;
 
@@ -701,7 +702,7 @@ public class UI {
         String subTitle4 = "Esc to exit.";
         g2.drawString(subTitle4,xString,yString+gap*8 + 10);
     }
-    private void drawChooseSubSaveGame() {
+    private void drawChooseSubExitGame() {
         Color backgroundC = new Color(0, 0, 0, 180);
         g2.setColor(backgroundC);
         //draw dark mark
@@ -723,6 +724,25 @@ public class UI {
         xString = getXforCenterdText(ans);
         yString = yTable + gap*2;
         g2.drawString(ans,xString,yString);
+    }
+    private void drawChooseSubSaveGame() {
+        Color backgroundC = new Color(0, 0, 0, 180);
+        g2.setColor(backgroundC);
+        //draw dark mark
+        g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
+
+        int wTable = gs.getWindowWidth() * 2 / 5;
+        int hTable = gs.getTile() * 3;
+        int xTable = gs.getWindowWidth() / 2 - wTable/2 ;
+        int yTable = gs.getWindowHeight() / 2 - hTable/2 - gs.getTile();
+        int gap = gs.getTile();
+        int xString;
+        int yString;
+        drawSubWindow(xTable,yTable,wTable,hTable, g2); //draw table
+        String title = "Successful.";
+        xString = getXforCenterdText(title);
+        yString = yTable + gap;
+        g2.drawString(title,xString,yString);
     }
     private void drawDialogExitGame() {
         //Draw background
@@ -779,7 +799,7 @@ public class UI {
                     g2.drawString("EXIT GAME",xString, yString);
 
                     // click to item
-                    if (gs.mouseHandle.isMouseLeftClick() && ! isShowSubSaveGame) {
+                    if (gs.mouseHandle.isMouseLeftClick() && ! isShowSubExitGame && ! isShowSubSaveGame) {
                         gs.mouseHandle.setMouseLeftClick(false);
                         gs.loopy.setSelectedExitOrSave(true, col);
                     }
@@ -787,6 +807,7 @@ public class UI {
             }
             if(gs.loopy.getSelectedExitOrSave()[0]) {
 //                System.out.println("save");
+                isShowSubSaveGame = true;
                 gs.saveGame();
                 gs.loopy.setSelectedExitOrSave(false,0);
             }
@@ -797,9 +818,12 @@ public class UI {
                     gs.exitGame();
                     gs.loopy.setSelectedExitOrSave(false,1);
                 }else {
-                    drawChooseSubSaveGame();
-                    isShowSubSaveGame = true;
+                    drawChooseSubExitGame();
+                    isShowSubExitGame = true;
                 }
+            }
+            if(isShowSubSaveGame) {
+                drawChooseSubSaveGame();
             }
         }
     }
@@ -1160,5 +1184,12 @@ public class UI {
 
     public void setShowSubSaveGame(boolean showSubSaveGame) {
         isShowSubSaveGame = showSubSaveGame;
+    }
+    public boolean isShowSubExitGame() {
+        return isShowSubExitGame;
+    }
+
+    public void setShowSubExitGame(boolean showSubExitGame) {
+        isShowSubExitGame = showSubExitGame;
     }
 }

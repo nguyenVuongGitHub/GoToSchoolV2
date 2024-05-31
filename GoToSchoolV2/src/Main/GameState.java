@@ -315,7 +315,7 @@ public class GameState extends JPanel implements Runnable{
 
 	public void saveGame() {
 			user.saveFile();
-			loopy.setShowDialogExit(false);
+//			loopy.setShowDialogExit(false);
 	}
 	//SOUND
 	public void playMusic(int i) {

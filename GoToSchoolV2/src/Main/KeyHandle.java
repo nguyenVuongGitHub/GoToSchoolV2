@@ -236,9 +236,8 @@ public class KeyHandle implements KeyListener{
 				}
 			}
 			else if (gs.state == State.LOOPY) {
-
 				if (gs.loopy.isShowDialogExit()) {
-					if(gs.ui.isShowSubSaveGame()) {
+					if(gs.ui.isShowSubExitGame()) {
 						if(code == KeyEvent.VK_Y) {
 							isSaveGame = "yes";
 							System.out.println("y");
@@ -249,8 +248,15 @@ public class KeyHandle implements KeyListener{
 						}
 						if(code == KeyEvent.VK_ESCAPE) {
 							isSaveGame = "nan";
-							gs.ui.setShowSubSaveGame(false);
+							gs.ui.setShowSubExitGame(false);
 							gs.loopy.setSelectedExitOrSave(false,1);
+							code = -1;
+						}
+					}else if(gs.ui.isShowSubSaveGame()) {
+						System.out.println("do this");
+						if(code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
+							gs.ui.setShowSubSaveGame(false);
+							code = -1;
 						}
 					}
 					if(code == KeyEvent.VK_ESCAPE) {

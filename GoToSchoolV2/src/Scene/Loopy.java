@@ -92,11 +92,7 @@ public class Loopy {
             skillAttackHave = 0;
             gs.keyHandle.setResetSkillAttack(false);
         }
-        if(gs.keyHandle.isAccessSaveGame()) {
-            gs.saveGame();
-            gs.ui.setPlayerSay(true);
-        }
-        if(gs.ui.isShowSubSaveGame()) {
+        if(gs.ui.isShowSubExitGame()) {
 
             if(gs.keyHandle.isSaveGame().equals("yes")){
                 gs.saveGame();
