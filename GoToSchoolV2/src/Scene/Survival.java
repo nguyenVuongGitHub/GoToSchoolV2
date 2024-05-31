@@ -266,6 +266,7 @@ public class Survival {
                 if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + height) {
                     selected = i + 1;
                     if (gs.mouseHandle.isMouseLeftPress()) {
+                        gs.playSE(17);
                         setEndOfDay(false);
                         //Give effect
                         applyBlessing(listBlessing.get(selected - 1));
@@ -376,6 +377,7 @@ public class Survival {
         if (gs.mouseHandle.getWorldX() > xShop + widthShop - gs.getTile() * 5/2 && gs.mouseHandle.getWorldX() < xShop + widthShop - gs.getTile() * 5/2 + squareSize * 3 / 4) {
             if (gs.mouseHandle.getWorldY() > yShop + gap / 2 && gs.mouseHandle.getWorldY() < yShop + gap / 2 + squareSize/4) {
                 if (gs.mouseHandle.isMouseLeftPress()) {
+                    gs.playSE(17);
                     meeting = false;
                 }
             }
@@ -391,6 +393,7 @@ public class Survival {
                     if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
                         selected = col + (row * 3) + 1;
                         if (gs.mouseHandle.isMouseLeftPress()) {
+                            gs.playSE(17);
                             //Give effect
                             giveItem(listItem.get(selected - 1));
                         }

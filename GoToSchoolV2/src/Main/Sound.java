@@ -31,6 +31,8 @@ public class Sound {
         soundURL[13] = getClass().getResource("/sound/arrows.wav");
         soundURL[14] = getClass().getResource("/sound/dame.wav");
         soundURL[15] = getClass().getResource("/sound/gojo.wav");
+        soundURL[16] = getClass().getResource("/sound/bossshot.wav");
+        soundURL[17] = getClass().getResource("/sound/click.wav");
 
     }
 
@@ -46,6 +48,17 @@ public class Sound {
 
     public void play(){
         clip.start();
+    }
+
+    public void playSE_one() {
+        if (clip != null && !clip.isRunning()) {
+            clip.start();
+            clip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.close(); // Đóng clip khi phát xong
+                }
+            });
+        }
     }
 
     public void loop(){

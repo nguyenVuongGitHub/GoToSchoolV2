@@ -26,6 +26,7 @@ public class LazerBoss extends BaseSkill{
 
     @Override
     public void getImage() {
+        gs.playSE(16);
         try {
             BufferedImage largeImage_temp = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapon/laser.png")));
             UtilityTool uTool =  new UtilityTool();

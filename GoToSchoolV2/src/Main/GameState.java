@@ -331,6 +331,10 @@ public class GameState extends JPanel implements Runnable{
 		sound.setFile(i);
 		sound.play();
 	}
+	public void playSE_one(int i) {
+		sound.setFile(i);
+		sound.playSE_one();
+	}
 	public void closeMusic() {
 		sound.close();
 	}

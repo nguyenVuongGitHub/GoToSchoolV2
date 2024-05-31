@@ -30,6 +30,8 @@ public class UI {
     boolean isPlayerSay = false;
     boolean isDrawChooseSkillsSupport = false;
 
+    boolean isSoundPlayed = false;
+
     boolean isDrawUpgradeSkill = false;
 
     boolean isDrawChooseSkillsAttack = false;
@@ -275,170 +277,177 @@ public class UI {
         }
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
     }
+
     private void drawChooseSkillAttack() {
         //Draw background
-        Color backgroundC = new Color(0, 0, 0, 180);
-        g2.setColor(backgroundC);
-        //draw dark mark
-        g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
+            Color backgroundC = new Color(0, 0, 0, 180);
+            g2.setColor(backgroundC);
+            //draw dark mark
+            g2.fillRect(0, 0, gs.getWindowWidth(), gs.getWindowHeight());
 
-        int xTable = gs.getWindowWidth() / 8 - gs.getTile() * 2;
-        int yTable = gs.getWindowHeight() / 8;
-        int wTable = gs.getWindowWidth() * 3 / 4;
-        int hTable = gs.getWindowHeight() * 3 / 4;
-        int gap = gs.getTile();
-        int xString = xTable + gap*2;
-        int yString = yTable + gap;
+            int xTable = gs.getWindowWidth() / 8 - gs.getTile() * 2;
+            int yTable = gs.getWindowHeight() / 8;
+            int wTable = gs.getWindowWidth() * 3 / 4;
+            int hTable = gs.getWindowHeight() * 3 / 4;
+            int gap = gs.getTile();
+            int xString = xTable + gap * 2;
+            int yString = yTable + gap;
 
-        drawSubWindow(xTable,yTable,wTable,hTable,g2); // draw table
-        drawSubWindow(xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable, g2); // draw sub table
-        g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
-        int squareSize = Math.min(((wTable - xTable) - 4 * gap) / 3, ((hTable - yTable) - 3 * gap) / 2);
-        Color hoverColor = new Color(220, 210, 100);
-        Color defaultC = new Color(255, 255, 255);
+            drawSubWindow(xTable, yTable, wTable, hTable, g2); // draw table
+            drawSubWindow(xTable + wTable, yTable, wTable / 3 - gs.getTile(), hTable, g2); // draw sub table
+            g2.setFont(getMaruMonica().deriveFont(Font.BOLD, 30F));
+            int squareSize = Math.min(((wTable - xTable) - 4 * gap) / 3, ((hTable - yTable) - 3 * gap) / 2);
+            Color hoverColor = new Color(220, 210, 100);
+            Color defaultC = new Color(255, 255, 255);
 
-        for(int row = 0; row < 4; row ++) {
-            int x = xTable + gap * 3 + row * (squareSize + gap) - gap/2;
-            int y = yTable + gap * 2;
+            for (int row = 0; row < 4; row++) {
+                int x = xTable + gap * 3 + row * (squareSize + gap) - gap / 2;
+                int y = yTable + gap * 2;
 
-            // if not select -> default css
-            if(!gs.loopy.getSelectedAttack()[row]) {
-                drawSubWindow(x, y, squareSize, squareSize, g2);
-                g2.drawImage(gs.survival.getItem_img().get(row + 2),
-                        x + gap /2,
-                        y + gap / 2,
-                        gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
-            }
-            else {
-                y -= gap/3;
-                drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
-                g2.drawImage(gs.survival.getItem_img().get(row + 2),
-                        x + gap /2,
-                        y + gap / 2,
-                        gs.getTile() * 3 / 2,
-                        gs.getTile() * 3 / 2,
-                        null);
-            }
-
-            // Mouse hover item
-            if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
-                if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
-                    switch (row) {
-                        case 0 -> drawSubTitleSkillAttack("ArrowLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
-                        case 1 -> drawSubTitleSkillAttack("CircleFire",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
-                        case 2 -> drawSubTitleSkillAttack("MultiArrowLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
-                        case 3 -> drawSubTitleSkillAttack("MoonLight",xTable + wTable,yTable,wTable / 3 - gs.getTile(),hTable);
-                    }
-
-                    // change the effect
-                    drawSubWindow(x, y, squareSize, squareSize, g2,5,Color.black,hoverColor,5,5,10,10,25,25);
+                // if not select -> default css
+                if (!gs.loopy.getSelectedAttack()[row]) {
+                    drawSubWindow(x, y, squareSize, squareSize, g2);
+                    g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                            x + gap / 2,
+                            y + gap / 2,
+                            gs.getTile() * 3 / 2, gs.getTile() * 3 / 2, null);
+                } else {
+                    y -= gap / 3;
+                    drawSubWindow(x, y, squareSize, squareSize, g2, 5, Color.black, hoverColor, 5, 5, 10, 10, 25, 25);
                     g2.drawImage(gs.survival.getItem_img().get(row + 2),
                             x + gap / 2,
                             y + gap / 2,
                             gs.getTile() * 3 / 2,
                             gs.getTile() * 3 / 2,
                             null);
+                }
 
-                    // click to item
-                    if (gs.mouseHandle.isMouseLeftClick()) {
-                        gs.mouseHandle.setMouseLeftClick(false);
+                // Mouse hover item
+                if (gs.mouseHandle.getWorldX() > x && gs.mouseHandle.getWorldX() < x + squareSize) {
+                    if (gs.mouseHandle.getWorldY() > y && gs.mouseHandle.getWorldY() < y + squareSize) {
+                        switch (row) {
+                            case 0 ->
+                                    drawSubTitleSkillAttack("ArrowLight", xTable + wTable, yTable, wTable / 3 - gs.getTile(), hTable);
+                            case 1 ->
+                                    drawSubTitleSkillAttack("CircleFire", xTable + wTable, yTable, wTable / 3 - gs.getTile(), hTable);
+                            case 2 ->
+                                    drawSubTitleSkillAttack("MultiArrowLight", xTable + wTable, yTable, wTable / 3 - gs.getTile(), hTable);
+                            case 3 ->
+                                    drawSubTitleSkillAttack("MoonLight", xTable + wTable, yTable, wTable / 3 - gs.getTile(), hTable);
+                        }
 
-                        if(gs.loopy.getSkillAttackHave() < 2) {
-                            // able select
-                            if(!gs.loopy.getSelectedAttack()[row]) {
-                                gs.loopy.setSelectedAttack(true,row);
-                                gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
+                        // change the effect
+                        drawSubWindow(x, y, squareSize, squareSize, g2, 5, Color.black, hoverColor, 5, 5, 10, 10, 25, 25);
+                        g2.drawImage(gs.survival.getItem_img().get(row + 2),
+                                x + gap / 2,
+                                y + gap / 2,
+                                gs.getTile() * 3 / 2,
+                                gs.getTile() * 3 / 2,
+                                null);
+
+                        // click to item
+                        if (gs.mouseHandle.isMouseLeftClick()) {
+                            gs.playSE(17);
+                            gs.mouseHandle.setMouseLeftClick(false);
+
+                            if (gs.loopy.getSkillAttackHave() < 2) {
+                                // able select
+                                if (!gs.loopy.getSelectedAttack()[row]) {
+                                    gs.loopy.setSelectedAttack(true, row);
+                                    gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
+                                }
                             }
-                        }
-                        // add to Map
-                        if(gs.loopy.getSelectedAttack()[0]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-                                gs.Map_chooseSkillAttack.put("ArrowLight",gs.loopy.getSkillAttackHave());
+                            // add to Map
+                            if (gs.loopy.getSelectedAttack()[0]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+                                    gs.Map_chooseSkillAttack.put("ArrowLight", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("ArrowLight");
                             }
-                        }else {
-                            gs.Map_chooseSkillAttack.remove("ArrowLight");
-                        }
-                        if(gs.loopy.getSelectedAttack()[1]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-                                gs.Map_chooseSkillAttack.put("CircleFire",gs.loopy.getSkillAttackHave());
+                            if (gs.loopy.getSelectedAttack()[1]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+                                    gs.Map_chooseSkillAttack.put("CircleFire", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("CircleFire");
                             }
-                        }
-                        else {
-                            gs.Map_chooseSkillAttack.remove("CircleFire");
-                        }
-                        if(gs.loopy.getSelectedAttack()[2]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-                                gs.Map_chooseSkillAttack.put("MultiArrowLight",gs.loopy.getSkillAttackHave());
+                            if (gs.loopy.getSelectedAttack()[2]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+                                    gs.Map_chooseSkillAttack.put("MultiArrowLight", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("MultiArrowLight");
                             }
-                        }else {
-                            gs.Map_chooseSkillAttack.remove("MultiArrowLight");
-                        }
-                        if(gs.loopy.getSelectedAttack()[3]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-                                gs.Map_chooseSkillAttack.put("MoonLight",gs.loopy.getSkillAttackHave());
+                            if (gs.loopy.getSelectedAttack()[3]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+                                    gs.Map_chooseSkillAttack.put("MoonLight", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("MoonLight");
                             }
-                        }else {
-                            gs.Map_chooseSkillAttack.remove("MoonLight");
                         }
                     }
                 }
-            }
-            // right click to reset
-            if(gs.mouseHandle.isMouseRightClick()) {
-                gs.mouseHandle.setMouseRightClick(false);
-                for(int i = 0; i < 4; i++) {
-                    gs.loopy.setSelectedAttack(false,i);
+
+
+                // right click to reset
+                if (gs.mouseHandle.isMouseRightClick()) {
+                    gs.playSE(17);
+                    gs.mouseHandle.setMouseRightClick(false);
+                    for (int i = 0; i < 4; i++) {
+                        gs.loopy.setSelectedAttack(false, i);
+                    }
+                    gs.Map_chooseSkillAttack.clear();
+                    gs.loopy.setSkillAttackHave(0);
                 }
-                gs.Map_chooseSkillAttack.clear();
-                gs.loopy.setSkillAttackHave(0);
             }
-        }
-        // draw sub icon
-        if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-            int value = gs.Map_chooseSkillAttack.get("ArrowLight") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
-        if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-            int value = gs.Map_chooseSkillAttack.get("CircleFire") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 + (squareSize + gap) - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
-        if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-            int value = gs.Map_chooseSkillAttack.get("MultiArrowLight") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 + 2 * (squareSize + gap) - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
-        if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-            int value = gs.Map_chooseSkillAttack.get("MoonLight") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 + 3 * (squareSize + gap) - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
+            // draw sub icon
+            if (gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+                int value = gs.Map_chooseSkillAttack.get("ArrowLight") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
+            if (gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+                int value = gs.Map_chooseSkillAttack.get("CircleFire") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 + (squareSize + gap) - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
+            if (gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+                int value = gs.Map_chooseSkillAttack.get("MultiArrowLight") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 + 2 * (squareSize + gap) - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
+            if (gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+                int value = gs.Map_chooseSkillAttack.get("MoonLight") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 + 3 * (squareSize + gap) - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
 
-        g2.setColor(defaultC);
-        String title = "Choose Skill Attack";
-        g2.drawString(title,xString,  yString + 10);
+            g2.setColor(defaultC);
+            String title = "Choose Skill Attack";
+            g2.drawString(title, xString, yString + 10);
 
-        String subTitle1 = "Left click to select. ";
-        g2.drawString(subTitle1,xString,yString+gap*5 + 10);
-        String subTitle2 = "Right click to reset. ";
-        g2.drawString(subTitle2,xString,yString+gap*6 + 10);
-        String subTitle3 = "The maximum skill to choose is 2.";
-        g2.drawString(subTitle3,xString,yString+gap*7 + 10);
-        String subTitle4 = "Esc to exit.";
-        g2.drawString(subTitle4,xString,yString+gap*8 + 10);
+            String subTitle1 = "Left click to select. ";
+            g2.drawString(subTitle1, xString, yString + gap * 5 + 10);
+            String subTitle2 = "Right click to reset. ";
+            g2.drawString(subTitle2, xString, yString + gap * 6 + 10);
+            String subTitle3 = "The maximum skill to choose is 2.";
+            g2.drawString(subTitle3, xString, yString + gap * 7 + 10);
+            String subTitle4 = "Esc to exit.";
+            g2.drawString(subTitle4, xString, yString + gap * 8 + 10);
 //        int x = 2 * gs.getTile();
 //        int y = gs.getTile()/2;
 //        int w = 8 * gs.getTile();
@@ -644,6 +653,8 @@ public class UI {
 //        g2.drawString("ESC to exit.",xString,yString);
     }
 
+
+
     public void drawInformationPlayer() {
         int x = 2 * gs.getTile();
         int y = gs.getTile()/2;
@@ -755,6 +766,7 @@ public class UI {
 
                     // click to item
                     if (gs.mouseHandle.isMouseLeftClick()) {
+                        gs.playSE(17);
                         gs.mouseHandle.setMouseLeftClick(false);
 
                         if(gs.loopy.getSkillSuportHave() < 2) {
@@ -792,6 +804,7 @@ public class UI {
             }
             // right click to reset
             if(gs.mouseHandle.isMouseRightClick()) {
+                gs.playSE(17);
                 gs.mouseHandle.setMouseRightClick(false);
                 for(int i = 0; i < 3; i++) {
                     gs.loopy.setSelectedSupport(false,i);
@@ -904,6 +917,7 @@ public class UI {
 
                     // click to item
                     if (gs.mouseHandle.isMouseLeftClick()) {
+                        gs.playSE(17);
                         gs.mouseHandle.setMouseLeftClick(false);
                         if(!gs.loopy.getSelectedUpgrade()[row]) {
                             gs.loopy.setSelectedUpgrade(true,row);
