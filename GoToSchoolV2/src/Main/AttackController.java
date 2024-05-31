@@ -148,27 +148,44 @@ public class AttackController {
             }
 
             if(gs.keyHandle.isSupportSkill1() && gs.loopy.getSkillSuportHave() >= 1) {
-                Entity e = gs.skillSupports.get(gs.indexSkillSupport1);
-                if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Flicker) {
-                    if(Flicker.TIME_COUNT_DOWN <= 0) {
-                        e.setAlive(true);
-                        Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
-                        gs.player.setStateEntity("attack");
-                        gs.player.setSpriteNum(1);
-                    }
-                }else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Sprint) {
-                    if(Sprint.TIME_COUNT_DOWN <= 0) {
-                        e.setAlive(true);
-                        Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
-                        gs.player.setStateEntity("attack");
-                        gs.player.setSpriteNum(1);
-                    }
-                }else if(e.getTypeSkill().typeSupport == SUPPORT_SKILL.Restore) {
-                    if(Restore.TIME_COUNT_DOWN <= 0) {
-                        e.setAlive(true);
-                        Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
-                        gs.player.setStateEntity("attack");
-                        gs.player.setSpriteNum(1);
+                for (Map.Entry<String, Integer> entry : gs.Map_chooseSkillSupport.entrySet()) {
+                    if (entry.getValue() == 1) {
+                        Entity e;
+                        switch (entry.getKey()) {
+                            case "Flicker":
+                                if (Flicker.TIME_COUNT_DOWN <= 0) {
+                                    e = new Flicker(gs);
+                                    e.setAlive(true);
+                                    gs.skillSupports.add(e);
+                                    gs.player.setSpriteNum(1);
+                                    Flicker.TIME_COUNT_DOWN = Flicker.TIME_REDUCE;
+                                    gs.player.setStateEntity("attack");
+                                    gs.player.setSpriteNum(1);
+                                }
+                                break;
+                            case "Sprint":
+                                if (Sprint.TIME_COUNT_DOWN <= 0) {
+                                    e = new Sprint(gs);
+                                    e.setAlive(true);
+                                    gs.skillSupports.add(e);
+                                    gs.player.setSpriteNum(1);
+                                    Sprint.TIME_COUNT_DOWN = Sprint.TIME_REDUCE;
+                                    gs.player.setStateEntity("attack");
+                                    gs.player.setSpriteNum(1);
+                                }
+                                break;
+                            case "Restore":
+                                if (Restore.TIME_COUNT_DOWN <= 0) {
+                                    e = new Restore(gs);
+                                    e.setAlive(true);
+                                    gs.skillSupports.add(e);
+                                    gs.player.setSpriteNum(1);
+                                    Restore.TIME_COUNT_DOWN = Restore.TIME_REDUCE;
+                                    gs.player.setStateEntity("attack");
+                                    gs.player.setSpriteNum(1);
+                                }
+                                break;
+                        }
                     }
                 }
             }
