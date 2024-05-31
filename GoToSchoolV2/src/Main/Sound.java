@@ -33,6 +33,9 @@ public class Sound {
         soundURL[15] = getClass().getResource("/sound/gojo.wav");
         soundURL[16] = getClass().getResource("/sound/bossshot.wav");
         soundURL[17] = getClass().getResource("/sound/click.wav");
+        soundURL[18] = getClass().getResource("/sound/Teleport.wav");
+        soundURL[19] = getClass().getResource("/sound/powerUp.wav");
+        soundURL[20] = getClass().getResource("/sound/Heal.wav");
 
     }
 
@@ -41,7 +44,7 @@ public class Sound {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
-            clipList.add(clip); // Thêm clip vào danh sách
+            clipList.add(clip);
         }catch (Exception e) {
         }
     }

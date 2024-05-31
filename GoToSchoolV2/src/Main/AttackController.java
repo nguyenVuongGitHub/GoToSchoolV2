@@ -153,6 +153,7 @@ public class AttackController {
                         Entity e;
                         switch (entry.getKey()) {
                             case "Flicker":
+                                gs.playSE(18);
                                 if (Flicker.TIME_COUNT_DOWN <= 0) {
                                     e = new Flicker(gs);
                                     e.setAlive(true);
@@ -164,6 +165,7 @@ public class AttackController {
                                 }
                                 break;
                             case "Sprint":
+                                gs.playSE(19);
                                 if (Sprint.TIME_COUNT_DOWN <= 0) {
                                     e = new Sprint(gs);
                                     e.setAlive(true);
@@ -175,6 +177,7 @@ public class AttackController {
                                 }
                                 break;
                             case "Restore":
+                                gs.playSE(20);
                                 if (Restore.TIME_COUNT_DOWN <= 0) {
                                     e = new Restore(gs);
                                     e.setAlive(true);
@@ -195,6 +198,7 @@ public class AttackController {
                         Entity e;
                         switch (entry.getKey()) {
                             case "Flicker":
+                                gs.playSE(18);
                                 if (Flicker.TIME_COUNT_DOWN <= 0) {
                                     e = new Flicker(gs);
                                     e.setAlive(true);
@@ -206,6 +210,7 @@ public class AttackController {
                                 }
                                 break;
                             case "Sprint":
+                                gs.playSE(19);
                                 if (Sprint.TIME_COUNT_DOWN <= 0) {
                                     e = new Sprint(gs);
                                     e.setAlive(true);
@@ -217,6 +222,7 @@ public class AttackController {
                                 }
                                 break;
                             case "Restore":
+                                gs.playSE(20);
                                 if (Restore.TIME_COUNT_DOWN <= 0) {
                                     e = new Restore(gs);
                                     e.setAlive(true);
