@@ -1,4 +1,4 @@
-lever :21
+lever :0
 time reduce; number Burning; damage; radius
 10;1;1;330
 10;1;2;330

@@ -1,2 +1,2 @@
 coin; coin need update;experience ;max number skill support unlocked; max number skill attack unlocked; number lever campaign unlocked; max state campaign
-15000;210;685;3;4;5;3
+0;10;0;3;4;1;3
