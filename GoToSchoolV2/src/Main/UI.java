@@ -30,6 +30,8 @@ public class UI {
     boolean isPlayerSay = false;
     boolean isDrawChooseSkillsSupport = false;
 
+    boolean isSoundPlayed = false;
+
     boolean isDrawUpgradeSkill = false;
 
     boolean isDrawChooseSkillsAttack = false;
@@ -219,6 +221,7 @@ public class UI {
         }
         g2.setFont(getMaruMonica().deriveFont(Font.BOLD,30F));
     }
+
     private void drawChooseSkillAttack() {
         //Draw background
         Color backgroundC = new Color(0, 0, 0, 180);
@@ -283,93 +286,96 @@ public class UI {
                             gs.getTile() * 3 / 2,
                             null);
 
-                    // click to item
-                    if (gs.mouseHandle.isMouseLeftClick()) {
-                        gs.mouseHandle.setMouseLeftClick(false);
+                        // click to item
+                        if (gs.mouseHandle.isMouseLeftClick()) {
+                            gs.playSE(17);
+                            gs.mouseHandle.setMouseLeftClick(false);
 
-                        if(gs.loopy.getSkillAttackHave() < 2) {
-                            // able select
-                            if(!gs.loopy.getSelectedAttack()[row]) {
-                                gs.loopy.setSelectedAttack(true,row);
-                                gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
+                            if (gs.loopy.getSkillAttackHave() < 2) {
+                                // able select
+                                if (!gs.loopy.getSelectedAttack()[row]) {
+                                    gs.loopy.setSelectedAttack(true, row);
+                                    gs.loopy.setSkillAttackHave(gs.loopy.getSkillAttackHave() + 1);
+                                }
                             }
-                        }
-                        // add to Map
-                        if(gs.loopy.getSelectedAttack()[0]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-                                gs.Map_chooseSkillAttack.put("ArrowLight",gs.loopy.getSkillAttackHave());
+                            // add to Map
+                            if (gs.loopy.getSelectedAttack()[0]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+                                    gs.Map_chooseSkillAttack.put("ArrowLight", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("ArrowLight");
                             }
-                        }else {
-                            gs.Map_chooseSkillAttack.remove("ArrowLight");
-                        }
-                        if(gs.loopy.getSelectedAttack()[1]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-                                gs.Map_chooseSkillAttack.put("CircleFire",gs.loopy.getSkillAttackHave());
+                            if (gs.loopy.getSelectedAttack()[1]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+                                    gs.Map_chooseSkillAttack.put("CircleFire", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("CircleFire");
                             }
-                        }
-                        else {
-                            gs.Map_chooseSkillAttack.remove("CircleFire");
-                        }
-                        if(gs.loopy.getSelectedAttack()[2]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-                                gs.Map_chooseSkillAttack.put("MultiArrowLight",gs.loopy.getSkillAttackHave());
+                            if (gs.loopy.getSelectedAttack()[2]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+                                    gs.Map_chooseSkillAttack.put("MultiArrowLight", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("MultiArrowLight");
                             }
-                        }else {
-                            gs.Map_chooseSkillAttack.remove("MultiArrowLight");
-                        }
-                        if(gs.loopy.getSelectedAttack()[3]) {
-                            if(!gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-                                gs.Map_chooseSkillAttack.put("MoonLight",gs.loopy.getSkillAttackHave());
+                            if (gs.loopy.getSelectedAttack()[3]) {
+                                if (!gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+                                    gs.Map_chooseSkillAttack.put("MoonLight", gs.loopy.getSkillAttackHave());
+                                }
+                            } else {
+                                gs.Map_chooseSkillAttack.remove("MoonLight");
                             }
-                        }else {
-                            gs.Map_chooseSkillAttack.remove("MoonLight");
                         }
                     }
                 }
-            }
-            // right click to reset
-            if(gs.mouseHandle.isMouseRightClick()) {
-                gs.mouseHandle.setMouseRightClick(false);
-                for(int i = 0; i < 4; i++) {
-                    gs.loopy.setSelectedAttack(false,i);
+
+
+                // right click to reset
+                if (gs.mouseHandle.isMouseRightClick()) {
+                    gs.playSE(17);
+                    gs.mouseHandle.setMouseRightClick(false);
+                    for (int i = 0; i < 4; i++) {
+                        gs.loopy.setSelectedAttack(false, i);
+                    }
+                    gs.Map_chooseSkillAttack.clear();
+                    gs.loopy.setSkillAttackHave(0);
                 }
-                gs.Map_chooseSkillAttack.clear();
-                gs.loopy.setSkillAttackHave(0);
             }
-        }
-        // draw sub icon
-        if(gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
-            int value = gs.Map_chooseSkillAttack.get("ArrowLight") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
-        if(gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
-            int value = gs.Map_chooseSkillAttack.get("CircleFire") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 + (squareSize + gap) - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
-        if(gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
-            int value = gs.Map_chooseSkillAttack.get("MultiArrowLight") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 + 2 * (squareSize + gap) - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
-        if(gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
-            int value = gs.Map_chooseSkillAttack.get("MoonLight") + 3;
-            g2.drawImage(key_img.get(value),
-                    xTable + gap * 4 + 3 * (squareSize + gap) - gap - 10,
-                    yTable + gap * 2 ,
-                    gs.getTile(),
-                    gs.getTile(), null);
-        }
+            // draw sub icon
+            if (gs.Map_chooseSkillAttack.containsKey("ArrowLight")) {
+                int value = gs.Map_chooseSkillAttack.get("ArrowLight") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
+            if (gs.Map_chooseSkillAttack.containsKey("CircleFire")) {
+                int value = gs.Map_chooseSkillAttack.get("CircleFire") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 + (squareSize + gap) - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
+            if (gs.Map_chooseSkillAttack.containsKey("MultiArrowLight")) {
+                int value = gs.Map_chooseSkillAttack.get("MultiArrowLight") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 + 2 * (squareSize + gap) - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
+            if (gs.Map_chooseSkillAttack.containsKey("MoonLight")) {
+                int value = gs.Map_chooseSkillAttack.get("MoonLight") + 3;
+                g2.drawImage(key_img.get(value),
+                        xTable + gap * 4 + 3 * (squareSize + gap) - gap - 10,
+                        yTable + gap * 2,
+                        gs.getTile(),
+                        gs.getTile(), null);
+            }
 
         g2.setColor(defaultC);
         String title = "Choose Skill Attack";
@@ -496,6 +502,7 @@ public class UI {
 
                     // click to item
                     if (gs.mouseHandle.isMouseLeftClick()) {
+                        gs.playSE(17);
                         gs.mouseHandle.setMouseLeftClick(false);
 
                         if(gs.loopy.getSkillSuportHave() < 2) {
@@ -533,6 +540,7 @@ public class UI {
             }
             // right click to reset
             if(gs.mouseHandle.isMouseRightClick()) {
+                gs.playSE(17);
                 gs.mouseHandle.setMouseRightClick(false);
                 for(int i = 0; i < 3; i++) {
                     gs.loopy.setSelectedSupport(false,i);
@@ -645,6 +653,7 @@ public class UI {
 
                     // click to item
                     if (gs.mouseHandle.isMouseLeftClick()) {
+                        gs.playSE(17);
                         gs.mouseHandle.setMouseLeftClick(false);
                         if(!gs.loopy.getSelectedUpgrade()[row]) {
                             gs.loopy.setSelectedUpgrade(true,row);
