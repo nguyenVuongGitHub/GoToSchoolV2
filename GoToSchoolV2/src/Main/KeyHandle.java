@@ -52,7 +52,12 @@ public class KeyHandle implements KeyListener{
 			if(gs.state == State.CAMPAIGN) {
 				// dialog
 				if(gs.campaign.isShowDialog()) {
-
+					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP || code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+						gs.playSE(4);
+					}
+				}
+				if(gs.campaign.isShowDialog()) {
+					gs.playSE(4);
 					if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 						if(gs.campaign.getChoose() > 1) {
 							gs.campaign.setChoose(gs.campaign.getChoose()-1);
@@ -89,11 +94,13 @@ public class KeyHandle implements KeyListener{
 						accessReturnLoopy = true;
 						gs.changeScene.setAlive(true);
 						resetAllKeyMoving();
+						gs.stopMusic();
 					}
 				}else{ // battle
 
 					// exit Game
 					if(code == KeyEvent.VK_ESCAPE) {
+						gs.stopMusic();
 						exitMap = true;
 					}else {
 						exitMap = false;

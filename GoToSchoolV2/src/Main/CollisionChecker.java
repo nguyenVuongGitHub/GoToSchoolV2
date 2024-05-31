@@ -292,6 +292,7 @@ public class CollisionChecker {
                         gs.user.setSurvivalCoin(gs.user.getSurvivalCoin() + 1);
                     }
                     other.setAlive(false);
+                    gs.playSE(5);
                 }
             }
         }
@@ -397,11 +398,13 @@ public class CollisionChecker {
 
             if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, true)) {
                 if (player.isCanTouch()) {
-                            int newHP = player.getHP() - other.getDamage();
+                    gs.playSE(14);
+                    int newHP = player.getHP() - other.getDamage();
                             player.setHP(newHP);
                     player.setCanTouch(false);
                 }
                 if (player.getHP() <= 0) {
+                    gs.playSE(14);
                     player.setAlive(false);
                 }
             }
@@ -425,11 +428,13 @@ public class CollisionChecker {
             if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, other, false, false)) {
                 other.setAlive(false);
                 if (player.isCanTouch()) {
+                    gs.playSE(14);
                     int newHP = player.getHP() - other.getDamage();
                     player.setHP(newHP);
                     player.setCanTouch(false);
                 }
                 if (player.getHP() <= 0) {
+                    gs.playSE(14);
                     player.setAlive(false);
                 }
             }
@@ -439,11 +444,13 @@ public class CollisionChecker {
     private void checkPlayerWithLazeboss(Entity player, Entity lazerBoss) {
         if (SeparatingAxis.polygonCollisionDetectFirstStatic(player, lazerBoss, false, false) && lazerBoss.getSpriteNum() >= 9) {
             if (player.isCanTouch()) {
+                gs.playSE(14);
                 int newHP = player.getHP() - lazerBoss.getDamage();
                 player.setHP(newHP);
                 player.setCanTouch(false);
             }
             if (player.getHP() <= 0) {
+                gs.playSE(14);
                 player.setAlive(false);
             }
         }
