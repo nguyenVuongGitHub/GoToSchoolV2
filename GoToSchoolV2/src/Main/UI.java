@@ -656,9 +656,11 @@ public class UI {
                         gs.playSE(17);
                         gs.mouseHandle.setMouseLeftClick(false);
                         if(!gs.loopy.getSelectedUpgrade()[row]) {
-                            gs.loopy.setSelectedUpgrade(true,row);
-                            gs.user.setCoin(gs.user.getCoin() - gs.user.getCoinNeedUpgrade());
-                            gs.user.setCoinNeedUpgrade(gs.user.getCoinNeedUpgrade() + 10);
+                            if(gs.user.getCoin() > gs.user.getCoinNeedUpgrade()) {
+                                gs.loopy.setSelectedUpgrade(true,row);
+                                gs.user.setCoin(gs.user.getCoin() - gs.user.getCoinNeedUpgrade());
+                                gs.user.setCoinNeedUpgrade(gs.user.getCoinNeedUpgrade() + 10);
+                            }
                         }
                     }
                     if(gs.loopy.getSelectedUpgrade()[0]) {
